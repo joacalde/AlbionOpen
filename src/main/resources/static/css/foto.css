@@ -10,3 +10,26 @@
     height: 100%;
 }
 
+.float{
+    width:30px;
+    height:30px;
+    top:40px;
+    left:40px;
+    background-color:transparent;
+    color:#FFF;
+    border-radius:50px;
+    text-align:center;
+    font-size:30px;
+    box-shadow:none;
+    transition: all .5s;
+}
+
+.float:hover {
+    text-decoration: background;
+    color:background;
+    background-color:transparent;
+}
+
+.my-float{
+    margin-top:14px;
+}

@@ -20,6 +20,7 @@
     </head>
 
     <body>
+        <button type="button" class="btn-close float" aria-label="Close" onclick="history.back()"></button>
         <div class="swiper mySwiper" id="fotos">
             <div class="swiper-wrapper">
                 <div th:if="${linea.foto1} != null" class="swiper-slide"><img th:src="@{/foto/__${linea.foto1.id}__}"></div>

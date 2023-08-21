@@ -41,8 +41,8 @@
                         <img th:src="@{/img/navbtn.png}" alt="">
                     </a>
 
-                    <div class="imgnav">
-                        <a class="" href="#">
+                    <div class="navbar-logo">
+                        <a href="#">
                             <img th:src="@{/img/logo.png}" alt="">
                         </a>
                     </div>
@@ -52,30 +52,47 @@
                         <li>
                             <a th:href="@{/contacto/{idioma}(idioma=${idioma})}">
                                 <button class="contactar">
-                                    <h3 th:text="${nav6}"></h3>
+                                    <h3 th:text="${nav5}"></h3>
                                 </button>
                             </a>
                         </li>
 
-                        <div class="textnav" id="header">
+                        <div class="navbar-text">
 
                             <ul class="nav">
                                 <li><a th:href="@{/index/{idioma}(idioma=${idioma})}" th:text="${nav1}"></a></li>
-                                <li><a href="#nosotros" th:text="${nav2}"></a></li>
-                                <li><a href="#lineas" th:text="${nav3}"></a>
-                                    <ul class="desplineas">
+                                <li>
+                                    <a class="dropdown-toggle" href="#nosotros" th:text="${nav2}"></a>
+                                    <ul class="navbar-dropdown">
+                                        <li><a href="#nosotros" th:text="${nav2_1}"></a></li>
+                                        <li><a href="#representaciones" th:text="${nav2_2}"></a></li>
+                                        <li><a href="#servicios" th:text="${nav2_3}"></a></li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a class="dropdown-toggle" href="#lineas" th:text="${nav3}"></a>
+                                    <ul class="navbar-dropdown">
                                         <li th:each="producto: ${productos}">
                                             <a  th:if="${idioma == 1}" th:href="@{/linea/{idioma}/{producto}(idioma=${idioma},producto=${producto.posicion})}" th:text="${producto.producto_es}"></a>
                                             <a  th:if="${idioma == 2}" th:href="@{/linea/{idioma}/{producto}(idioma=${idioma},producto=${producto.posicion})}" th:text="${producto.producto_en}"></a>
-                                            <a  th:if="${idioma == 3}" th:href="@{/linea/{idioma}/{producto}(idioma=${idioma},producto=${producto.posicion})}" th:text="${producto.producto_fr}"></a>
-                                            <a  th:if="${idioma == 4}" th:href="@{/linea/{idioma}/{producto}(idioma=${idioma},producto=${producto.posicion})}" th:text="${producto.producto_br}"></a>
+                                            <!--                                            <a  th:if="${idioma == 3}" th:href="@{/linea/{idioma}/{producto}(idioma=${idioma},producto=${producto.posicion})}" th:text="${producto.producto_fr}"></a>
+                                                                                        <a  th:if="${idioma == 4}" th:href="@{/linea/{idioma}/{producto}(idioma=${idioma},producto=${producto.posicion})}" th:text="${producto.producto_br}"></a>-->
                                         </li>
                                         <hr/>
                                         <li><a href="" th:text="${producto_otro}"></a></li>
                                     </ul>
                                 </li>
-                                <li><a href="#representaciones" th:text="${nav4}"></a></li>
-                                <li><a href="#servicios" th:text="${nav5}"></a></li>
+                                <li>
+                                    <a class="dropdown-toggle" href="#" th:text="${nav4}"></a>
+                                    <ul class="navbar-dropdown">
+                                        <li th:each="producto: ${productos}">
+                                            <a  th:if="${idioma == 1}" th:href="@{/linea/{idioma}/{producto}(idioma=${idioma},producto=${producto.posicion})}" th:text="${producto.producto_es}"></a>
+                                            <a  th:if="${idioma == 2}" th:href="@{/linea/{idioma}/{producto}(idioma=${idioma},producto=${producto.posicion})}" th:text="${producto.producto_en}"></a>
+                                            <!--                                            <a  th:if="${idioma == 3}" th:href="@{/linea/{idioma}/{producto}(idioma=${idioma},producto=${producto.posicion})}" th:text="${producto.producto_fr}"></a>
+                                                                                        <a  th:if="${idioma == 4}" th:href="@{/linea/{idioma}/{producto}(idioma=${idioma},producto=${producto.posicion})}" th:text="${producto.producto_br}"></a>-->
+                                        </li>
+                                    </ul>
+                                </li>
                             </ul>
 
                         </div>
@@ -93,7 +110,7 @@
                                         <a th:if="${idioma != 3}" th:href="@{/index/3}">
                                             <img src="/img/fr2.png" alt="France">
                                         </a>-->
-                    <a th:if="${idioma != 2}" th:href="@{/index/2}">
+                    <a th:if="${idioma != 2}"  th:href="@{/linea/2/{producto}(producto=${producto.posicion})}">
                         <img th:src="@{/img/ing2.png}" alt="English">
                     </a>
                     <a th:if="${idioma != 1}" th:href="@{/index/1}">
@@ -106,15 +123,16 @@
 
         <div class="leftnav">
             <ul>
-                <li><a th:href="@{/index/{idioma}(idioma=${idioma})}"></a></li>
-                <li><a th:href="@{/nosotros/{idioma}(idioma=${idioma})}" th:text="${nav2}"></a></li>
+                <li><a th:href="@{/index/{idioma}(idioma=${idioma})}" th:text="${nav1}"></a></li>
+                <li><a th:href="@{/nosotros/{idioma}(idioma=${idioma})}" th:text="${nav2_1}"></a></li>
                 <li><a th:href="@{/lineas/{idioma}(idioma=${idioma})}" th:text="${nav3}"></a>
-                <li><a th:href="@{/representaciones/{idioma}(idioma=${idioma})}" th:text="${nav4}"></a></li>
-                <li><a th:href="@{/servicios/{idioma}(idioma=${idioma})}" th:text="${nav5}"></a></li>
+                <li><a th:href="@{/representaciones/{idioma}(idioma=${idioma})}" th:text="${nav2_2}"></a></li>
+                <li><a th:href="@{/servicios/{idioma}(idioma=${idioma})}" th:text="${nav2_3}"></a></li>
+                <li><a th:href="@{/equipos/{idioma}(idioma=${idioma})}" th:text="${nav4}"></a></li>
                 <li>
                 <li id="leftnavcontactar">
                     <a th:href="@{/contacto/{idioma}(idioma=${idioma})}"><button class="contactarnav" id="contactarleftnav">
-                            <h3 th:text="${nav6}"></h3>
+                            <h3 th:text="${nav5}"></h3>
                         </button></a>
                 </li>
             </ul>
@@ -125,8 +143,8 @@
                 <li th:each="producto: ${productos}">
                     <a  th:if="${idioma == 1}" th:href="@{/linea/{idioma}/{producto}(idioma=${idioma},producto=${producto.posicion})}" th:text="${producto.producto_es}"></a>
                     <a  th:if="${idioma == 2}" th:href="@{/linea/{idioma}/{producto}(idioma=${idioma},producto=${producto.posicion})}" th:text="${producto.producto_en}"></a>
-                    <a  th:if="${idioma == 3}" th:href="@{/linea/{idioma}/{producto}(idioma=${idioma},producto=${producto.posicion})}" th:text="${producto.producto_fr}"></a>
-                    <a  th:if="${idioma == 4}" th:href="@{/linea/{idioma}/{producto}(idioma=${idioma},producto=${producto.posicion})}" th:text="${producto.producto_br}"></a>
+<!--                    <a  th:if="${idioma == 3}" th:href="@{/linea/{idioma}/{producto}(idioma=${idioma},producto=${producto.posicion})}" th:text="${producto.producto_fr}"></a>
+                    <a  th:if="${idioma == 4}" th:href="@{/linea/{idioma}/{producto}(idioma=${idioma},producto=${producto.posicion})}" th:text="${producto.producto_br}"></a>-->
                 </li>
                 <hr />
                 <li><a href="otros.html" th:text="${producto_otro}"></a></li>
