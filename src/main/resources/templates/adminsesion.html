@@ -1,0 +1,902 @@
+<!doctype html>
+<html lang="en">
+
+    <head>
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <!-- Bootstrap CSS -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+
+        <link rel="stylesheet" th:href="@{/css/admin.css}" />
+
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+        <title>Albion - Administracion</title>
+    </head>
+
+    <body th:style="'background-image: url(' + @{/img/taller.jpg} + ');'">
+        <!--        <form><input type="button" value="volver atrás" name="volver atrás2" onclick="history.back()" /> </form>-->
+        <a th:href="@{/logout}">Salir</a>
+        <div class="adminmenu">
+            <a th:href="@{/logout}"><img src="/img/logo.png" alt=""></a>
+            <p th:if="${exito}!=null" th:text="${exito}" style="color:green"></p>
+            <p th:if="${error}!=null" th:text="${error}" style="color:red"></p>
+            <div class="btn-group dropend">
+                <button type="button" class="contactar dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                    Crear
+                </button>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" data-bs-toggle="modal" href="#crearProducto">Crear Producto</a></li>
+                    <li><a class="dropdown-item" data-bs-toggle="modal" href="#crearFuncion">Crear Funcion</a></li>
+                    <li><a class="dropdown-item" data-bs-toggle="modal" href="#crearLinea">Crear Linea</a></li>
+                </ul>
+            </div>
+            <div class="btn-group dropend">
+                <button type="button" class="contactar dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                    Editar
+                </button>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" data-bs-toggle="modal" href="#editarProducto">Editar Producto</a></li>
+                    <li><a class="dropdown-item" data-bs-toggle="modal" href="#editarFuncion">Editar Funcion</a></li>
+                    <li><a class="dropdown-item" data-bs-toggle="modal" href="#editarLinea">Editar Linea</a></li>
+                </ul>
+            </div>
+            <div class="btn-group dropend">
+                <button type="button" class="contactar dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                    Ordenar
+                </button>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" data-bs-toggle="modal" href="#ordenarProducto">Ordenar Producto</a></li>
+                    <li><a class="dropdown-item" data-bs-toggle="modal" href="#ordenarFuncion">Ordenar Funcion</a></li>
+                    <li><a class="dropdown-item" data-bs-toggle="modal" href="#ordenarLinea">Ordenar Linea</a></li>
+                </ul>
+            </div>
+        </div>
+
+
+        <!-- Crear Producto -->
+        <div class="modal fade" id="crearProducto" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">Crear Producto</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form th:action="@{/crearProducto}" method="POST" enctype="multipart/form-data">
+                            <div class="mb-3">
+                                <label for="exampleInputEmail1" class="form-label">Producto Español</label>
+                                <input type="text" name="producto_es" class="form-control" id="exampleInputEmail1"  th:value="${newproducto.producto_es}" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="exampleInputEmail1" class="form-label">Producto Inglés</label>
+                                <input type="text" name="producto_en" class="form-control" id="exampleInputEmail1"  th:value="${newproducto.producto_en}">
+                            </div>
+                            <div class="mb-3">
+                                <label for="exampleInputEmail1" class="form-label">Producto Francés</label>
+                                <input type="text" name="producto_fr" class="form-control" id="exampleInputEmail1"  th:value="${newproducto.producto_fr}">
+                            </div>
+                            <div class="mb-3">
+                                <label for="exampleInputEmail1" class="form-label">Producto Brasil</label>
+                                <input type="text" name="producto_br" class="form-control" id="exampleInputEmail1"  th:value="${newproducto.producto_br}">
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label" for="inputGroupFile01">Foto</label>
+                                <input name="foto" type="file" class="form-control" id="inputGroupFile01"   th:value="${newproducto.foto}">
+                            </div>
+                            <button type="submit" class="contactar">Crear</button>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Crear Funcion -->
+        <div class="modal fade" id="crearFuncion" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">Crear Funcion</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form th:action="@{/crearFuncion}" method="POST" >
+                            <label for="exampleInputEmail1" class="form-label">Producto</label>
+                            <p th:text="${newfuncion.funcion_es}"></p>
+                            <select name="producto_es" required class="form-select" aria-label="Default select example">
+                                <option  th:each="producto : ${producto}" th:value="${producto.producto_es}"  th:text="${producto.producto_es}" th:selected="${producto.producto_es == newfuncion.funcion_es}" ></option>
+                            </select>
+                            <div class="mb-3">
+                                <label for="exampleInputEmail1" class="form-label">Funcion Español</label>
+                                <input type="text" name="funcion_es" class="form-control" id="exampleInputEmail1" th:value="${newfuncion.funcion_es}" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="exampleInputEmail1" class="form-label">Funcion Inglés</label>
+                                <input type="text" name="funcion_en" class="form-control" id="exampleInputEmail1" th:value="${newfuncion.funcion_en}">
+                            </div>
+                            <div class="mb-3">
+                                <label for="exampleInputEmail1" class="form-label">Funcion Francés</label>
+                                <input type="text" name="funcion_fr" class="form-control" id="exampleInputEmail1" th:value="${newfuncion.funcion_fr}">
+                            </div>
+                            <div class="mb-3">
+                                <label for="exampleInputEmail1" class="form-label">Funcion Brasil</label>
+                                <input type="text" name="funcion_br" class="form-control" id="exampleInputEmail1" th:value="${newfuncion.funcion_br}">
+                            </div>
+                            <button type="submit" class="contactar">Crear</button>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Crear Linea -->
+        <div class="modal fade" id="crearLinea" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-fullscreen">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">Crear Linea</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form class="row g-3" th:action="@{/crearLinea}" method="POST" enctype="multipart/form-data">
+                            <div class="col-md-6">
+                                <label for="inputState" class="form-label">Producto</label>
+                                <select name="productoId" id="select-producto" onchange="cargarFunciones()" class="form-select" aria-label="Default select example">
+                                    <option value="">Selecciona un producto</option>
+                                    <option  th:each="producto : ${producto}" th:value="${producto.id}"  th:text="${producto.producto_es}" th:selected="${producto.producto_es == newfuncion.funcion_es}" ></option>
+                                </select>
+                            </div>
+                            <script th:inline="javascript">
+                                function cargarFunciones() {
+                                $('#funciones').prop('disabled', false);
+                                var productoId = document.getElementById("select-producto").value;
+                                if (productoId) {
+                                var url = /*[[@{/productos/{id}/funciones}]]*/ '';
+                                url = url.replace('{id}', productoId);
+                                $.ajax({
+                                url: url,
+                                type: 'GET',
+                                success: function(data) {
+                                $('#funciones').html(data);
+                                $('#funciones').prop('disabled', false);
+                                },
+                                error: function() {
+                                console.log('Error al obtener las funciones del producto');
+                                }
+                                });
+                                } else {
+                                $('#funciones').html('<option value="">Selecciona un producto primero</option>');
+                                $('#funciones').prop('disabled', true);
+                                }
+                                }
+                            </script>
+
+                            <div class="col-md-6">
+                                <label for="inputState" class="form-label">Funcion</label>
+                                <select name="funcionId" id="funciones" disabled  class="form-select" aria-label="Default select example">
+                                    <option value="">Selecciona un producto primero</option>
+                                </select>
+                            </div>
+
+                            <div class="col-md-4">
+                                <label for="exampleInputEmail1" class="form-label">Modelo</label>
+                                <input type="text" name="modelo" class="form-control" id="exampleInputEmail1">
+                            </div>
+                            <div class="col-md-4">
+                                <label for="exampleInputEmail1" class="form-label">Configuración</label>
+                                <input type="text" name="configuracion" class="form-control" id="exampleInputEmail1">
+                            </div>
+                            <div class="col-md-4">
+                                <label for="exampleInputEmail1" class="form-label">Producción</label>
+                                <input type="text" name="produccion" class="form-control" id="exampleInputEmail1">
+                            </div>
+                            <div class="col-md-3">
+                                <label for="exampleInputEmail1" class="form-label">Título Español</label>
+                                <input type="text" name="titulo_es" class="form-control" id="exampleInputEmail1">
+                            </div>
+                            <div class="col-md-3">
+                                <label for="exampleInputEmail1" class="form-label">Título Inglés</label>
+                                <input type="text" name="titulo_en" class="form-control" id="exampleInputEmail1">
+                            </div>
+                            <div class="col-md-3">
+                                <label for="exampleInputEmail1" class="form-label">Título Francés</label>
+                                <input type="text" name="titulo_fr" class="form-control" id="exampleInputEmail1">
+                            </div>
+                            <div class="col-md-3">
+                                <label for="exampleInputEmail1" class="form-label">Título Brasil</label>
+                                <input type="text" name="titulo_br" class="form-control" id="exampleInputEmail1">
+                            </div>
+                            <div class="col-md-3">
+                                <label for="exampleFormControlTextarea1" class="form-label">Descripción Español</label>
+                                <textarea name="descripcion_es" class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="exampleFormControlTextarea1" class="form-label">Descripción Inglés</label>
+                                <textarea name="descripcion_en" class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="exampleFormControlTextarea1" class="form-label">Descripción Francés</label>
+                                <textarea name="descripcion_fr" class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="exampleFormControlTextarea1" class="form-label">Descripción Brasil</label>
+                                <textarea name="descripcion_br" class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label" for="inputGroupFile01">Foto 1</label>
+                                <input name="archivo1" type="file" class="form-control" id="inputGroupFile01">
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label" for="inputGroupFile01">Foto 2</label>
+                                <input name="archivo2" type="file" class="form-control" id="inputGroupFile01">
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label" for="inputGroupFile01">Foto 3</label>
+                                <input name="archivo3" type="file" class="form-control" id="inputGroupFile01">
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label" for="inputGroupFile01">Foto 4</label>
+                                <input name="archivo4" type="file" class="form-control" id="inputGroupFile01">
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label" for="inputGroupFile01">Foto 5</label>
+                                <input name="archivo5" type="file" class="form-control" id="inputGroupFile01">
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label" for="inputGroupFile01">Foto 6</label>
+                                <input name="archivo6" type="file" class="form-control" id="inputGroupFile01">
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label" for="inputGroupFile01">Foto 7</label>
+                                <input name="archivo7" type="file" class="form-control" id="inputGroupFile01">
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label" for="inputGroupFile01">Foto 8</label>
+                                <input name="archivo8" type="file" class="form-control" id="inputGroupFile01">
+                            </div>
+                            <button type="submit" class="contactar">Crear</button>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Editar Producto -->
+        <div class="modal fade" id="editarProducto" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-xl">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">Editar Producto</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+
+
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Producto</th>
+                                    <th>Editar</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="producto : ${producto}">
+                            <form th:action="@{/producto/editar}" method="POST" >
+                                <td>
+                                    <input type="text" name="producto_es" th:value="${producto.producto_es}"/> <br/>
+                                    <input type="text" name="producto_en" th:value="${producto.producto_en}"/><br/>
+                                    <input type="text" name="producto_fr" th:value="${producto.producto_fr}"/> <br/>
+                                    <input type="text" name="producto_br" th:value="${producto.producto_br}"/>
+                                    <input type="hidden" name="id" th:value="${producto.id}"/>
+                                </td>
+                                <td>
+                                    <button type="submit">Editar</button> <br/>
+                                    <a th:if="${producto.alta == false}" th:href="@{/producto/eliminar/{id}(id=${producto.id})}">Alta</a>
+                                    <a th:if="${producto.alta == true}" th:href="@{/producto/eliminar/{id}(id=${producto.id})}">Baja</a>
+                                    <br/>
+                                    <a href="" id="eliminarProducto">Eliminar</a>
+
+                                    <script th:inline="javascript">
+                                        $(document).ready(function() {
+                                        $('#eliminarProducto').click(function(event) {
+                                        event.preventDefault(); // Evita el comportamiento predeterminado del enlace
+
+                                        var id = /*[[${producto.id}]]*/ null; // Obtén el ID del producto utilizando la sintaxis de Thymeleaf
+
+                                        $.ajax({
+                                        url: /*[[@{/eliminar/producto/{id}(id=${producto.id})}]]*/,
+                                        method: 'POST',
+                                        data: { param1: 'valor1', param2: 'valor2' },
+                                        success: function(response) {
+                                        // Manejar la respuesta
+                                        },
+                                        error: function(xhr, status, error) {
+                                        // Manejar el error
+                                        }
+                                        });
+                                        });
+                                        });
+                                    </script>
+
+
+                                </td>
+                            </form>
+                            </tr>
+                            </tbody>
+                        </table>
+
+
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Editar Funcion -->
+        <div class="modal fade" id="editarFuncion" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-xl">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">Editar Funcion</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form th:action="@{/funcion/editar}" method="post">
+                            <label for="producto">Seleccionar Producto:</label>
+                            <select name="producto" id="select-editarFuncion" onchange="cargarEditarFuncion()">
+                                <option value="">Seleccionar</option>
+                                <option th:each="producto : ${producto}" th:value="${producto.id}" th:text="${producto.producto_es}" th:selected="${producto.producto_es == newfuncion.funcion_es}"></option>
+                            </select>
+
+                            <!-- Tabla de funciones -->
+                            <table id="editarFunciones">
+                                <thead>
+                                    <tr>
+                                        <th>Función ES</th>
+                                        <th>Función EN</th>
+                                        <th>Función FR</th>
+                                        <th>Función BR</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+
+                            <button type="submit">Guardar cambios</button>
+                        </form>
+                        <script th:inline="javascript">
+                            function cargarEditarFuncion() {
+                            var productoId = $('#select-editarFuncion').val();
+
+                            if (productoId) {
+                            var url = /*[[@{/productos/{id}/buscarFunciones}]]*/ '';
+                            url = url.replace('{id}', productoId);
+
+                            $.ajax({
+                            url: url,
+                            type: 'GET',
+                            success: function(data) {
+                            // Limpiar la tabla de funciones
+                            $('#editarFunciones tbody').empty();
+
+                            // Iterar sobre las funciones y generar las filas de la tabla
+                            $.each(data, function(index, funcion) {
+                            var fila = $('<tr>');
+                            fila.append('<td><input type="text" name="funcion_es" value="' + funcion.funcion_es + '"></td>');
+                            fila.append('<td><input type="text" name="funcion_en" value="' + funcion.funcion_en + '"></td>');
+                            fila.append('<td><input type="text" name="funcion_fr" value="' + funcion.funcion_fr + '"></td>');
+                            fila.append('<td><input type="text" name="funcion_br" value="' + funcion.funcion_br + '"></td>');
+                            fila.append('<td><input type="hidden" name="id" value="' + funcion.id + '"></td>');
+
+                            $('#editarFunciones tbody').append(fila);
+                            });
+                            },
+                            error: function() {
+                            console.log('Error al obtener las funciones del producto');
+                            }
+                            });
+                            } else {
+                            $('#editarFunciones tbody').empty();
+                            }
+                            }
+                        </script>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Editar Linea -->
+        <div class="modal fade" id="editarLinea" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-fullscreen">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">Editar Linea</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form th:action="@{/linea/editar}" method="post" enctype="multipart/form-data">
+                            <label for="producto">Seleccionar Producto:</label>
+                            <select name="producto" id="select-producto-editarLinea" onchange="cargarFuncionesEditarLinea()">
+                                <option value="">Seleccionar</option>
+                                <!-- Iterar sobre los productos y generar las opciones del select -->
+                                <option th:each="producto : ${producto}" th:value="${producto.id}" th:text="${producto.producto_es}"></option>
+                            </select>
+
+                            <label for="funcion">Seleccionar Función:</label>
+                            <select name="funcion" id="select-funcion-editarLinea" onchange="cargarLineasEditarLineas()">
+                                <option value="">Seleccionar</option>
+                            </select>
+
+                            <!-- Tabla de líneas -->
+                            <table id="editarLineas">
+                                <thead>
+                                    <tr>
+                                        <th>Modelo</th>
+                                        <th>Configuracion</th>
+                                        <th>Produccion</th>
+                                        <th>Titulo Es</th>
+                                        <th>Titulo En</th>
+                                        <th>Titulo Fr</th>
+                                        <th>Titulo Br</th>
+                                        <th>Descripcion Es</th>
+                                        <th>Descripcion En</th>
+                                        <th>Descripcion Fr</th>
+                                        <th>Descripcion Br</th>
+                                        <th>Foto 1</th>
+                                        <th>Foto 2</th>
+                                        <th>Foto 3</th>
+                                        <th>Foto 4</th>
+                                        <th>Foto 5</th>
+                                        <th>Foto 6</th>
+                                        <th>Foto 7</th>
+                                        <th>Foto 8</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="editarLineasBody">
+                                </tbody>
+                            </table>
+
+                            <button type="submit">Guardar cambios</button>
+                        </form>
+
+                        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+                        <script>
+                            function eliminarFoto(id) {
+                            $.ajax({
+                            url: '/foto/eliminar/' + id,
+                            type: 'DELETE',
+                            success: function () {
+                            // La foto se eliminó correctamente, puedes realizar alguna acción adicional aquí si lo deseas
+                            alert('La foto se eliminó con éxito');
+                            // Puedes redirigir a alguna página después de eliminar la foto, por ejemplo:
+                            window.location.href = '/adminsesion';
+                            },
+                            error: function () {
+                            // Ocurrió un error al eliminar la foto
+                            alert('Error al eliminar la foto');
+                            }
+                            });
+                            }
+                        </script>
+                        <script th:inline="javascript">
+
+                            function cargarFuncionesEditarLinea() {
+                            var productoId = $('#select-producto-editarLinea').val();
+
+                            if (productoId) {
+                            var url = /*[[@{/productos/{id}/buscarFunciones}]]*/ '';
+                            url = url.replace('{id}', productoId);
+
+                            $.ajax({
+                            url: url,
+                            type: 'GET',
+                            success: function(data) {
+                            // Limpiar el select de funciones
+                            $('#select-funcion-editarLinea').empty();
+                            $('#select-funcion-editarLinea').append('<option value="">Seleccionar</option>');
+
+                            // Iterar sobre las funciones y generar las opciones del select
+                            $.each(data, function(index, funcion) {
+                            $('#select-funcion-editarLinea').append('<option value="' + funcion.id + '">' + funcion.funcion_es + '</option>');
+                            });
+                            },
+                            error: function() {
+                            console.log('Error al obtener las funciones del producto');
+                            }
+                            });
+                            } else {
+                            $('#select-funcion-editarLinea').empty();
+                            $('#editarLineasBody').empty();
+                            }
+                            }
+
+                            function cargarLineasEditarLineas() {
+                            var funcionId = $('#select-funcion-editarLinea').val();
+
+                            if (funcionId) {
+                            var url = /*[[@{/funciones/{id}/buscarLineas}]]*/ '';
+                            url = url.replace('{id}', funcionId);
+
+                            $.ajax({
+                            url: url,
+                            type: 'GET',
+                            success: function(data) {
+                            var editarLineasBody = $('#editarLineasBody');
+                            editarLineasBody.empty();
+
+                            $.each(data, function(index, linea) {
+                            var fila = $('<tr>');
+                            fila.append('<td><input type="text" name="modelo" value="' + linea.modelo + '"></td>');
+                            fila.append('<td><input type="text" name="configuracion" value="' + linea.configuracion + '"></td>');
+                            fila.append('<td><input type="text" name="produccion" value="' + linea.produccion + '"></td>');
+                            fila.append('<td><input type="text" name="titulo_es" value="' + linea.titulo_es + '"></td>');
+                            fila.append('<td><input type="text" name="titulo_en" value="' + linea.titulo_en + '"></td>');
+                            fila.append('<td><input type="text" name="titulo_fr" value="' + linea.titulo_fr + '"></td>');
+                            fila.append('<td><input type="text" name="titulo_br" value="' + linea.titulo_br + '"></td>');
+                            fila.append('<td><input type="text" name="descripcion_es" value="' + linea.descripcion_es + '"></td>');
+                            fila.append('<td><input type="text" name="descripcion_en" value="' + linea.descripcion_en + '"></td>');
+                            fila.append('<td><input type="text" name="descripcion_fr" value="' + linea.descripcion_fr + '"></td>');
+                            fila.append('<td><input type="text" name="descripcion_br" value="' + linea.descripcion_br + '"></td>');
+
+                            // Mostrar imagen previa si existe
+                            if (linea.foto1) {
+                            var urlFoto1 = /*[[@{/foto/{id}}]]*/ '';
+                            urlFoto1 = urlFoto1.replace('{id}', linea.foto1.id);
+                            fila.append('<td><img class="imagen-previa" src="' + urlFoto1 + '" alt="Imagen actual" style="max-width: 100px;">' +
+                            '<input type="file" name="foto1" onchange="mostrarVistaPrevia(this)">' +
+                            '<button type="button" onclick="eliminarArchivo(this)">Eliminar Archivo</button>' +
+                            '<button type="button" onclick="eliminarFoto(\'' + linea.foto1.id + '\')">Eliminar Foto</button></td>');
+                            } else {
+                            fila.append('<td><img class="imagen-previa" src="" alt="No hay imagen" style="max-width: 100px;"><input type="file" name="foto1" onchange="mostrarVistaPrevia(this)"><button type="button" onclick="eliminarFoto(this)">Eliminar Foto</button></td>');
+                            }
+                            if (linea.foto2) {
+                            var urlFoto2 = /*[[@{/foto/{id}}]]*/ '';
+                            urlFoto2 = urlFoto2.replace('{id}', linea.foto2.id);
+
+                            fila.append('<td><img class="imagen-previa" src="' + urlFoto2 + '" alt="Imagen actual" style="max-width: 100px;"><input type="file" name="foto2" onchange="mostrarVistaPrevia(this)"><button type="button" onclick="eliminarArchivo(this)">Eliminar Archivo</button><form th:action="' + urlFoto2 + '" method="post" id="eliminarFotoForm"><input type="hidden" name="_method" value="delete"><button type="submit">Eliminar Foto</button></form></td>');
+                            } else {
+                            fila.append('<td><img class="imagen-previa" src="" alt="No hay imagen" style="max-width: 100px;"><input type="file" name="foto2" onchange="mostrarVistaPrevia(this)"><button type="button" onclick="eliminarFoto(this)">Eliminar Foto</button></td>');
+                            }
+                            if (linea.foto3) {
+                            var urlFoto3 = /*[[@{/foto/{id}}]]*/ '';
+                            urlFoto3 = urlFoto3.replace('{id}', linea.foto3.id);
+
+                            fila.append('<td><img class="imagen-previa" src="' + urlFoto3 + '" alt="Imagen actual" style="max-width: 100px;"><input type="file" name="foto3" onchange="mostrarVistaPrevia(this)"><button type="button" onclick="eliminarArchivo(this)">Eliminar Archivo</button><form th:action="' + urlFoto3 + '" method="post" id="eliminarFotoForm"><input type="hidden" name="_method" value="delete"><button type="submit">Eliminar Foto</button></form></td>');
+                            } else {
+                            fila.append('<td><img class="imagen-previa" src="" alt="No hay imagen" style="max-width: 100px;"><input type="file" name="foto3" onchange="mostrarVistaPrevia(this)"><button type="button" onclick="eliminarFoto(this)">Eliminar Foto</button></td>');
+                            }
+                            if (linea.foto4) {
+                            var urlFoto4 = /*[[@{/foto/{id}}]]*/ '';
+                            urlFoto4 = urlFoto4.replace('{id}', linea.foto4.id);
+
+                            fila.append('<td><img class="imagen-previa" src="' + urlFoto4 + '" alt="Imagen actual" style="max-width: 100px;"><input type="file" name="foto4" onchange="mostrarVistaPrevia(this)"><button type="button" onclick="eliminarArchivo(this)">Eliminar Archivo</button><form th:action="' + urlFoto4 + '" method="post" id="eliminarFotoForm"><input type="hidden" name="_method" value="delete"><button type="submit">Eliminar Foto</button></form></td>');
+                            } else {
+                            fila.append('<td><img class="imagen-previa" src="" alt="No hay imagen" style="max-width: 100px;"><input type="file" name="foto4" onchange="mostrarVistaPrevia(this)"><button type="button" onclick="eliminarFoto(this)">Eliminar Foto</button></td>');
+                            }
+                            if (linea.foto5) {
+                            var urlFoto5 = /*[[@{/foto/{id}}]]*/ '';
+                            urlFoto5 = urlFoto5.replace('{id}', linea.foto5.id);
+
+                            fila.append('<td><img class="imagen-previa" src="' + urlFoto5 + '" alt="Imagen actual" style="max-width: 100px;"><input type="file" name="foto5" onchange="mostrarVistaPrevia(this)"><button type="button" onclick="eliminarArchivo(this)">Eliminar Archivo</button><form th:action="' + urlFoto5 + '" method="post" id="eliminarFotoForm"><input type="hidden" name="_method" value="delete"><button type="submit">Eliminar Foto</button></form></td>');
+                            } else {
+                            fila.append('<td><img class="imagen-previa" src="" alt="No hay imagen" style="max-width: 100px;"><input type="file" name="foto5" onchange="mostrarVistaPrevia(this)"><button type="button" onclick="eliminarFoto(this)">Eliminar Foto</button></td>');
+                            }
+                            if (linea.foto6) {
+                            var urlFoto6 = /*[[@{/foto/{id}}]]*/ '';
+                            urlFoto6 = urlFoto6.replace('{id}', linea.foto6.id);
+
+                            fila.append('<td><img class="imagen-previa" src="' + urlFoto6 + '" alt="Imagen actual" style="max-width: 100px;"><input type="file" name="foto6" onchange="mostrarVistaPrevia(this)"><button type="button" onclick="eliminarArchivo(this)">Eliminar Archivo</button><form th:action="' + urlFoto6 + '" method="post" id="eliminarFotoForm"><input type="hidden" name="_method" value="delete"><button type="submit">Eliminar Foto</button></form></td>');
+                            } else {
+                            fila.append('<td><img class="imagen-previa" src="" alt="No hay imagen" style="max-width: 100px;"><input type="file" name="foto6" onchange="mostrarVistaPrevia(this)"><button type="button" onclick="eliminarFoto(this)">Eliminar Foto</button></td>');
+                            }
+                            if (linea.foto7) {
+                            var urlFoto7 = /*[[@{/foto/{id}}]]*/ '';
+                            urlFoto7 = urlFoto7.replace('{id}', linea.foto7.id);
+
+                            fila.append('<td><img class="imagen-previa" src="' + urlFoto7 + '" alt="Imagen actual" style="max-width: 100px;"><input type="file" name="foto7" onchange="mostrarVistaPrevia(this)"><button type="button" onclick="eliminarArchivo(this)">Eliminar Archivo</button><form th:action="' + urlFoto7 + '" method="post" id="eliminarFotoForm"><input type="hidden" name="_method" value="delete"><button type="submit">Eliminar Foto</button></form></td>');
+                            } else {
+                            fila.append('<td><img class="imagen-previa" src="" alt="No hay imagen" style="max-width: 100px;"><input type="file" name="foto7" onchange="mostrarVistaPrevia(this)"><button type="button" onclick="eliminarFoto(this)">Eliminar Foto</button></td>');
+                            }
+                            if (linea.foto8) {
+                            var urlFoto8 = /*[[@{/foto/{id}}]]*/ '';
+                            urlFoto8 = urlFoto8.replace('{id}', linea.foto8.id);
+
+                            fila.append('<td><img class="imagen-previa" src="' + urlFoto8 + '" alt="Imagen actual" style="max-width: 100px;"><input type="file" name="foto8" onchange="mostrarVistaPrevia(this)"><button type="button" onclick="eliminarArchivo(this)">Eliminar Archivo</button><form th:action="' + urlFoto8 + '" method="post" id="eliminarFotoForm"><input type="hidden" name="_method" value="delete"><button type="submit">Eliminar Foto</button></form></td>');
+                            } else {
+                            fila.append('<td><img class="imagen-previa" src="" alt="No hay imagen" style="max-width: 100px;"><input type="file" name="foto8" onchange="mostrarVistaPrevia(this)"><button type="button" onclick="eliminarFoto(this)">Eliminar Foto</button></td>');
+                            }
+
+                            fila.append('<td><input type="hidden" name="id" value="' + linea.id + '"></td>');
+
+                            editarLineasBody.append(fila);
+                            });
+                            },
+                            error: function() {
+                            console.log('Error al obtener las líneas de la función');
+                            }
+                            });
+                            } else {
+                            $('#editarLineasBody').empty();
+                            }
+                            }
+
+                            function mostrarVistaPrevia(input) {
+                            var archivo = input.files[0];
+                            var lector = new FileReader();
+                            var imagenPrev = $(input).closest('td').find('.imagen-previa');
+
+                            lector.onload = function(e) {
+                            var imagen = e.target.result;
+                            imagenPrev.attr('src', imagen);
+                            };
+
+                            lector.readAsDataURL(archivo);
+                            }
+
+                            function eliminarArchivo(button) {
+                            var fila = $(button).closest('tr');
+                            fila.find('input[type="file"]').val('');
+                            fila.find('.imagen-previa').attr('src', '');
+                            }
+                        </script>
+
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Ordenar Producto -->
+        <div class="modal fade" id="ordenarProducto" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-xl">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">Ordenar Producto</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+
+                        <form th:action="@{/ordenarProducto}" method="POST" >
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Producto</th>
+                                        <th>Posición</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr th:each="producto : ${producto}">
+                                        <td th:text="${producto.producto_es}"></td>
+                                        <td>
+                                            <input type="number" name="posicion" th:value="${producto.posicion}"/>
+                                            <input type="hidden" name="id" th:value="${producto.id}" />
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <button type="submit">Ordenar</button>
+                        </form>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Ordenar Funcion -->
+        <div class="modal fade" id="ordenarFuncion" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-xl">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">Ordenar Funcion</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+
+                        <form th:action="@{/ordenarFuncion}" method="post">
+                            <label for="producto">Seleccionar Producto:</label>
+                            <select name="producto" id="select-ordenarFunciones" onchange="cargarOrdenarFunciones()">
+                                <option value="">Seleccionar</option>
+                                <option th:each="producto : ${producto}" th:value="${producto.id}" th:text="${producto.producto_es}" th:selected="${producto.producto_es == newfuncion.funcion_es}"></option>
+                            </select>
+
+                            <!-- Tabla de funciones -->
+                            <table id="ordenarFunciones">
+                                <thead>
+                                    <tr>
+                                        <th>Función</th>
+                                        <th>Posición</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+
+                            <button type="submit">Guardar cambios</button>
+                        </form>
+
+                        <script th:inline="javascript">
+                            function cargarOrdenarFunciones() {
+                            var productoId = $('#select-ordenarFunciones').val();
+
+                            if (productoId) {
+                            var url = /*[[@{/productos/{id}/buscarFunciones}]]*/ '';
+                            url = url.replace('{id}', productoId);
+
+                            $.ajax({
+                            url: url,
+                            type: 'GET',
+                            success: function(data) {
+                            // Limpiar la tabla de funciones
+                            $('#ordenarFunciones tbody').empty();
+
+                            // Iterar sobre las funciones y generar las filas de la tabla
+                            $.each(data, function(index, funcion) {
+                            var fila = $('<tr>');
+                            fila.append('<td>' + funcion.funcion_es + '</td>');
+                            fila.append('<input type="hidden" name="id" value="' + funcion.id + '">');
+                            fila.append('<td><input type="number" name="posicion" value="' + funcion.posicion + '"></td>');
+
+                            $('#ordenarFunciones tbody').append(fila);
+                            });
+                            },
+                            error: function() {
+                            console.log('Error al obtener las funciones del producto');
+                            }
+                            });
+                            } else {
+                            $('#ordenarFunciones tbody').empty();
+                            }
+                            }
+                        </script>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Ordenar Linea -->
+        <div class="modal fade" id="ordenarLinea" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-xl">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">Ordenar Linea</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+
+                        <form th:action="@{/ordenarLinea}" method="post">
+                            <label for="producto">Seleccionar Producto:</label>
+                            <select name="producto" id="select-producto-ordenarLinea" onchange="cargarFuncionesOrdenarLinea()">
+                                <option value="">Seleccionar</option>
+                                <!-- Iterar sobre los productos y generar las opciones del select -->
+                                <option th:each="producto : ${producto}" th:value="${producto.id}" th:text="${producto.producto_es}"></option>
+                            </select>
+
+                            <label for="funcion">Seleccionar Función:</label>
+                            <select name="funcion" id="select-funcion" onchange="cargarLineasOrdenarLineas()">
+                                <option value="">Seleccionar</option>
+                            </select>
+
+                            <!-- Tabla de líneas -->
+                            <table id="ordenarLineas">
+                                <thead>
+                                    <tr>
+                                        <th>Modelo</th>
+                                        <th>Posición</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+
+                            <button type="submit">Guardar cambios</button>
+                        </form>
+
+                        <script th:inline="javascript">
+                            function cargarFuncionesOrdenarLinea() {
+                            var productoId = $('#select-producto-ordenarLinea').val();
+
+                            if (productoId) {
+                            var url = /*[[@{/productos/{id}/buscarFunciones}]]*/ '';
+                            url = url.replace('{id}', productoId);
+
+                            $.ajax({
+                            url: url,
+                            type: 'GET',
+                            success: function(data) {
+                            // Limpiar el select de funciones
+                            $('#select-funcion').empty();
+                            $('#select-funcion').append('<option value="">Seleccionar</option>');
+
+                            // Iterar sobre las funciones y generar las opciones del select
+                            $.each(data, function(index, funcion) {
+                            $('#select-funcion').append('<option value="' + funcion.id + '">' + funcion.funcion_es + '</option>');
+                            });
+                            },
+                            error: function() {
+                            console.log('Error al obtener las funciones del producto');
+                            }
+                            });
+                            } else {
+                            $('#select-funcion').empty();
+                            $('#ordenarLineas tbody').empty();
+                            }
+                            }
+
+                            function cargarLineasOrdenarLineas() {
+                            var funcionId = $('#select-funcion').val();
+
+                            if (funcionId) {
+                            var url = /*[[@{/funciones/{id}/buscarLineas}]]*/ '';
+                            url = url.replace('{id}', funcionId);
+
+                            $.ajax({
+                            url: url,
+                            type: 'GET',
+                            success: function(data) {
+                            // Limpiar la tabla de líneas
+                            $('#ordenarLineas tbody').empty();
+
+                            // Iterar sobre las líneas y generar las filas de la tabla
+                            $.each(data, function(index, linea) {
+                            var fila = $('<tr>');
+                            fila.append('<td>' + linea.modelo + '</td>');
+                            fila.append('<td><input type="hidden" name="id" value="' + linea.id + '">' +
+                            '<input type="number" name="posicion" value="' + linea.posicion + '"></td>');
+
+                            $('#ordenarLineas tbody').append(fila);
+                            });
+                            },
+                            error: function() {
+                            console.log('Error al obtener las líneas de la función');
+                            }
+                            });
+                            } else {
+                            $('#ordenarLineas tbody').empty();
+                            }
+                            }
+                        </script>
+
+
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+
+    </body>
+
+</html>

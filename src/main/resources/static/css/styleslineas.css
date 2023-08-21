@@ -1,0 +1,412 @@
+:root{
+    --calbion: #154388;
+    --calbionsecundario: #1294CD;
+    --gris1: #DAD9DC;
+    --gris2: #b2b2b2;
+    --gris3: #878787;
+    --letra: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    --letranav: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+html,body {
+    position: relative;
+    height: 100%;
+}
+
+body {
+    background: #eee;
+    color: #000;
+    margin: 0;
+    padding: 0;
+}
+
+.body2 {
+    background-color: white;
+    padding: 0;
+    margin: 0;
+}
+
+.cardscontainer {
+  padding-left: 10%;
+  padding-right: 10%;
+  padding-top: 90px;
+  padding-bottom: 0;
+  height: fit-content;
+  overflow: hidden;
+  display: flex;
+  flex-wrap: wrap; /* Permite que los elementos se envuelvan en varias líneas */
+}
+
+.botonestiposlineas {
+    flex: 0 0 auto; /* Evita que los botones se estiren para ajustarse al ancho */
+    margin-right: 10px; /* Espacio entre botones */
+    margin-bottom: 10px;
+}
+
+.botonestiposlineas a {
+    display: block;
+    color: white;
+    background-color: var(--calbion);
+    padding: 10px;
+    border-radius: 30px;
+    margin-bottom: 10px;
+}
+
+.botonestiposlineas a:hover {
+    background-color: var(--calbionsecundario);
+    transition: background 0.5s;
+}
+
+h2 {
+    font-size: 55px;
+    padding-top: 100px;
+    padding-bottom: 10px;
+    padding-left: 5%;
+    padding-right: 5%;
+}
+
+.titulolinea{
+    color: white;
+    text-align: left;
+    margin-left: 5%;
+    margin-right: 5%;
+    padding-top: 230px;
+}
+
+/*DENTRO DE TABLA*/
+table {
+    width: 90%;
+    margin-left: 5%;
+    margin-right: 5%;
+    background-color: rgb(247, 247, 247);
+}
+
+th {
+    text-align: center;
+    font-size: 20px;
+    padding-top: 30px;
+    padding-bottom: 30px;
+}
+
+td {
+    text-align: center;
+    vertical-align: middle;
+    padding-left: 30px;
+    padding-right: 30px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+/*MODELO*/
+.modelo {
+    width: 15%;
+}
+
+p{
+    width: auto;
+    text-align: center;
+    margin: auto;
+}
+
+.modal{
+    --bs-modal-width: 95%;
+}
+
+.modal p{
+    text-align: left;
+}
+
+.modal-header{
+    padding-bottom: 45px;
+}
+
+.nav-tabs{
+    position: fixed;
+    padding-top: 50px;
+}
+
+/*PRODUCCION*/
+.produccion {
+    width: 15%;
+}
+
+/*FOTOS*/
+.fotos {
+    width: 55%;
+}
+
+.imglinea{
+    width: 100%;
+    height: 400px;
+}
+
+.swiper {
+    width: 500px;
+    margin: 0;
+}
+
+.swiper-slide {
+    text-align: center;
+    font-size: 18px;
+    background: #fff;
+
+    /* Center slide text vertically */
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    -webkit-justify-content: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    -webkit-align-items: center;
+    align-items: center;
+}
+
+.swiper-slide img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.swiper {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/*COTIZAR*/
+.cotizar{
+    width: 15%;
+}
+
+#cotizar{
+    height: 70px;
+    width: 150px;
+    margin: 0;
+}
+
+#cotizar h3{
+    line-height: 15px;
+}
+
+footer{
+    margin-top: 200px;
+}
+
+@media screen and (max-width: 1200px) {
+    .modelo {
+        width: 25%;
+    }
+
+    .produccion {
+        width: 25%;
+    }
+
+    .fotos {
+        width: 40%;
+    }
+
+    .cotizar{
+        width: 10%;
+    }
+
+    .swiper {
+        width: 400px;
+    }
+
+    #cotizar{
+        width: 100px;
+    }
+
+    td {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+
+    h2{
+        font-size: 50px;
+    }
+}
+
+@media screen and (max-width: 1100px) {
+    .swiper {
+        width: 340px;
+    }
+    #cotizar h3{
+        font-size: 100%;
+    }
+    table .contactar{
+        border-radius: 20px;
+    }
+    h2{
+        font-size: 45px;
+    }
+}
+
+@media screen and (max-width: 900px) {
+    .produccion {
+        display: none;
+    }
+    h2{
+        font-size: 40px;
+    }
+}
+
+@media screen and (max-width: 700px) {
+    .swiper {
+        width: 200px;
+    }
+    .swiper-button-next{
+        margin-right: -10px;
+    }
+    .swiper-button-prev{
+        margin-left: -10px;
+    }
+    .swiper-pagination{
+        margin-bottom: -10px;
+    }
+    #cotizar{
+        width: 90px;
+        height: 55px;
+    }
+    #cotizar h3{
+        font-size: 90%;
+    }
+    .modelo {
+        width: 30%;
+    }
+
+    .produccion {
+        width: 0;
+    }
+
+    .fotos {
+        width: 40%;
+    }
+
+    .cotizar{
+        width: 30%;
+        padding-right: calc(15% - 45px);
+        padding-left: calc(15% - 45px);
+    }
+    table .contactar{
+        border-radius: 15px;
+    }
+    .botonestiposlineas a{
+        font-size: 13px;
+    }
+    h2{
+        font-size: 35px;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .swiper {
+        width: 200px;
+    }
+    #cotizar{
+        width: 80px;
+    }
+    .cotizar{
+        padding-right: calc(15% - 40px);
+        padding-left: calc(15% - 40px);
+    }
+    #cotizar h3{
+        font-size: 80%;
+    }
+    h2{
+        font-size: 30px;
+    }
+}
+
+@media screen and (max-width: 500px) {
+    .swiper {
+        display: none;
+    }
+    .modelo {
+        width: 34%;
+    }
+    .fotos {
+        width: 33%;
+    }
+    .cotizar{
+        width: 34%;
+        padding-right: calc(17% - 40px);
+        padding-left: calc(17% - 40px);
+    }
+    table .contactar{
+        border-radius: 10px;
+    }
+}
+
+@media screen and (max-width: 400px) {
+    .swiper {
+        display: none;
+    }
+    .modelo {
+        width: 30%;
+    }
+    .fotos {
+        width: 30%;
+    }
+    .cotizar{
+        width: 40%;
+        padding-right: calc(20% - 40px);
+        padding-left: calc(20% - 40px);
+    }
+    td {
+        padding-left: 0;
+        padding-right: 0;
+    }
+
+
+    .botonestiposlineas a{
+        font-size: 12px;
+    }
+}
+
+@media screen and (max-width: 340px) {
+    th{
+        font-size: 18px;
+    }
+    #cotizar{
+        width: 60px;
+        height: 50px;
+    }
+    .cotizar{
+        padding-right: calc(20% - 30px);
+        padding-left: calc(20% - 30px);
+    }
+    table a{
+        font-size: 13px;
+        padding: 0;
+        margin: 0;
+    }
+    table p{
+        font-size: 13px;
+    }
+} 
+
+@media screen and (max-width: 300px) {
+    th{
+        font-size: 14px;
+    }
+    table p{
+        font-size: 12px;
+    }
+} 
+
+.modal{
+    z-index: 9999;
+}
+
+.cardscontainer{
+    display: flex;
+}
+
+.cardscontainer a{
+    margin-right: 10px;
+}

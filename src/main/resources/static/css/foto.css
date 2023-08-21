@@ -1,0 +1,12 @@
+#fotos { 
+    display:block; 
+}
+
+.mySwiper{
+    height: 100%;
+}
+
+.swiper-wrapper img{
+    height: 100%;
+}
+

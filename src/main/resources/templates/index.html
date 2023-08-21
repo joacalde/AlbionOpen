@@ -1,0 +1,495 @@
+<!doctype html>
+<html lang="en">
+
+    <head>
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <!-- Bootstrap CSS -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+              integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+
+        <!-- Link Swiper's CSS -->
+        <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+
+        <link rel="stylesheet" th:href="@{/css/styles.css}"/>
+
+        <title th:text="${title}"></title>
+    </head>
+
+    <body>
+
+        <!--        Logo de WhatsApp-->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+        <a href="https://wa.me/2615799499/?text=Buenos%20días,%20me%20comunico%20con%20Albion" class="float"
+           target="_blank">
+            <i class="fa fa-whatsapp my-float"></i>
+        </a>
+
+        <div class="fijo">
+            <nav>
+
+                <div class="body2">
+                    <a class="checkbtn">
+                        <img th:src="@{/img/navbtn.png}" alt="">
+                    </a>
+
+                    <div class="imgnav">
+                        <a class="" href="#">
+                            <img th:src="@{/img/logo.png}" alt="">
+                        </a>
+                    </div>
+
+                    <div class="navbar-links">
+
+                        <li>
+                            <a th:href="@{/contacto/{idioma}(idioma=${idioma})}">
+                                <button class="contactar">
+                                    <h3 th:text="${nav6}"></h3>
+                                </button>
+                            </a>
+                        </li>
+
+                        <div class="textnav" id="header">
+
+                            <ul class="nav">
+                                <li><a th:href="@{/index/{idioma}(idioma=${idioma})}" th:text="${nav1}"></a></li>
+                                <li><a href="#nosotros" th:text="${nav2}"></a></li>
+                                <li><a href="#lineas" th:text="${nav3}"></a>
+                                    <ul class="desplineas">
+                                        <li th:each="producto: ${productos}">
+                                            <a  th:if="${idioma == 1}" th:href="@{/linea/{idioma}/{producto}(idioma=${idioma},producto=${producto.posicion})}" th:text="${producto.producto_es}"></a>
+                                            <a  th:if="${idioma == 2}" th:href="@{/linea/{idioma}/{producto}(idioma=${idioma},producto=${producto.posicion})}" th:text="${producto.producto_en}"></a>
+<!--                                            <a  th:if="${idioma == 3}" th:href="@{/linea/{idioma}/{producto}(idioma=${idioma},producto=${producto.posicion})}" th:text="${producto.producto_fr}"></a>
+                                            <a  th:if="${idioma == 4}" th:href="@{/linea/{idioma}/{producto}(idioma=${idioma},producto=${producto.posicion})}" th:text="${producto.producto_br}"></a>-->
+                                        </li>
+                                        <hr/>
+                                        <li><a href="" th:text="${producto_otro}"></a></li>
+                                    </ul>
+                                </li>
+                                <li><a href="#representaciones" th:text="${nav4}"></a></li>
+                                <li><a href="#servicios" th:text="${nav5}"></a></li>
+                            </ul>
+
+                        </div>
+
+                    </div>
+                </div>
+
+            </nav>
+
+            <div class="idiomas">
+                <div class="idiomasright">
+                    <!--                    <a th:if="${idioma != 4}" th:href="@{/index/4}">
+                                            <img src="/img/pt.jpg" alt="Brasil">
+                                        </a>
+                                        <a th:if="${idioma != 3}" th:href="@{/index/3}">
+                                            <img src="/img/fr2.png" alt="France">
+                                        </a>-->
+                    <a th:if="${idioma != 2}" th:href="@{/index/2}">
+                        <img th:src="@{/img/ing2.png}" alt="English">
+                    </a>
+                    <a th:if="${idioma != 1}" th:href="@{/index/1}">
+                        <img th:src="@{/img/es.png}" alt="Argentina">
+                    </a>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="leftnav">
+            <ul>
+                <li><a class="hnav" href="#" th:text="${nav1}"></a></li>
+                <li><a class="hnosotros" href="#nosotros" th:text="${nav2}"></a></li>
+                <li><a class="lineasnav" href="#lineas" th:text="${nav3}"></a>
+                <li><a  class="representacionesnav" href="#representaciones" th:text="${nav4}"></a></li>
+                <li><a class="serviciosnav" href="#servicios" th:text="${nav5}"></a></li>
+                <li>
+                <li id="leftnavcontactar">
+                    <a th:href="@{/contacto/{idioma}(idioma=${idioma})}"><button class="contactarnav" id="contactarleftnav">
+                            <h3 th:text="${nav6}"></h3>
+                        </button></a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="leftnav2">
+            <ul>
+                <li th:each="producto: ${productos}">
+                    <a  th:if="${idioma == 1}" th:href="@{/linea/{idioma}/{producto}(idioma=${idioma},producto=${producto.posicion})}" th:text="${producto.producto_es}"></a>
+                    <a  th:if="${idioma == 2}" th:href="@{/linea/{idioma}/{producto}(idioma=${idioma},producto=${producto.posicion})}" th:text="${producto.producto_en}"></a>
+<!--                    <a  th:if="${idioma == 3}" th:href="@{/linea/{idioma}/{producto}(idioma=${idioma},producto=${producto.posicion})}" th:text="${producto.producto_fr}"></a>
+                    <a  th:if="${idioma == 4}" th:href="@{/linea/{idioma}/{producto}(idioma=${idioma},producto=${producto.posicion})}" th:text="${producto.producto_br}"></a>-->
+                </li>
+                <hr />
+                <li><a href="otros.html" th:text="${producto_otro}"></a></li>
+                <hr />
+            </ul>
+            <ul>
+                <li><a href="" class="cancelleftnav2" th:text="${volver}"></a></li>
+            </ul>
+        </div>
+
+        <script>
+            const toggleButton = document.getElementsByClassName('checkbtn')[0]
+            const navbarLinks = document.getElementsByClassName('leftnav')[0]
+
+            toggleButton.addEventListener('click',()=> {
+            navbarLinks.classList.toggle('active')
+            })
+
+            const hnav = document.getElementsByClassName('hnav')[0]
+            hnav.addEventListener('click',()=> {
+            navbarLinks.classList.toggle('active')
+            })
+
+            const representacionesnav = document.getElementsByClassName('representacionesnav')[0]
+            representacionesnav.addEventListener('click',()=> {
+            navbarLinks.classList.toggle('active')
+            })
+
+            const serviciosnav = document.getElementsByClassName('serviciosnav')[0]
+            serviciosnav.addEventListener('click',()=> {
+            navbarLinks.classList.toggle('active')
+            })
+
+            const contactarnav = document.getElementsByClassName('contactarnav')[0]
+            contactarnav.addEventListener('click',()=> {
+            navbarLinks.classList.toggle('active')
+            })
+
+            const hnosotros = document.getElementsByClassName('hnosotros')[0]
+            hnosotros.addEventListener('click',()=> {
+            navbarLinks.classList.toggle('active')
+            })
+
+            const lineasnav = document.getElementsByClassName('lineasnav')[0]
+            const leftnav2 = document.getElementsByClassName('leftnav2')[0]
+            const cancelleftnav2 = document.getElementsByClassName('cancelleftnav2')[0]
+            lineasnav.addEventListener('click',()=> {
+            leftnav2.classList.toggle('active')
+            })
+            cancelleftnav2.addEventListener('click',()=> {
+            leftnav2.classList.toggle('active')
+            })
+        </script>
+
+
+        <div class="body2">
+            <header th:style="'background-image: url(' + @{/img/taller2as.jpg} + ');'">
+                <div class="headertext">
+                    <div class="cardheadertext">
+                        <h4>67</h4>
+                        <p th:text="${header_1}"></p>
+                    </div>
+                    <div class="cardheadertext" id="cardheadertext2">
+                        <h4>+40</h4>
+                        <p th:text="${header_2}"></p>
+                    </div>
+                    <div class="cardheadertext" id="cardheadertext3">
+                        <h4>+10</h4>
+                        <p th:text="${header_3}"></p>
+                    </div>
+                </div>
+            </header>
+
+            <div class="cardscontainer" id="nosotros">
+                <div class="historia">
+                    <img th:src="@{/img/historia.jpg}" alt="Team Albion">
+                    <h2 th:text="${tit_1}"></h2>
+
+                    <!--                    Español-->
+                    <div th:if="${idioma}==1">
+                        <article>
+                            ALBION es una empresa ubicada en Mendoza, Argentina, nacida en 1955. A lo largo de su historia ha ido
+                            creciendo y evolucionando desde sus comienzos como empresa unipersonal hasta el presente donde una tercera
+                            generación familiar se prepara para continuar con el desafío.
+                        </article>
+                        <article>
+                            Hoy, buscamos ser la empresa de productores y compañías que desean crecer y expandirse, brindando el apoyo
+                            necesario para su desarrollo. Para ello, gracias a nuestra historia, trabajo y dedicación contamos con un gran
+                            capital humano y tecnología de producción que nos ayuda a estar a la altura de los desafíos de un mercado que
+                            está en constante cambio
+                        </article>
+                    </div>
+
+                    <!--                    Ingles-->
+                    <div th:if="${idioma}==2">
+                        <article>
+                            ALBION is a company located in Mendoza, Argentina, born in 1955. 
+                            Throughout its history, it has grown and evolved from its beginnings as a sole proprietorship to the present, 
+                            where a third-generation family is preparing to carry on the challenge.
+                        </article>
+                        <article>
+                            Today, we aim to be the company for producers and businesses that aspire to grow and expand, 
+                            providing the necessary support for their development. 
+                            Thanks to our history, work, and dedication, 
+                            we have a great human capital and production technology that enables us to meet the challenges of an ever-changing market.
+                        </article>
+                    </div>
+
+                    <!--                    Frances-->
+<!--                    <div th:if="${idioma}==3">
+                        <article>
+                            ALBION es una empresa ubicada en Mendoza, Argentina, nacida en 1955. A lo largo de su historia ha ido
+                            creciendo y evolucionando desde sus comienzos como empresa unipersonal hasta el presente donde una tercera
+                            generación familiar se prepara para continuar con el desafío.
+                        </article>
+                        <article>
+                            Hoy, buscamos ser la empresa de productores y compañías que desean crecer y expandirse, brindando el apoyo
+                            necesario para su desarrollo. Para ello, gracias a nuestra historia, trabajo y dedicación contamos con un gran
+                            capital humano y tecnología de producción que nos ayuda a estar a la altura de los desafíos de un mercado que
+                            está en constante cambio
+                        </article>
+                    </div>-->
+
+                    <!--                    Brasil-->
+<!--                    <div th:if="${idioma}==4">
+                        <article>
+                            ALBION es una empresa ubicada en Mendoza, Argentina, nacida en 1955. A lo largo de su historia ha ido
+                            creciendo y evolucionando desde sus comienzos como empresa unipersonal hasta el presente donde una tercera
+                            generación familiar se prepara para continuar con el desafío.
+                        </article>
+                        <article>
+                            Hoy, buscamos ser la empresa de productores y compañías que desean crecer y expandirse, brindando el apoyo
+                            necesario para su desarrollo. Para ello, gracias a nuestra historia, trabajo y dedicación contamos con un gran
+                            capital humano y tecnología de producción que nos ayuda a estar a la altura de los desafíos de un mercado que
+                            está en constante cambio
+                        </article>
+                    </div>-->
+
+                    <!--                    <a href="https://www.youtube.com/watch?v=Qy2YxJRm2hU"  th:text="${tit_1_vermas}"></a>-->
+                </div>
+            </div>
+
+
+            <div class="cardscontainer" id="lineas">
+
+                <h2 th:text="${tit_2}"></h2>
+                <div class="linescontainer">
+                    <div  th:each="producto: ${productos}" >
+                        <a th:href="@{/linea/{idioma}/{producto}(idioma=${idioma},producto=${producto.posicion})}">
+                            <div class="cards">
+                                <div th:if="${producto.foto} != null"><img th:src="@{/foto/__${producto.foto.id}__}"></div>
+                                <div class="cardcontent">
+                                    <h6  th:if="${idioma == 1}" th:text="${producto.producto_es}"></h6>
+                                    <h6  th:if="${idioma == 2}" th:text="${producto.producto_en}"></h6>
+<!--                                    <h6  th:if="${idioma == 3}" th:text="${producto.producto_fr}"></h6>
+                                    <h6  th:if="${idioma == 4}" th:text="${producto.producto_br}"></h6>-->
+                                    <p></p>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+            <!--                    <div class="cardsmas">-->
+            <!--                    </div>-->
+            <!--            <div class="containsmasmenos">
+                            <a href="#lineas" class="mas">+</a>
+                        </div>
+                        <div class="containsmasmenos">
+                            <a href="#lineas" class="menos">-</a>
+                        </div>-->
+
+            <div id="representaciones">
+                <div class="cardscontainer" id="repres">
+
+                    <h2 th:text="${tit_3}"></h2>
+
+                    <div class="cards3">
+                        <div class="cardsimg3">
+                            <a href="http://www.simon-online.fr/">
+                                <img th:src="@{/img/representation_01.jpg}" alt="Simon">
+                            </a>
+                        </div>
+                    </div>
+                    <div class="cards3">
+                        <div class="cardsimg3">
+                            <a href="http://www.newtec.com/">
+                                <img th:src="@{/img/representation_02.jpg}" alt="Newtec">
+                            </a>
+                        </div>
+                    </div>
+                    <div class="cards3">
+                        <div class="cardsimg3">
+                            <a href="http://www.c-pack.com/">
+                                <img th:src="@{/img/representation_04.jpg}" alt="C-pack">
+                            </a>
+                        </div>
+                    </div>
+                    <div class="cards3" id="cards3-4">
+                        <div class="cardsimg3">
+                            <a>
+                                <img th:src="@{/img/visys.jpg}" alt="VISYS">
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+            <div class="cardscontainer" id="servicios">
+
+                <h2 th:text="${tit_4}"></h2>
+
+                <div class="servicios">
+
+                    <div class="cards2">
+                        <img th:src="@{/img/pictograma-servicio12.png}" alt="Puesta En Marcha">
+                        <div class="cardcontent2">
+                            <h6 th:text="${ser_1}"></h6>
+                        </div>
+                    </div>
+
+
+                    <div class="cards2" id="s2">
+                        <img th:src="@{/img/pictograma-servicio22.png}" alt="Mantenimiento">
+                        <div class="cardcontent2">
+                            <h6 th:text="${ser_2}"></h6>
+                        </div>
+                    </div>
+
+                    <div class="servicios2">
+                        <div class="cardcontent2">
+                            <h6 th:text="${ser_1}"></h6>
+                        </div>
+                        <div class="cardcontent2">
+                            <h6 th:text="${ser_2}"></h6>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+            <!--            <div class="swiper mySwiper">
+                            <div class="swiper-wrapper">
+            
+                                <div class="swiper-slide testimonios">
+                                    <h2>Angel</h2>
+                                    <h5>CEO de Albion</h5>
+                                    <hr />
+                                    <div class="testimoniostext">
+                                        <p>"La Argentina está organizada como un Estado federal descentralizado, integrado desde 1994 por un Estado
+                                            nacional y 24 jurisdicciones o distritos de primer orden8​ o estados autogobernados,9​10​ que son 23
+                                            provincias y la Ciudad Autónoma de Buenos Aires (CABA), esta última designada como capital federal
+                                            principal del país.i​ Las 24 jurisdicciones o distritos autogobernados tienen constitución, bandera y
+                                            fuerza de seguridad propios. Las 23 provincias mantienen todos los poderes no delegados al Estado
+                                            nacional, tienen tres poderes autónomos y garantizan la autonomía de sus municipios"</p>
+                                    </div>
+                                </div>
+            
+                                <div class="swiper-slide testimonios">
+                                    <h2>Angel</h2>
+                                    <h5>CEO de Albion</h5>
+                                    <hr />
+                                    <div class="testimoniostext">
+                                        <p>"La Argentina está organizada como un Estado federal descentralizado, integrado desde 1994 por un Estado
+                                            nacional y 24 jurisdicciones o distritos de primer orden8​ o estados autogobernados,9​10​ que son 23
+                                            provincias y la Ciudad Autónoma de Buenos Aires (CABA), esta última designada como capital federal
+                                            principal del país.i​ Las 24 jurisdicciones o distritos autogobernados tienen constitución, bandera y
+                                            fuerza de seguridad propios. Las 23 provincias mantienen todos los poderes no delegados al Estado
+                                            nacional, tienen tres poderes autónomos y garantizan la autonomía de sus municipios"</p>
+                                    </div>
+                                </div>
+            
+                                <div class="swiper-slide testimonios">
+                                    <h2>Angel</h2>
+                                    <h5>CEO de Albion</h5>
+                                    <hr />
+                                    <div class="testimoniostext">
+                                        <p>"La Argentina está organizada como un Estado federal descentralizado, integrado desde 1994 por un Estado
+                                            nacional y 24 jurisdicciones o distritos de primer orden8​ o estados autogobernados,9​10​ que son 23
+                                            provincias y la Ciudad Autónoma de Buenos Aires (CABA), esta última designada como capital federal
+                                            principal del país.i​ Las 24 jurisdicciones o distritos autogobernados tienen constitución, bandera y
+                                            fuerza de seguridad propios. Las 23 provincias mantienen todos los poderes no delegados al Estado
+                                            nacional, tienen tres poderes autónomos y garantizan la autonomía de sus municipios"</p>
+                                    </div>
+                                </div>
+            
+                                <div class="swiper-slide testimonios">
+                                    <h2>Angel</h2>
+                                    <h5>CEO de Albion</h5>
+                                    <hr />
+                                    <div class="testimoniostext">
+                                        <p>"La Argentina está organizada como un Estado federal descentralizado, integrado desde 1994 por un Estado
+                                            nacional y 24 jurisdicciones o distritos de primer ordeno estados autogobernados,9que son 23
+                                            provincias y la Ciudad Autónoma de Buenos Aires (CABA), esta última designada como capital federal
+                                            principal del país. Las 24 jurisdicciones o distritos autogobernados tienen constitución, bandera y
+                                            fuerza de seguridad propios. Las 23 provincias mantienen todos los poderes no delegados al Estado
+                                            nacional, tienen tres poderes autónomos y garantizan la autonomía de sus municipios"</p>
+                                    </div>
+                                </div>
+            
+                            </div>
+                            <div class="swiper-button-next"></div>
+                            <div class="swiper-button-prev"></div>
+                            <div class="swiper-pagination"></div>
+                        </div>-->
+
+            <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+
+            <script>
+                var swiper = new Swiper(".mySwiper", {
+                slidesPerView: 1,
+                spaceBetween: 30,
+                loop: true,
+                pagination: {
+                el: ".swiper-pagination",
+                clickable: true,
+                },
+                navigation: {
+                nextEl: ".swiper-button-next",
+                prevEl: ".swiper-button-prev",
+                },
+                });
+            </script>
+
+
+
+            <footer  th:style="'background-image: url(' + @{/img/tallerinferior.jpg} + ');'">
+
+                <div class="pie">
+                    <img class="logofooter" th:src="@{/img/logo.png}" alt="logo Albion">
+                    <p>Food processing machinery</p>
+                </div>
+                <div class="pie" id="direccion">
+
+                    <div class="info" id="info1">
+                        <img th:src="@{/img/pictograma-mail.png}" alt="mail">
+                        <h6>albion@albion.com.ar </h6>
+                    </div>
+                    <div class="info">
+                        <img th:src="@{/img/pictograma-telefono.png}" alt="mail">
+                        <h6>+54 261 432-6200</h6>
+                    </div>
+                    <div class="info">
+                        <img th:src="@{/img/pictograma-ubicacion.png}">
+                        <h6>Independencia 516 - Godoy Cruz - Mendoza - ARGENTINA</h6>
+                    </div>
+
+                </div>
+
+                <div class="copyri">
+                    <p>Copyright © 2022 ALBION</p>
+                </div>
+
+            </footer>
+        </div>
+
+
+
+        <!-- Option 1: Bootstrap Bundle with Popper -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+                integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+        crossorigin="anonymous"></script>
+
+    </body>
+
+</html>

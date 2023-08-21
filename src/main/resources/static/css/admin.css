@@ -1,0 +1,120 @@
+:root{
+    --calbion: #154388;
+    --calbionsecundario: #1294CD;
+    --gris1: #DAD9DC;
+    --gris2: #b2b2b2;
+    --gris3: #878787;
+    --letra: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    --letranav: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+a{
+    text-decoration: none;
+    pointer-events: auto;
+}
+
+body{
+    background-size: cover;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+.form-login{
+    width: 200px;
+    margin-left: calc(50% - 100px);
+    margin-right: calc(50% - 100px);
+    margin-top: 200px;
+    text-align: center;
+    background-color: white;
+    padding: 20px;
+    border-radius: 30px;
+    border-style: solid;
+    border-width: 1px;
+    border-color: var(--calbion);
+    font-weight: 500;
+}
+
+.form-login img{
+    width: 90px;
+    padding-bottom: 20px;
+}
+
+.form-login .form-control{
+    border-radius: 30px;
+    background-color: white;
+    border-color: var(--calbion);
+}
+
+.contactar{
+    background-color: var(--calbion);
+    border-radius: 30px;
+    height: 40px;
+    width: 150px;
+    border: none;
+    color: white;
+    font-weight: 500;
+    text-align: center;
+    font-size: 110%;
+    display: table-cell;
+}
+
+.contactar:hover{
+    background-color: var(--calbionsecundario);
+    transition: background 0.5s;
+}
+
+select{
+    margin-bottom: 0px;
+}
+
+.dropdown-toggle{
+    margin-bottom: 15px;
+}
+
+.adminmenu{
+    width: 300px;
+    margin-left: calc(50% - 150px);
+    margin-right: calc(50% - 150px);
+    text-align: center;
+}
+
+.adminmenu img{
+    padding: 0;
+    width: 200px;
+    margin-bottom: 100px;
+}
+
+table a{
+    color: red;
+}
+
+table tr, th, td{
+    border-collapse: collapse;
+    border: outset black 1px;
+}
+
+table tr th{
+    border: outset black 3px;
+    border-collapse: collapse;
+}
+
+table{
+    margin-left: 10%;
+    margin-right: 10%;
+    width: 80%;
+    background-color: white;
+    border-collapse: collapse;
+}
+
+table tr:nth-child(odd) td{
+    background-color: darkgrey;
+}
+
+th {
+    text-align: center;
+    font-size: 20px;
+}
+
+td {
+    text-align: center;
+    vertical-align: middle;
+}
