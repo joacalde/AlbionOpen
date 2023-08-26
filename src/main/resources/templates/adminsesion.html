@@ -68,23 +68,23 @@
                         <form th:action="@{/crearProducto}" method="POST" enctype="multipart/form-data">
                             <div class="mb-3">
                                 <label for="exampleInputEmail1" class="form-label">Producto Español</label>
-                                <input type="text" name="producto_es" class="form-control" id="exampleInputEmail1"  th:value="${newproducto.producto_es}" required>
+                                <input type="text" name="producto_es" class="form-control" id="exampleInputEmail1">
                             </div>
                             <div class="mb-3">
                                 <label for="exampleInputEmail1" class="form-label">Producto Inglés</label>
-                                <input type="text" name="producto_en" class="form-control" id="exampleInputEmail1"  th:value="${newproducto.producto_en}">
+                                <input type="text" name="producto_en" class="form-control" id="exampleInputEmail1">
                             </div>
                             <div class="mb-3">
                                 <label for="exampleInputEmail1" class="form-label">Producto Francés</label>
-                                <input type="text" name="producto_fr" class="form-control" id="exampleInputEmail1"  th:value="${newproducto.producto_fr}">
+                                <input type="text" name="producto_fr" class="form-control" id="exampleInputEmail1">
                             </div>
                             <div class="mb-3">
                                 <label for="exampleInputEmail1" class="form-label">Producto Brasil</label>
-                                <input type="text" name="producto_br" class="form-control" id="exampleInputEmail1"  th:value="${newproducto.producto_br}">
+                                <input type="text" name="producto_br" class="form-control" id="exampleInputEmail1">
                             </div>
                             <div class="mb-3">
                                 <label class="form-label" for="inputGroupFile01">Foto</label>
-                                <input name="foto" type="file" class="form-control" id="inputGroupFile01"   th:value="${newproducto.foto}">
+                                <input name="foto" type="file" class="form-control" id="inputGroupFile01">
                             </div>
                             <button type="submit" class="contactar">Crear</button>
                         </form>
