@@ -30,7 +30,6 @@ public class LineaServicio {
             String modelo, String configuracion, String produccion,
             String titulo_es, String titulo_en, String titulo_fr, String titulo_br,
             String descripcion_es, String descripcion_en, String descripcion_fr, String descripcion_br,
-            MultipartFile archivo1, MultipartFile archivo2, MultipartFile archivo3, MultipartFile archivo4, MultipartFile archivo5, MultipartFile archivo6, MultipartFile archivo7, MultipartFile archivo8,
             String funcionId) throws ErrorServicio {
         Integer posicion = 1;
         if (lineaRepositorio.ultimaPosicion() != null) {
@@ -48,14 +47,6 @@ public class LineaServicio {
         linea.setDescripcion_en(descripcion_en);
         linea.setDescripcion_fr(descripcion_fr);
         linea.setDescripcion_br(descripcion_br);
-        linea.setFoto1(fotoServicio.guardar(archivo1));
-        linea.setFoto2(fotoServicio.guardar(archivo2));
-        linea.setFoto3(fotoServicio.guardar(archivo3));
-        linea.setFoto4(fotoServicio.guardar(archivo4));
-        linea.setFoto5(fotoServicio.guardar(archivo5));
-        linea.setFoto6(fotoServicio.guardar(archivo6));
-        linea.setFoto7(fotoServicio.guardar(archivo7));
-        linea.setFoto8(fotoServicio.guardar(archivo8));
         linea.setPosicion(posicion);
         Optional<Funcion> opt = funcionRepositorio.findById(funcionId);
         if (opt.isPresent()) {
@@ -166,30 +157,5 @@ public class LineaServicio {
             }
         }
     }
-    
-    @Transactional(readOnly = true)
-public Linea lineaPorFotoId(String fotoId) throws ErrorServicio {
-    if (lineaRepositorio.lineaPorFoto1Id(fotoId) != null) {
-        return lineaRepositorio.lineaPorFoto1Id(fotoId);
-    } else if (lineaRepositorio.lineaPorFoto2Id(fotoId) != null) {
-        return lineaRepositorio.lineaPorFoto2Id(fotoId);
-    } else if (lineaRepositorio.lineaPorFoto3Id(fotoId) != null) {
-        return lineaRepositorio.lineaPorFoto3Id(fotoId);
-    } else if (lineaRepositorio.lineaPorFoto4Id(fotoId) != null) {
-        return lineaRepositorio.lineaPorFoto4Id(fotoId);
-    } else if (lineaRepositorio.lineaPorFoto5Id(fotoId) != null) {
-        return lineaRepositorio.lineaPorFoto5Id(fotoId);
-    } else if (lineaRepositorio.lineaPorFoto6Id(fotoId) != null) {
-        return lineaRepositorio.lineaPorFoto6Id(fotoId);
-    } else if (lineaRepositorio.lineaPorFoto7Id(fotoId) != null) {
-        return lineaRepositorio.lineaPorFoto7Id(fotoId);
-    } else if (lineaRepositorio.lineaPorFoto8Id(fotoId) != null) {
-        return lineaRepositorio.lineaPorFoto8Id(fotoId);
-    }
-    
-    // Si ninguna foto coincide con el ID, retorna null o lanza una excepción según sea necesario.
-    return null;
-}
-
 
 }

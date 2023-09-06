@@ -110,12 +110,12 @@ public class EquipoServicio {
     }
 
     @Transactional(readOnly = true)
-    public List<Equipo> todas() throws ErrorServicio {
+    public List<Equipo> todos() throws ErrorServicio {
         List<Equipo> equipo = equipoRepositorio.findAll();
         if (!equipo.isEmpty()) {
             return equipo;
         } else {
-            throw new ErrorServicio("No se encontró el equipo.");
+            return null;
         }
     }
 

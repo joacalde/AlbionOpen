@@ -34,10 +34,6 @@ public class Producto {
     public Producto() {
     }
 
-    public Producto(String producto_es) {
-        this.producto_es = producto_es;
-    }
-    
     public Producto(String producto_es, String producto_en, String producto_fr, String producto_br, int posicion, boolean alta, List<Funcion> funciones) {
         this.producto_es = producto_es;
         this.producto_en = producto_en;

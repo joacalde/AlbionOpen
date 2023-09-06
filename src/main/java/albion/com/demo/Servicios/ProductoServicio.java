@@ -89,13 +89,11 @@ public class ProductoServicio {
 
     @Transactional(readOnly = true)
     public List<Producto> todos() throws ErrorServicio {
-        List<Producto> productos = productoRepositorio.findAll();
-        if (!productos.isEmpty()) {
-            return productos;
+        List<Producto> producto = productoRepositorio.findAll();
+        if (!producto.isEmpty()) {
+            return producto;
         } else {
-            Producto producto = new Producto("No hay ningun producto aún, debe crear uno");
-            productos.add(producto);
-            return productos;
+            return null;
         }
     }
 

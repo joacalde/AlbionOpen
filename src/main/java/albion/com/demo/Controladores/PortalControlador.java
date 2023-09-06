@@ -1,7 +1,9 @@
 package albion.com.demo.Controladores;
 
+import albion.com.demo.Entidades.Equipo;
 import albion.com.demo.Entidades.Producto;
 import albion.com.demo.Errores.ErrorServicio;
+import albion.com.demo.Servicios.EquipoServicio;
 import albion.com.demo.Servicios.ProductoServicio;
 import java.util.Comparator;
 import java.util.List;
@@ -18,6 +20,9 @@ public class PortalControlador {
 
     @Autowired
     private ProductoServicio productoServicio;
+
+    @Autowired
+    private EquipoServicio equipoServicio;
 
     @GetMapping("/")
     public String index(ModelMap model) throws ErrorServicio {
@@ -46,9 +51,18 @@ public class PortalControlador {
         model.put("ser_2", "Mantenimiento preventivo y correctivo");
 
         model.put("idioma", 1);
+        
         List<Producto> productos = productoServicio.todos();
-        productos.sort(Comparator.comparingInt(Producto::getPosicion));
+        if (productos != null) {
+            productos.sort(Comparator.comparingInt(Producto::getPosicion));
+        }
         model.put("productos", productos);
+        List<Equipo> equipos = equipoServicio.todos();
+        if (equipos != null) {
+            equipos.sort(Comparator.comparingInt(Equipo::getPosicion));
+        }
+        model.put("equipos", equipos);
+        
         return "index";
     }
 
@@ -153,8 +167,15 @@ public class PortalControlador {
         model.put("idioma", idioma);
 
         List<Producto> productos = productoServicio.todos();
-        productos.sort(Comparator.comparingInt(Producto::getPosicion));
+        if (productos != null) {
+            productos.sort(Comparator.comparingInt(Producto::getPosicion));
+        }
         model.put("productos", productos);
+        List<Equipo> equipos = equipoServicio.todos();
+        if (equipos != null) {
+            equipos.sort(Comparator.comparingInt(Equipo::getPosicion));
+        }
+        model.put("equipos", equipos);
 
         return "index";
     }

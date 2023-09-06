@@ -1,8 +1,11 @@
 package albion.com.demo.Entidades;
 
+import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import org.hibernate.annotations.GenericGenerator;
 
@@ -31,35 +34,15 @@ public class Linea {
     private int posicion;
     private boolean alta;
     
-    @OneToOne
-    private Foto foto1;
-    
-    @OneToOne
-    private Foto foto2;
-    
-    @OneToOne
-    private Foto foto3;
-    
-    @OneToOne
-    private Foto foto4;
-    
-    @OneToOne
-    private Foto foto5;
-    
-    @OneToOne
-    private Foto foto6;
-    
-    @OneToOne
-    private Foto foto7;
-    
-    @OneToOne
-    private Foto foto8;
+    @OneToMany (cascade = {CascadeType.ALL})
+    private List<Foto> fotos;
 
     public Linea() {
     }
 
-    public Linea(String modelo, String produccion, String titulo_es, String titulo_en, String titulo_fr, String titulo_br, String descripcion_es, String descripcion_en, String descripcion_fr, String descripcion_br, int posicion, boolean alta, Foto foto1, Foto foto2, Foto foto3, Foto foto4, Foto foto5, Foto foto6, Foto foto7, Foto foto8) {
+    public Linea(String modelo, String configuracion, String produccion, String titulo_es, String titulo_en, String titulo_fr, String titulo_br, String descripcion_es, String descripcion_en, String descripcion_fr, String descripcion_br, int posicion, boolean alta, List<Foto> fotos) {
         this.modelo = modelo;
+        this.configuracion = configuracion;
         this.produccion = produccion;
         this.titulo_es = titulo_es;
         this.titulo_en = titulo_en;
@@ -71,19 +54,11 @@ public class Linea {
         this.descripcion_br = descripcion_br;
         this.posicion = posicion;
         this.alta = alta;
-        this.foto1 = foto1;
-        this.foto2 = foto2;
-        this.foto3 = foto3;
-        this.foto4 = foto4;
-        this.foto5 = foto5;
-        this.foto6 = foto6;
-        this.foto7 = foto7;
-        this.foto8 = foto8;
+        this.fotos = fotos;
     }
     
     
     
-
     public String getId() {
         return id;
     }
@@ -195,71 +170,13 @@ public class Linea {
     public void setAlta(boolean alta) {
         this.alta = alta;
     }
-    
-    public Foto getFoto1() {
-        return foto1;
+
+    public List<Foto> getFotos() {
+        return fotos;
     }
 
-    public void setFoto1(Foto foto1) {
-        this.foto1 = foto1;
+    public void setFotos(List<Foto> fotos) {
+        this.fotos = fotos;
     }
-
-    public Foto getFoto2() {
-        return foto2;
-    }
-
-    public void setFoto2(Foto foto2) {
-        this.foto2 = foto2;
-    }
-
-    public Foto getFoto3() {
-        return foto3;
-    }
-
-    public void setFoto3(Foto foto3) {
-        this.foto3 = foto3;
-    }
-
-    public Foto getFoto4() {
-        return foto4;
-    }
-
-    public void setFoto4(Foto foto4) {
-        this.foto4 = foto4;
-    }
-
-    public Foto getFoto5() {
-        return foto5;
-    }
-
-    public void setFoto5(Foto foto5) {
-        this.foto5 = foto5;
-    }
-
-    public Foto getFoto6() {
-        return foto6;
-    }
-
-    public void setFoto6(Foto foto6) {
-        this.foto6 = foto6;
-    }
-
-    public Foto getFoto7() {
-        return foto7;
-    }
-
-    public void setFoto7(Foto foto7) {
-        this.foto7 = foto7;
-    }
-
-    public Foto getFoto8() {
-        return foto8;
-    }
-
-    public void setFoto8(Foto foto8) {
-        this.foto8 = foto8;
-    }
-    
-    
-    
+     
 }

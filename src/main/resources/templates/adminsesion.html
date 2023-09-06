@@ -17,7 +17,6 @@
     </head>
 
     <body th:style="'background-image: url(' + @{/img/taller.jpg} + ');'">
-        <!--        <form><input type="button" value="volver atrás" name="volver atrás2" onclick="history.back()" /> </form>-->
         <a th:href="@{/logout}">Salir</a>
         <div class="adminmenu">
             <a th:href="@{/logout}"><img src="/img/logo.png" alt=""></a>
@@ -159,7 +158,7 @@
                                 $('#funciones').prop('disabled', false);
                                 var productoId = document.getElementById("select-producto").value;
                                 if (productoId) {
-                                var url = /*[[@{/productos/{id}/funciones}]]*/ '';
+                                var url = /*[[@{/productos/{id}/buscarFunciones}]]*/ '';
                                 url = url.replace('{id}', productoId);
                                 $.ajax({
                                 url: url,
@@ -230,7 +229,7 @@
                                 <label for="exampleFormControlTextarea1" class="form-label">Descripción Brasil</label>
                                 <textarea name="descripcion_br" class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
                             </div>
-                            <div class="col-md-3">
+<!--                            <div class="col-md-3">
                                 <label class="form-label" for="inputGroupFile01">Foto 1</label>
                                 <input name="archivo1" type="file" class="form-control" id="inputGroupFile01">
                             </div>
@@ -261,7 +260,7 @@
                             <div class="col-md-3">
                                 <label class="form-label" for="inputGroupFile01">Foto 8</label>
                                 <input name="archivo8" type="file" class="form-control" id="inputGroupFile01">
-                            </div>
+                            </div>-->
                             <button type="submit" class="contactar">Crear</button>
                         </form>
                     </div>
@@ -460,14 +459,6 @@
                                         <th>Descripcion En</th>
                                         <th>Descripcion Fr</th>
                                         <th>Descripcion Br</th>
-                                        <th>Foto 1</th>
-                                        <th>Foto 2</th>
-                                        <th>Foto 3</th>
-                                        <th>Foto 4</th>
-                                        <th>Foto 5</th>
-                                        <th>Foto 6</th>
-                                        <th>Foto 7</th>
-                                        <th>Foto 8</th>
                                     </tr>
                                 </thead>
                                 <tbody id="editarLineasBody">
@@ -555,75 +546,6 @@
                             fila.append('<td><input type="text" name="descripcion_en" value="' + linea.descripcion_en + '"></td>');
                             fila.append('<td><input type="text" name="descripcion_fr" value="' + linea.descripcion_fr + '"></td>');
                             fila.append('<td><input type="text" name="descripcion_br" value="' + linea.descripcion_br + '"></td>');
-
-                            // Mostrar imagen previa si existe
-                            if (linea.foto1) {
-                            var urlFoto1 = /*[[@{/foto/{id}}]]*/ '';
-                            urlFoto1 = urlFoto1.replace('{id}', linea.foto1.id);
-                            fila.append('<td><img class="imagen-previa" src="' + urlFoto1 + '" alt="Imagen actual" style="max-width: 100px;">' +
-                            '<input type="file" name="foto1" onchange="mostrarVistaPrevia(this)">' +
-                            '<button type="button" onclick="eliminarArchivo(this)">Eliminar Archivo</button>' +
-                            '<button type="button" onclick="eliminarFoto(\'' + linea.foto1.id + '\')">Eliminar Foto</button></td>');
-                            } else {
-                            fila.append('<td><img class="imagen-previa" src="" alt="No hay imagen" style="max-width: 100px;"><input type="file" name="foto1" onchange="mostrarVistaPrevia(this)"><button type="button" onclick="eliminarFoto(this)">Eliminar Foto</button></td>');
-                            }
-                            if (linea.foto2) {
-                            var urlFoto2 = /*[[@{/foto/{id}}]]*/ '';
-                            urlFoto2 = urlFoto2.replace('{id}', linea.foto2.id);
-
-                            fila.append('<td><img class="imagen-previa" src="' + urlFoto2 + '" alt="Imagen actual" style="max-width: 100px;"><input type="file" name="foto2" onchange="mostrarVistaPrevia(this)"><button type="button" onclick="eliminarArchivo(this)">Eliminar Archivo</button><form th:action="' + urlFoto2 + '" method="post" id="eliminarFotoForm"><input type="hidden" name="_method" value="delete"><button type="submit">Eliminar Foto</button></form></td>');
-                            } else {
-                            fila.append('<td><img class="imagen-previa" src="" alt="No hay imagen" style="max-width: 100px;"><input type="file" name="foto2" onchange="mostrarVistaPrevia(this)"><button type="button" onclick="eliminarFoto(this)">Eliminar Foto</button></td>');
-                            }
-                            if (linea.foto3) {
-                            var urlFoto3 = /*[[@{/foto/{id}}]]*/ '';
-                            urlFoto3 = urlFoto3.replace('{id}', linea.foto3.id);
-
-                            fila.append('<td><img class="imagen-previa" src="' + urlFoto3 + '" alt="Imagen actual" style="max-width: 100px;"><input type="file" name="foto3" onchange="mostrarVistaPrevia(this)"><button type="button" onclick="eliminarArchivo(this)">Eliminar Archivo</button><form th:action="' + urlFoto3 + '" method="post" id="eliminarFotoForm"><input type="hidden" name="_method" value="delete"><button type="submit">Eliminar Foto</button></form></td>');
-                            } else {
-                            fila.append('<td><img class="imagen-previa" src="" alt="No hay imagen" style="max-width: 100px;"><input type="file" name="foto3" onchange="mostrarVistaPrevia(this)"><button type="button" onclick="eliminarFoto(this)">Eliminar Foto</button></td>');
-                            }
-                            if (linea.foto4) {
-                            var urlFoto4 = /*[[@{/foto/{id}}]]*/ '';
-                            urlFoto4 = urlFoto4.replace('{id}', linea.foto4.id);
-
-                            fila.append('<td><img class="imagen-previa" src="' + urlFoto4 + '" alt="Imagen actual" style="max-width: 100px;"><input type="file" name="foto4" onchange="mostrarVistaPrevia(this)"><button type="button" onclick="eliminarArchivo(this)">Eliminar Archivo</button><form th:action="' + urlFoto4 + '" method="post" id="eliminarFotoForm"><input type="hidden" name="_method" value="delete"><button type="submit">Eliminar Foto</button></form></td>');
-                            } else {
-                            fila.append('<td><img class="imagen-previa" src="" alt="No hay imagen" style="max-width: 100px;"><input type="file" name="foto4" onchange="mostrarVistaPrevia(this)"><button type="button" onclick="eliminarFoto(this)">Eliminar Foto</button></td>');
-                            }
-                            if (linea.foto5) {
-                            var urlFoto5 = /*[[@{/foto/{id}}]]*/ '';
-                            urlFoto5 = urlFoto5.replace('{id}', linea.foto5.id);
-
-                            fila.append('<td><img class="imagen-previa" src="' + urlFoto5 + '" alt="Imagen actual" style="max-width: 100px;"><input type="file" name="foto5" onchange="mostrarVistaPrevia(this)"><button type="button" onclick="eliminarArchivo(this)">Eliminar Archivo</button><form th:action="' + urlFoto5 + '" method="post" id="eliminarFotoForm"><input type="hidden" name="_method" value="delete"><button type="submit">Eliminar Foto</button></form></td>');
-                            } else {
-                            fila.append('<td><img class="imagen-previa" src="" alt="No hay imagen" style="max-width: 100px;"><input type="file" name="foto5" onchange="mostrarVistaPrevia(this)"><button type="button" onclick="eliminarFoto(this)">Eliminar Foto</button></td>');
-                            }
-                            if (linea.foto6) {
-                            var urlFoto6 = /*[[@{/foto/{id}}]]*/ '';
-                            urlFoto6 = urlFoto6.replace('{id}', linea.foto6.id);
-
-                            fila.append('<td><img class="imagen-previa" src="' + urlFoto6 + '" alt="Imagen actual" style="max-width: 100px;"><input type="file" name="foto6" onchange="mostrarVistaPrevia(this)"><button type="button" onclick="eliminarArchivo(this)">Eliminar Archivo</button><form th:action="' + urlFoto6 + '" method="post" id="eliminarFotoForm"><input type="hidden" name="_method" value="delete"><button type="submit">Eliminar Foto</button></form></td>');
-                            } else {
-                            fila.append('<td><img class="imagen-previa" src="" alt="No hay imagen" style="max-width: 100px;"><input type="file" name="foto6" onchange="mostrarVistaPrevia(this)"><button type="button" onclick="eliminarFoto(this)">Eliminar Foto</button></td>');
-                            }
-                            if (linea.foto7) {
-                            var urlFoto7 = /*[[@{/foto/{id}}]]*/ '';
-                            urlFoto7 = urlFoto7.replace('{id}', linea.foto7.id);
-
-                            fila.append('<td><img class="imagen-previa" src="' + urlFoto7 + '" alt="Imagen actual" style="max-width: 100px;"><input type="file" name="foto7" onchange="mostrarVistaPrevia(this)"><button type="button" onclick="eliminarArchivo(this)">Eliminar Archivo</button><form th:action="' + urlFoto7 + '" method="post" id="eliminarFotoForm"><input type="hidden" name="_method" value="delete"><button type="submit">Eliminar Foto</button></form></td>');
-                            } else {
-                            fila.append('<td><img class="imagen-previa" src="" alt="No hay imagen" style="max-width: 100px;"><input type="file" name="foto7" onchange="mostrarVistaPrevia(this)"><button type="button" onclick="eliminarFoto(this)">Eliminar Foto</button></td>');
-                            }
-                            if (linea.foto8) {
-                            var urlFoto8 = /*[[@{/foto/{id}}]]*/ '';
-                            urlFoto8 = urlFoto8.replace('{id}', linea.foto8.id);
-
-                            fila.append('<td><img class="imagen-previa" src="' + urlFoto8 + '" alt="Imagen actual" style="max-width: 100px;"><input type="file" name="foto8" onchange="mostrarVistaPrevia(this)"><button type="button" onclick="eliminarArchivo(this)">Eliminar Archivo</button><form th:action="' + urlFoto8 + '" method="post" id="eliminarFotoForm"><input type="hidden" name="_method" value="delete"><button type="submit">Eliminar Foto</button></form></td>');
-                            } else {
-                            fila.append('<td><img class="imagen-previa" src="" alt="No hay imagen" style="max-width: 100px;"><input type="file" name="foto8" onchange="mostrarVistaPrevia(this)"><button type="button" onclick="eliminarFoto(this)">Eliminar Foto</button></td>');
-                            }
-
                             fila.append('<td><input type="hidden" name="id" value="' + linea.id + '"></td>');
 
                             editarLineasBody.append(fila);
@@ -637,25 +559,7 @@
                             $('#editarLineasBody').empty();
                             }
                             }
-
-                            function mostrarVistaPrevia(input) {
-                            var archivo = input.files[0];
-                            var lector = new FileReader();
-                            var imagenPrev = $(input).closest('td').find('.imagen-previa');
-
-                            lector.onload = function(e) {
-                            var imagen = e.target.result;
-                            imagenPrev.attr('src', imagen);
-                            };
-
-                            lector.readAsDataURL(archivo);
-                            }
-
-                            function eliminarArchivo(button) {
-                            var fila = $(button).closest('tr');
-                            fila.find('input[type="file"]').val('');
-                            fila.find('.imagen-previa').attr('src', '');
-                            }
+                            
                         </script>
 
 

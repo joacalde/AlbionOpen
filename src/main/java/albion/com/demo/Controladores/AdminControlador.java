@@ -33,9 +33,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 public class AdminControlador {
 
     @Autowired
-    private UsuarioServicio usuarioServicio;
-
-    @Autowired
     private LineaServicio lineaServicio;
 
     @Autowired
@@ -151,19 +148,11 @@ public class AdminControlador {
             @RequestParam("descripcion_en") String descripcion_en,
             @RequestParam("descripcion_fr") String descripcion_fr,
             @RequestParam("descripcion_br") String descripcion_br,
-            @RequestParam("archivo1") MultipartFile archivo1,
-            @RequestParam("archivo2") MultipartFile archivo2,
-            @RequestParam("archivo3") MultipartFile archivo3,
-            @RequestParam("archivo4") MultipartFile archivo4,
-            @RequestParam("archivo5") MultipartFile archivo5,
-            @RequestParam("archivo6") MultipartFile archivo6,
-            @RequestParam("archivo7") MultipartFile archivo7,
-            @RequestParam("archivo8") MultipartFile archivo8,
             @RequestParam String funcionId,
             ModelMap model,
             RedirectAttributes ra) {
         try {
-            lineaServicio.crear(modelo, configuracion, produccion, titulo_es, titulo_en, titulo_fr, titulo_br, descripcion_es, descripcion_en, descripcion_fr, descripcion_br, archivo1, archivo2, archivo3, archivo4, archivo5, archivo6, archivo7, archivo8, funcionId);
+            lineaServicio.crear(modelo, configuracion, produccion, titulo_es, titulo_en, titulo_fr, titulo_br, descripcion_es, descripcion_en, descripcion_fr, descripcion_br, funcionId);
             ra.addAttribute("exito", "La Linea se ha creado con éxito");
         } catch (ErrorServicio e) {
             ra.addAttribute("error", e.getMessage());
@@ -339,14 +328,6 @@ public class AdminControlador {
             @RequestParam("descripcion_en") List<String> descripcion_en,
             @RequestParam("descripcion_fr") List<String> descripcion_fr,
             @RequestParam("descripcion_br") List<String> descripcion_br,
-            @RequestParam("foto1") List<MultipartFile> fotos1,
-            @RequestParam("foto2") List<MultipartFile> fotos2,
-            @RequestParam("foto3") List<MultipartFile> fotos3,
-            @RequestParam("foto4") List<MultipartFile> fotos4,
-            @RequestParam("foto5") List<MultipartFile> fotos5,
-            @RequestParam("foto6") List<MultipartFile> fotos6,
-            @RequestParam("foto7") List<MultipartFile> fotos7,
-            @RequestParam("foto8") List<MultipartFile> fotos8,
             ModelMap model, RedirectAttributes ra) throws ErrorServicio, IOException {
         try {
             int i = 0;
@@ -363,63 +344,6 @@ public class AdminControlador {
                 linea.setDescripcion_en(descripcion_en.get(i));
                 linea.setDescripcion_fr(descripcion_fr.get(i));
                 linea.setDescripcion_br(descripcion_br.get(i));
-                if (!fotos1.get(i).isEmpty()) {
-                    if (linea.getFoto1() == null) {
-                        linea.setFoto1(fotoServicio.guardar(fotos1.get(i)));
-                    } else {
-                        linea.setFoto1(fotoServicio.actualizar(linea.getFoto1().getId(), fotos1.get(i)));
-                    }
-                }
-                if (!fotos2.get(i).isEmpty()) {
-                    if (linea.getFoto2() == null) {
-                        linea.setFoto2(fotoServicio.guardar(fotos2.get(i)));
-                    } else {
-                        linea.setFoto2(fotoServicio.actualizar(linea.getFoto2().getId(), fotos2.get(i)));
-                    }
-                }
-                if (!fotos3.get(i).isEmpty()) {
-                    if (linea.getFoto3() == null) {
-                        linea.setFoto3(fotoServicio.guardar(fotos3.get(i)));
-                    } else {
-                        linea.setFoto3(fotoServicio.actualizar(linea.getFoto3().getId(), fotos3.get(i)));
-                    }
-                }
-                if (!fotos4.get(i).isEmpty()) {
-                    if (linea.getFoto4() == null) {
-                        linea.setFoto4(fotoServicio.guardar(fotos4.get(i)));
-                    } else {
-                        linea.setFoto4(fotoServicio.actualizar(linea.getFoto4().getId(), fotos4.get(i)));
-                    }
-                }
-                if (!fotos5.get(i).isEmpty()) {
-                    if (linea.getFoto5() == null) {
-                        linea.setFoto5(fotoServicio.guardar(fotos5.get(i)));
-                    } else {
-                        linea.setFoto5(fotoServicio.actualizar(linea.getFoto5().getId(), fotos5.get(i)));
-                    }
-                }
-                if (!fotos6.get(i).isEmpty()) {
-                    if (linea.getFoto6() == null) {
-                        linea.setFoto6(fotoServicio.guardar(fotos6.get(i)));
-                    } else {
-                        linea.setFoto6(fotoServicio.actualizar(linea.getFoto6().getId(), fotos6.get(i)));
-                    }
-                }
-                if (!fotos7.get(i).isEmpty()) {
-                    if (linea.getFoto7() == null) {
-                        linea.setFoto7(fotoServicio.guardar(fotos7.get(i)));
-                    } else {
-                        linea.setFoto7(fotoServicio.actualizar(linea.getFoto7().getId(), fotos7.get(i)));
-                    }
-                }
-                if (!fotos8.get(i).isEmpty()) {
-                    if (linea.getFoto8() == null) {
-                        linea.setFoto8(fotoServicio.guardar(fotos8.get(i)));
-                    } else {
-                        linea.setFoto8(fotoServicio.actualizar(linea.getFoto8().getId(), fotos8.get(i)));
-                    }
-                }
-
                 lineaServicio.editar(linea);
                 i++;
             }
@@ -471,60 +395,7 @@ public class AdminControlador {
     @DeleteMapping("/foto/eliminar/{id}")
     public String eliminarFoto(@PathVariable("id") String id, ModelMap model, RedirectAttributes ra) throws ErrorServicio {
         try {
-            Linea linea = lineaServicio.lineaPorFotoId(id);
-            if (linea.getFoto1() != null && linea.getFoto1().getId().equals(id)) {
-                linea.setFoto1(null);
-                fotoServicio.eliminar(id);
-                lineaRepositorio.save(linea);
-            }
-// Foto 2
-            if (linea.getFoto2() != null && linea.getFoto2().getId().equals(id)) {
-                linea.setFoto2(null);
-                fotoServicio.eliminar(id);
-                lineaRepositorio.save(linea);
-            }
-
-// Foto 3
-            if (linea.getFoto3() != null && linea.getFoto3().getId().equals(id)) {
-                linea.setFoto3(null);
-                fotoServicio.eliminar(id);
-                lineaRepositorio.save(linea);
-            }
-
-// Foto 4
-            if (linea.getFoto4() != null && linea.getFoto4().getId().equals(id)) {
-                linea.setFoto4(null);
-                fotoServicio.eliminar(id);
-                lineaRepositorio.save(linea);
-            }
-
-// Foto 5
-            if (linea.getFoto5() != null && linea.getFoto5().getId().equals(id)) {
-                linea.setFoto5(null);
-                fotoServicio.eliminar(id);
-                lineaRepositorio.save(linea);
-            }
-
-// Foto 6
-            if (linea.getFoto6() != null && linea.getFoto6().getId().equals(id)) {
-                linea.setFoto6(null);
-                fotoServicio.eliminar(id);
-                lineaRepositorio.save(linea);
-            }
-
-// Foto 7
-            if (linea.getFoto7() != null && linea.getFoto7().getId().equals(id)) {
-                linea.setFoto7(null);
-                fotoServicio.eliminar(id);
-                lineaRepositorio.save(linea);
-            }
-
-// Foto 8
-            if (linea.getFoto8() != null && linea.getFoto8().getId().equals(id)) {
-                linea.setFoto8(null);
-                fotoServicio.eliminar(id);
-                lineaRepositorio.save(linea);
-            }
+            fotoServicio.eliminar(id);
             ra.addAttribute("exito", "La Foto se ha eliminado con éxito");
         } catch (ErrorServicio e) {
             ra.addAttribute("error", e.getMessage());

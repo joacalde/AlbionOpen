@@ -1,7 +1,9 @@
 package albion.com.demo.Controladores;
 
+import albion.com.demo.Entidades.Equipo;
 import albion.com.demo.Entidades.Producto;
 import albion.com.demo.Errores.ErrorServicio;
+import albion.com.demo.Servicios.EquipoServicio;
 import albion.com.demo.Servicios.NotificacionServicio;
 import albion.com.demo.Servicios.ProductoServicio;
 import java.util.Comparator;
@@ -25,6 +27,9 @@ public class ContactoControlador {
     
     @Autowired
     private ProductoServicio productoServicio;
+    
+    @Autowired
+    private EquipoServicio equipoServicio;
 
     @GetMapping("/contacto/{idioma}")
     public String contacto(ModelMap model, @PathVariable("idioma") int idioma, @RequestParam(required = false, value = "exito") String exito, @RequestParam(required = false, value = "error") String error, @RequestParam(required = false, value = "nombre") String nombre, @RequestParam(required = false, value = "apellido") String apellido, @RequestParam(required = false, value = "empresa") String empresa, @RequestParam(required = false, value = "pais") String pais, @RequestParam(required = false, value = "correo") String correo, @RequestParam(required = false, value = "telefono") String telefono, @RequestParam(required = false, value = "direccion") String direccion, @RequestParam(required = false, value = "producto") String producto, @RequestParam(required = false, value = "modelo") String modelo, @RequestParam(required = false, value = "mensaje") String mensaje) throws ErrorServicio {
@@ -190,9 +195,18 @@ public class ContactoControlador {
                 model.put("form_enviar_m", "Formulário enviado com sucesso!");
                 break;
         }
+        
         List<Producto> productos = productoServicio.todos();
-        productos.sort(Comparator.comparingInt(Producto::getPosicion));
+        if (productos != null) {
+            productos.sort(Comparator.comparingInt(Producto::getPosicion));
+        }
         model.put("productos", productos);
+        List<Equipo> equipos = equipoServicio.todos();
+        if (equipos != null) {
+            equipos.sort(Comparator.comparingInt(Equipo::getPosicion));
+        }
+        model.put("equipos", equipos);
+        
         model.put("idioma", idioma);
         return "contacto";
     }
@@ -348,9 +362,19 @@ public class ContactoControlador {
                 model.put("form_enviar_m", "Formulário enviado com sucesso!");
                 break;
         }
+        
         List<Producto> productos = productoServicio.todos();
-        productos.sort(Comparator.comparingInt(Producto::getPosicion));
+        if (productos != null) {
+            productos.sort(Comparator.comparingInt(Producto::getPosicion));
+        }
         model.put("productos", productos);
+        List<Equipo> equipos = equipoServicio.todos();
+        if (equipos != null) {
+            equipos.sort(Comparator.comparingInt(Equipo::getPosicion));
+        }
+        model.put("equipos", equipos);
+        
+        
         model.put("idioma", idioma);
         
         model.put("producto", producto);
@@ -510,9 +534,18 @@ public class ContactoControlador {
                 model.put("form_enviar_m", "Formulário enviado com sucesso!");
                 break;
         }
+        
         List<Producto> productos = productoServicio.todos();
-        productos.sort(Comparator.comparingInt(Producto::getPosicion));
+        if (productos != null) {
+            productos.sort(Comparator.comparingInt(Producto::getPosicion));
+        }
         model.put("productos", productos);
+        List<Equipo> equipos = equipoServicio.todos();
+        if (equipos != null) {
+            equipos.sort(Comparator.comparingInt(Equipo::getPosicion));
+        }
+        model.put("equipos", equipos);
+        
         model.put("idioma", idioma);
         
         model.put("producto", producto);

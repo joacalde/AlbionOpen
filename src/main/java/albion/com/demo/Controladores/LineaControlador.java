@@ -1,9 +1,11 @@
 package albion.com.demo.Controladores;
 
+import albion.com.demo.Entidades.Equipo;
 import albion.com.demo.Entidades.Funcion;
 import albion.com.demo.Entidades.Linea;
 import albion.com.demo.Entidades.Producto;
 import albion.com.demo.Errores.ErrorServicio;
+import albion.com.demo.Servicios.EquipoServicio;
 import albion.com.demo.Servicios.LineaServicio;
 import albion.com.demo.Servicios.ProductoServicio;
 import java.util.Comparator;
@@ -24,6 +26,9 @@ public class LineaControlador {
 
     @Autowired
     private LineaServicio lineaServicio;
+    
+    @Autowired
+    private EquipoServicio equipoServicio;
 
     @GetMapping("/linea/{idioma}/{producto}")
     public String linea(ModelMap model, @PathVariable("idioma") int idioma, @PathVariable("producto") int posicion) throws ErrorServicio {
@@ -146,10 +151,18 @@ public class LineaControlador {
         }
         producto.setFunciones(funciones);
         model.put("producto", producto);
-        List<Producto> productos = productoServicio.todos();
-        productos.sort(Comparator.comparingInt(Producto::getPosicion));
-        model.put("productos", productos);
 
+        List<Producto> productos = productoServicio.todos();
+        if (productos != null) {
+            productos.sort(Comparator.comparingInt(Producto::getPosicion));
+        }
+        model.put("productos", productos);
+        List<Equipo> equipos = equipoServicio.todos();
+        if (equipos != null) {
+            equipos.sort(Comparator.comparingInt(Equipo::getPosicion));
+        }
+        model.put("equipos", equipos);
+        
         return "linea";
     }
 
