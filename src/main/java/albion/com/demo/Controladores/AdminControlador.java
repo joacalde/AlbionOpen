@@ -12,7 +12,10 @@ import albion.com.demo.Servicios.ProductoServicio;
 import albion.com.demo.Servicios.UsuarioServicio;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -26,6 +29,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
@@ -86,22 +90,26 @@ public class AdminControlador {
         return "adminsesion.html";
     }
 
+    //BUSCAR
     @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
-    @GetMapping("/productos/{id}/funciones")
-    public ResponseEntity<List<String>> obtenerFunciones(@PathVariable String id) throws ErrorServicio {
-        try {
-            Producto producto = productoServicio.buscar(id);
-            List<Funcion> funciones = producto.getFunciones();
-            List<String> opciones = new ArrayList<>();
-            for (Funcion funcion : funciones) {
-                opciones.add("<option value=\"" + funcion.getId() + "\">" + funcion.getFuncion_es() + "</option>");
-            }
-            return ResponseEntity.ok(opciones);
-        } catch (ErrorServicio e) {
-            return ResponseEntity.notFound().build();
-        }
+    @GetMapping("/productos/{productoId}/buscarFunciones")
+    public ResponseEntity<List<Funcion>> buscarFunciones(@PathVariable String productoId) throws ErrorServicio {
+        Producto producto = productoServicio.buscar(productoId);
+        List<Funcion> funciones = producto.getFunciones();
+        funciones.sort(Comparator.comparingInt(Funcion::getPosicion));
+        return ResponseEntity.ok(funciones);
     }
 
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+    @GetMapping("/funciones/{funcionId}/buscarLineas")
+    public ResponseEntity<List<Linea>> buscarLineas(@PathVariable String funcionId) throws ErrorServicio {
+        Funcion funcion = funcionServicio.buscar(funcionId);
+        List<Linea> lineas = funcion.getLineas();
+        lineas.sort(Comparator.comparingInt(Linea::getPosicion));
+        return ResponseEntity.ok(lineas);
+    }
+
+    //CREAR
     @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     @PostMapping("/crearProducto")
     public String crearProducto(
@@ -142,17 +150,13 @@ public class AdminControlador {
             @RequestParam("produccion") String produccion,
             @RequestParam("titulo_es") String titulo_es,
             @RequestParam("titulo_en") String titulo_en,
-            @RequestParam("titulo_fr") String titulo_fr,
-            @RequestParam("titulo_br") String titulo_br,
             @RequestParam("descripcion_es") String descripcion_es,
             @RequestParam("descripcion_en") String descripcion_en,
-            @RequestParam("descripcion_fr") String descripcion_fr,
-            @RequestParam("descripcion_br") String descripcion_br,
             @RequestParam String funcionId,
             ModelMap model,
             RedirectAttributes ra) {
         try {
-            lineaServicio.crear(modelo, configuracion, produccion, titulo_es, titulo_en, titulo_fr, titulo_br, descripcion_es, descripcion_en, descripcion_fr, descripcion_br, funcionId);
+            lineaServicio.crear(modelo, configuracion, produccion, titulo_es, titulo_en, descripcion_es, descripcion_en, funcionId);
             ra.addAttribute("exito", "La Linea se ha creado con éxito");
         } catch (ErrorServicio e) {
             ra.addAttribute("error", e.getMessage());
@@ -160,60 +164,7 @@ public class AdminControlador {
         return "redirect:/adminsesion";
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
-    @PostMapping("/ordenarProducto")
-    public String ordenarProductos(@RequestParam("id") List<String> ids, @RequestParam("posicion") List<Integer> posiciones, RedirectAttributes ra) throws ErrorServicio {
-        try {
-            productoServicio.ordenarProductos(ids, posiciones);
-            ra.addAttribute("exito", "Los Productos se han ordenado con éxito");
-        } catch (ErrorServicio e) {
-            ra.addAttribute("error", e.getMessage());
-        }
-        return "redirect:/adminsesion";
-    }
-
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
-    @PostMapping("/ordenarFuncion")
-    public String ordenarFuncion(@RequestParam("id") List<String> ids, @RequestParam("posicion") List<Integer> posiciones, RedirectAttributes ra) throws ErrorServicio {
-        try {
-            funcionServicio.ordenarFunciones(ids, posiciones);
-            ra.addAttribute("exito", "Las Funciones se han ordenado con éxito");
-        } catch (ErrorServicio e) {
-            ra.addAttribute("error", e.getMessage());
-        }
-        return "redirect:/adminsesion";
-    }
-
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
-    @GetMapping("/productos/{productoId}/buscarFunciones")
-    public ResponseEntity<List<Funcion>> buscarFunciones(@PathVariable String productoId) throws ErrorServicio {
-        Producto producto = productoServicio.buscar(productoId);
-        List<Funcion> funciones = producto.getFunciones();
-        return ResponseEntity.ok(funciones);
-    }
-
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
-    @PostMapping("/ordenarLinea")
-    public String ordenarLinea(@RequestParam("id") List<String> ids, @RequestParam("posicion") List<Integer> posiciones, RedirectAttributes ra) throws ErrorServicio {
-        try {
-            lineaServicio.ordenarLineas(ids, posiciones);
-            ra.addAttribute("exito", "Las Lineas se han ordenado con éxito");
-        } catch (ErrorServicio e) {
-            ra.addAttribute("error", e.getMessage());
-        }
-        return "redirect:/adminsesion";
-    }
-
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
-    @GetMapping("/funciones/{funcionId}/buscarLineas")
-    public ResponseEntity<List<Linea>> buscarLineas(@PathVariable String funcionId) throws ErrorServicio {
-        Funcion funcion = funcionServicio.buscar(funcionId);
-        List<Linea> lineas = funcion.getLineas();
-        return ResponseEntity.ok(lineas);
-    }
-
     //EDITAR
-    //PRODUCTO
     @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     @PostMapping("/producto/editar")
     public String editarProducto(@ModelAttribute("producto") Producto producto, ModelMap model, RedirectAttributes ra) throws ErrorServicio {
@@ -226,43 +177,6 @@ public class AdminControlador {
         return "redirect:/adminsesion";
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
-    @PostMapping("/producto/alta")
-    public String altaProducto(@ModelAttribute String id, ModelMap model, RedirectAttributes ra) throws ErrorServicio {
-        try {
-            productoServicio.alta(id);
-            ra.addAttribute("exito", "El producto se ha dado de Alta con éxito");
-        } catch (ErrorServicio e) {
-            ra.addAttribute("error", e.getMessage());
-        }
-        return "redirect:/adminsesion";
-    }
-
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
-    @PostMapping("/producto/baja")
-    public String bajaProducto(@ModelAttribute String id, ModelMap model, RedirectAttributes ra) throws ErrorServicio {
-        try {
-            productoServicio.baja(id);
-            ra.addAttribute("exito", "El producto se ha dado de Baja con éxito");
-        } catch (ErrorServicio e) {
-            ra.addAttribute("error", e.getMessage());
-        }
-        return "redirect:/adminsesion";
-    }
-
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
-    @PostMapping("/producto/eliminar/{id}")
-    public String eliminarProducto(@PathVariable("id") String id, ModelMap model, RedirectAttributes ra) throws ErrorServicio {
-        try {
-            productoServicio.eliminar(id);
-            ra.addAttribute("exito", "El producto se ha dado de Baja con éxito");
-        } catch (ErrorServicio e) {
-            ra.addAttribute("error", e.getMessage());
-        }
-        return "redirect:/adminsesion";
-    }
-
-    //FUNCION
     @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     @PostMapping("/funcion/editar")
     public String editarFuncion(@RequestParam("funcion_es") List<String> funcionEs,
@@ -283,30 +197,6 @@ public class AdminControlador {
                 i++;
             }
             ra.addAttribute("exito", "Las funciones se han editado con éxito");
-        } catch (ErrorServicio e) {
-            ra.addAttribute("error", e.getMessage());
-        }
-        return "redirect:/adminsesion";
-    }
-
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
-    @PostMapping("/funcion/alta")
-    public String altaFuncion(@ModelAttribute String id, ModelMap model, RedirectAttributes ra) throws ErrorServicio {
-        try {
-            funcionServicio.alta(id);
-            ra.addAttribute("exito", "La Función se ha dado de Alta con éxito");
-        } catch (ErrorServicio e) {
-            ra.addAttribute("error", e.getMessage());
-        }
-        return "redirect:/adminsesion";
-    }
-
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
-    @PostMapping("/funcion/baja")
-    public String bajaFuncion(@ModelAttribute String id, ModelMap model, RedirectAttributes ra) throws ErrorServicio {
-        try {
-            funcionServicio.baja(id);
-            ra.addAttribute("exito", "La Función se ha dado de Baja con éxito");
         } catch (ErrorServicio e) {
             ra.addAttribute("error", e.getMessage());
         }
@@ -354,6 +244,105 @@ public class AdminControlador {
         return "redirect:/adminsesion";
     }
 
+    //ORDENAR
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+    @PostMapping("/ordenarProducto")
+    public String ordenarProductos(@RequestParam("id") List<String> ids, @RequestParam("posicion") List<Integer> posiciones, RedirectAttributes ra) throws ErrorServicio {
+        try {
+            productoServicio.ordenarProductos(ids, posiciones);
+            ra.addAttribute("exito", "Los Productos se han ordenado con éxito");
+        } catch (ErrorServicio e) {
+            ra.addAttribute("error", e.getMessage());
+        }
+        return "redirect:/adminsesion";
+    }
+
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+    @PostMapping("/ordenarFuncion")
+    public String ordenarFuncion(@RequestParam("id") List<String> ids, @RequestParam("posicion") List<Integer> posiciones, RedirectAttributes ra) throws ErrorServicio {
+        try {
+            funcionServicio.ordenarFunciones(ids, posiciones);
+            ra.addAttribute("exito", "Las Funciones se han ordenado con éxito");
+        } catch (ErrorServicio e) {
+            ra.addAttribute("error", e.getMessage());
+        }
+        return "redirect:/adminsesion";
+    }
+
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+    @PostMapping("/ordenarLinea")
+    public String ordenarLinea(@RequestParam("id") List<String> ids, @RequestParam("posicion") List<Integer> posiciones, RedirectAttributes ra) throws ErrorServicio {
+        try {
+            lineaServicio.ordenarLineas(ids, posiciones);
+            ra.addAttribute("exito", "Las Lineas se han ordenado con éxito");
+        } catch (ErrorServicio e) {
+            ra.addAttribute("error", e.getMessage());
+        }
+        return "redirect:/adminsesion";
+    }
+
+    //PRODUCTO
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+    @PostMapping("/producto/alta")
+    public String altaProducto(@ModelAttribute String id, ModelMap model, RedirectAttributes ra) throws ErrorServicio {
+        try {
+            productoServicio.alta(id);
+            ra.addAttribute("exito", "El producto se ha dado de Alta con éxito");
+        } catch (ErrorServicio e) {
+            ra.addAttribute("error", e.getMessage());
+        }
+        return "redirect:/adminsesion";
+    }
+
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+    @PostMapping("/producto/baja")
+    public String bajaProducto(@ModelAttribute String id, ModelMap model, RedirectAttributes ra) throws ErrorServicio {
+        try {
+            productoServicio.baja(id);
+            ra.addAttribute("exito", "El producto se ha dado de Baja con éxito");
+        } catch (ErrorServicio e) {
+            ra.addAttribute("error", e.getMessage());
+        }
+        return "redirect:/adminsesion";
+    }
+
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+    @PostMapping("/producto/eliminar/{id}")
+    public String eliminarProducto(@PathVariable("id") String id, ModelMap model, RedirectAttributes ra) throws ErrorServicio {
+        try {
+            productoServicio.eliminar(id);
+            ra.addAttribute("exito", "El producto se ha dado de Baja con éxito");
+        } catch (ErrorServicio e) {
+            ra.addAttribute("error", e.getMessage());
+        }
+        return "redirect:/adminsesion";
+    }
+
+    //FUNCION
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+    @PostMapping("/funcion/alta")
+    public String altaFuncion(@ModelAttribute String id, ModelMap model, RedirectAttributes ra) throws ErrorServicio {
+        try {
+            funcionServicio.alta(id);
+            ra.addAttribute("exito", "La Función se ha dado de Alta con éxito");
+        } catch (ErrorServicio e) {
+            ra.addAttribute("error", e.getMessage());
+        }
+        return "redirect:/adminsesion";
+    }
+
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+    @PostMapping("/funcion/baja")
+    public String bajaFuncion(@ModelAttribute String id, ModelMap model, RedirectAttributes ra) throws ErrorServicio {
+        try {
+            funcionServicio.baja(id);
+            ra.addAttribute("exito", "La Función se ha dado de Baja con éxito");
+        } catch (ErrorServicio e) {
+            ra.addAttribute("error", e.getMessage());
+        }
+        return "redirect:/adminsesion";
+    }
+
     @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     @PostMapping("/funcion/eliminar/{id}")
     public String eliminarFuncion(@PathVariable("id") String id, ModelMap model, RedirectAttributes ra) throws ErrorServicio {
@@ -372,7 +361,19 @@ public class AdminControlador {
     public String altaLinea(@PathVariable("id") String id, ModelMap model, RedirectAttributes ra) throws ErrorServicio {
         try {
             lineaServicio.alta(id);
-            ra.addFlashAttribute("exito", "La línea se ha eliminado con éxito");
+            ra.addFlashAttribute("exito", "La línea se dió de alta");
+        } catch (ErrorServicio e) {
+            ra.addFlashAttribute("error", e.getMessage());
+        }
+        return "redirect:/adminsesion";
+    }
+
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+    @PostMapping("/linea/baja/{id}")
+    public String bajaLinea(@PathVariable("id") String id, ModelMap model, RedirectAttributes ra) throws ErrorServicio {
+        try {
+            lineaServicio.baja(id);
+            ra.addFlashAttribute("exito", "La línea se dió de baja");
         } catch (ErrorServicio e) {
             ra.addFlashAttribute("error", e.getMessage());
         }
@@ -391,12 +392,46 @@ public class AdminControlador {
         return "redirect:/adminsesion";
     }
 
+    //FOTO
     @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     @DeleteMapping("/foto/eliminar/{id}")
     public String eliminarFoto(@PathVariable("id") String id, ModelMap model, RedirectAttributes ra) throws ErrorServicio {
         try {
             fotoServicio.eliminar(id);
             ra.addAttribute("exito", "La Foto se ha eliminado con éxito");
+        } catch (ErrorServicio e) {
+            ra.addAttribute("error", e.getMessage());
+        }
+        return "redirect:/adminsesion";
+    }
+
+//    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+//    @PostMapping("/fotosLinea")
+//    public String fotosLinea(@RequestParam("id") List<String> ids, @RequestParam("fotos") List<List<MultipartFile>> fotos, RedirectAttributes ra) throws ErrorServicio {
+//        try {
+//            lineaServicio.agregarLineas(ids, fotos);
+//            ra.addAttribute("exito", "Las fotos se han agregado correctamente");
+//        } catch (ErrorServicio e) {
+//            ra.addAttribute("error", e.getMessage());
+//        }
+//        return "redirect:/adminsesion";
+//    }
+    @PostMapping("/fotoLinea")
+    public String fotoLinea(@RequestParam("id") List<String> ids, MultipartHttpServletRequest request, RedirectAttributes ra) throws ErrorServicio {
+
+        // Crear un mapa para almacenar las fotos por línea
+        Map<String, List<MultipartFile>> fotosPorLinea = new HashMap<>();
+
+        for (String id : ids) {
+            List<MultipartFile> fotos = request.getFiles("fotos_linea_" + id);
+            if (fotos != null && !fotos.isEmpty()) {
+                fotosPorLinea.put(id, fotos);
+            }
+        }
+
+        try {
+            lineaServicio.agregarLineas(ids, fotosPorLinea);
+            ra.addAttribute("exito", "Las fotos se han agregado correctamente");
         } catch (ErrorServicio e) {
             ra.addAttribute("error", e.getMessage());
         }

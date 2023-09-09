@@ -52,6 +52,15 @@
                     <li><a class="dropdown-item" data-bs-toggle="modal" href="#ordenarLinea">Ordenar Linea</a></li>
                 </ul>
             </div>
+            <div class="btn-group dropend">
+                <button type="button" class="contactar dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                    Fotos
+                </button>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" data-bs-toggle="modal" href="#fotosLinea">Fotos Lineas</a></li>
+                    <li><a class="dropdown-item" data-bs-toggle="modal" href="#fotosEquipo">Fotos Equipos</a></li>
+                </ul>
+            </div>
         </div>
 
 
@@ -147,43 +156,49 @@
                     <div class="modal-body">
                         <form class="row g-3" th:action="@{/crearLinea}" method="POST" enctype="multipart/form-data">
                             <div class="col-md-6">
-                                <label for="inputState" class="form-label">Producto</label>
-                                <select name="productoId" id="select-producto" onchange="cargarFunciones()" class="form-select" aria-label="Default select example">
-                                    <option value="">Selecciona un producto</option>
-                                    <option  th:each="producto : ${producto}" th:value="${producto.id}"  th:text="${producto.producto_es}" th:selected="${producto.producto_es == newfuncion.funcion_es}" ></option>
+                                <label for="producto">Seleccionar Producto:</label>
+                                <select name="producto" id="select-producto-crearLinea" onchange="cargarFuncionesCrearLinea()">
+                                    <option value="">Seleccionar</option>
+                                    <!-- Iterar sobre los productos y generar las opciones del select -->
+                                    <option th:each="producto : ${producto}" th:value="${producto.id}" th:text="${producto.producto_es}"></option>
+                                </select>
+
+                                <label for="funcion">Seleccionar Función:</label>
+                                <select name="funcionId" id="select-funcion-crearLinea">
+                                    <option value="">Seleccionar</option>
                                 </select>
                             </div>
                             <script th:inline="javascript">
-                                function cargarFunciones() {
-                                $('#funciones').prop('disabled', false);
-                                var productoId = document.getElementById("select-producto").value;
+                                function cargarFuncionesCrearLinea() {
+                                var productoId = $('#select-producto-crearLinea').val();
+
                                 if (productoId) {
                                 var url = /*[[@{/productos/{id}/buscarFunciones}]]*/ '';
                                 url = url.replace('{id}', productoId);
+
                                 $.ajax({
                                 url: url,
                                 type: 'GET',
                                 success: function(data) {
-                                $('#funciones').html(data);
-                                $('#funciones').prop('disabled', false);
+                                // Limpiar el select de funciones
+                                $('#select-funcion-crearLinea').empty();
+                                $('#select-funcion-crearLinea').append('<option value="">Seleccionar</option>');
+
+                                // Iterar sobre las funciones y generar las opciones del select
+                                $.each(data, function(index, funcion) {
+                                $('#select-funcion-crearLinea').append('<option value="' + funcion.id + '">' + funcion.funcion_es + '</option>');
+                                });
                                 },
                                 error: function() {
                                 console.log('Error al obtener las funciones del producto');
                                 }
                                 });
                                 } else {
-                                $('#funciones').html('<option value="">Selecciona un producto primero</option>');
-                                $('#funciones').prop('disabled', true);
+                                $('#select-funcion-crearLinea').empty();
+                                $('#crearLineasBody').empty();
                                 }
                                 }
                             </script>
-
-                            <div class="col-md-6">
-                                <label for="inputState" class="form-label">Funcion</label>
-                                <select name="funcionId" id="funciones" disabled  class="form-select" aria-label="Default select example">
-                                    <option value="">Selecciona un producto primero</option>
-                                </select>
-                            </div>
 
                             <div class="col-md-4">
                                 <label for="exampleInputEmail1" class="form-label">Modelo</label>
@@ -205,14 +220,14 @@
                                 <label for="exampleInputEmail1" class="form-label">Título Inglés</label>
                                 <input type="text" name="titulo_en" class="form-control" id="exampleInputEmail1">
                             </div>
-                            <div class="col-md-3">
+<!--                            <div class="col-md-3">
                                 <label for="exampleInputEmail1" class="form-label">Título Francés</label>
                                 <input type="text" name="titulo_fr" class="form-control" id="exampleInputEmail1">
                             </div>
                             <div class="col-md-3">
                                 <label for="exampleInputEmail1" class="form-label">Título Brasil</label>
                                 <input type="text" name="titulo_br" class="form-control" id="exampleInputEmail1">
-                            </div>
+                            </div>-->
                             <div class="col-md-3">
                                 <label for="exampleFormControlTextarea1" class="form-label">Descripción Español</label>
                                 <textarea name="descripcion_es" class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
@@ -221,46 +236,46 @@
                                 <label for="exampleFormControlTextarea1" class="form-label">Descripción Inglés</label>
                                 <textarea name="descripcion_en" class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
                             </div>
-                            <div class="col-md-3">
+<!--                            <div class="col-md-3">
                                 <label for="exampleFormControlTextarea1" class="form-label">Descripción Francés</label>
                                 <textarea name="descripcion_fr" class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
                             </div>
                             <div class="col-md-3">
                                 <label for="exampleFormControlTextarea1" class="form-label">Descripción Brasil</label>
                                 <textarea name="descripcion_br" class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
-                            </div>
-<!--                            <div class="col-md-3">
-                                <label class="form-label" for="inputGroupFile01">Foto 1</label>
-                                <input name="archivo1" type="file" class="form-control" id="inputGroupFile01">
-                            </div>
-                            <div class="col-md-3">
-                                <label class="form-label" for="inputGroupFile01">Foto 2</label>
-                                <input name="archivo2" type="file" class="form-control" id="inputGroupFile01">
-                            </div>
-                            <div class="col-md-3">
-                                <label class="form-label" for="inputGroupFile01">Foto 3</label>
-                                <input name="archivo3" type="file" class="form-control" id="inputGroupFile01">
-                            </div>
-                            <div class="col-md-3">
-                                <label class="form-label" for="inputGroupFile01">Foto 4</label>
-                                <input name="archivo4" type="file" class="form-control" id="inputGroupFile01">
-                            </div>
-                            <div class="col-md-3">
-                                <label class="form-label" for="inputGroupFile01">Foto 5</label>
-                                <input name="archivo5" type="file" class="form-control" id="inputGroupFile01">
-                            </div>
-                            <div class="col-md-3">
-                                <label class="form-label" for="inputGroupFile01">Foto 6</label>
-                                <input name="archivo6" type="file" class="form-control" id="inputGroupFile01">
-                            </div>
-                            <div class="col-md-3">
-                                <label class="form-label" for="inputGroupFile01">Foto 7</label>
-                                <input name="archivo7" type="file" class="form-control" id="inputGroupFile01">
-                            </div>
-                            <div class="col-md-3">
-                                <label class="form-label" for="inputGroupFile01">Foto 8</label>
-                                <input name="archivo8" type="file" class="form-control" id="inputGroupFile01">
                             </div>-->
+                            <!--                            <div class="col-md-3">
+                                                            <label class="form-label" for="inputGroupFile01">Foto 1</label>
+                                                            <input name="archivo1" type="file" class="form-control" id="inputGroupFile01">
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            <label class="form-label" for="inputGroupFile01">Foto 2</label>
+                                                            <input name="archivo2" type="file" class="form-control" id="inputGroupFile01">
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            <label class="form-label" for="inputGroupFile01">Foto 3</label>
+                                                            <input name="archivo3" type="file" class="form-control" id="inputGroupFile01">
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            <label class="form-label" for="inputGroupFile01">Foto 4</label>
+                                                            <input name="archivo4" type="file" class="form-control" id="inputGroupFile01">
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            <label class="form-label" for="inputGroupFile01">Foto 5</label>
+                                                            <input name="archivo5" type="file" class="form-control" id="inputGroupFile01">
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            <label class="form-label" for="inputGroupFile01">Foto 6</label>
+                                                            <input name="archivo6" type="file" class="form-control" id="inputGroupFile01">
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            <label class="form-label" for="inputGroupFile01">Foto 7</label>
+                                                            <input name="archivo7" type="file" class="form-control" id="inputGroupFile01">
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            <label class="form-label" for="inputGroupFile01">Foto 8</label>
+                                                            <input name="archivo8" type="file" class="form-control" id="inputGroupFile01">
+                                                        </div>-->
                             <button type="submit" class="contactar">Crear</button>
                         </form>
                     </div>
@@ -559,7 +574,7 @@
                             $('#editarLineasBody').empty();
                             }
                             }
-                            
+
                         </script>
 
 
@@ -785,6 +800,121 @@
                             });
                             } else {
                             $('#ordenarLineas tbody').empty();
+                            }
+                            }
+                        </script>
+
+
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+          <!-- Fotos Linea -->
+        <div class="modal fade" id="fotosLinea" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-xl">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">Fotos Linea</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+
+                        <form th:action="@{/fotoLinea}" method="post" enctype="multipart/form-data">
+                            <label for="producto">Seleccionar Producto:</label>
+                            <select name="producto" id="select-producto-fotosLinea" onchange="cargarFuncionesfotosLinea()">
+                                <option value="">Seleccionar</option>
+                                <!-- Iterar sobre los productos y generar las opciones del select -->
+                                <option th:each="producto : ${producto}" th:value="${producto.id}" th:text="${producto.producto_es}"></option>
+                            </select>
+
+                            <label for="funcion">Seleccionar Función:</label>
+                            <select name="funcion" id="select-funcion-fotosLinea" onchange="cargarLineasfotosLineas()">
+                                <option value="">Seleccionar</option>
+                            </select>
+
+                            <!-- Tabla de líneas -->
+                            <table id="fotosLineas">
+                                <thead>
+                                    <tr>
+                                        <th>Modelo</th>
+                                        <th>Configuracion</th>
+                                        <th>Fotos</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+
+                            <button type="submit">Guardar cambios</button>
+                        </form>
+
+                        <script th:inline="javascript">
+                            function cargarFuncionesfotosLinea() {
+                            var productoId = $('#select-producto-fotosLinea').val();
+
+                            if (productoId) {
+                            var url = /*[[@{/productos/{id}/buscarFunciones}]]*/ '';
+                            url = url.replace('{id}', productoId);
+
+                            $.ajax({
+                            url: url,
+                            type: 'GET',
+                            success: function(data) {
+                            // Limpiar el select de funciones
+                            $('#select-funcion-fotosLinea').empty();
+                            $('#select-funcion-fotosLinea').append('<option value="">Seleccionar</option>');
+
+                            // Iterar sobre las funciones y generar las opciones del select
+                            $.each(data, function(index, funcion) {
+                            $('#select-funcion-fotosLinea').append('<option value="' + funcion.id + '">' + funcion.funcion_es + '</option>');
+                            });
+                            },
+                            error: function() {
+                            console.log('Error al obtener las funciones del producto');
+                            }
+                            });
+                            } else {
+                            $('#select-funcion-fotosLinea').empty();
+                            $('#fotosLineas tbody').empty();
+                            }
+                            }
+
+                            function cargarLineasfotosLineas() {
+                            var funcionId = $('#select-funcion-fotosLinea').val();
+
+                            if (funcionId) {
+                            var url = /*[[@{/funciones/{id}/buscarLineas}]]*/ '';
+                            url = url.replace('{id}', funcionId);
+
+                            $.ajax({
+                            url: url,
+                            type: 'GET',
+                            success: function(data) {
+                            // Limpiar la tabla de líneas
+                            $('#fotosLineas tbody').empty();
+
+                            // Iterar sobre las líneas y generar las filas de la tabla
+                            $.each(data, function(index, linea) {
+                            var fila = $('<tr>');
+                            fila.append('<td>' + linea.modelo + '</td>');
+                            fila.append('<td>' + linea.configuracion + '</td>');
+                            fila.append('<td><input type="file" name="fotos_linea_' + linea.id + '" multiple></td>');
+                            fila.append('<td><input type="hidden" name="id" value="' + linea.id + '"></td>');
+
+                            $('#fotosLineas tbody').append(fila);
+                            });
+                            },
+                            error: function() {
+                            console.log('Error al obtener las líneas de la función');
+                            }
+                            });
+                            } else {
+                            $('#fotosLineas tbody').empty();
                             }
                             }
                         </script>

@@ -1,11 +1,13 @@
 package albion.com.demo.Servicios;
 
+import albion.com.demo.Entidades.Foto;
 import albion.com.demo.Entidades.Funcion;
 import albion.com.demo.Entidades.Linea;
 import albion.com.demo.Errores.ErrorServicio;
 import albion.com.demo.Repositorios.FuncionRepositorio;
 import albion.com.demo.Repositorios.LineaRepositorio;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,8 +30,8 @@ public class LineaServicio {
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = {Exception.class})
     public void crear(
             String modelo, String configuracion, String produccion,
-            String titulo_es, String titulo_en, String titulo_fr, String titulo_br,
-            String descripcion_es, String descripcion_en, String descripcion_fr, String descripcion_br,
+            String titulo_es, String titulo_en, 
+            String descripcion_es, String descripcion_en, 
             String funcionId) throws ErrorServicio {
         Integer posicion = 1;
         if (lineaRepositorio.ultimaPosicion() != null) {
@@ -41,12 +43,8 @@ public class LineaServicio {
         linea.setProduccion(produccion);
         linea.setTitulo_es(titulo_es);
         linea.setTitulo_en(titulo_en);
-        linea.setTitulo_fr(titulo_fr);
-        linea.setTitulo_br(titulo_br);
         linea.setDescripcion_es(descripcion_es);
         linea.setDescripcion_en(descripcion_en);
-        linea.setDescripcion_fr(descripcion_fr);
-        linea.setDescripcion_br(descripcion_br);
         linea.setPosicion(posicion);
         Optional<Funcion> opt = funcionRepositorio.findById(funcionId);
         if (opt.isPresent()) {
@@ -154,6 +152,43 @@ public class LineaServicio {
                 lineaRepositorio.save(linea);
             } else {
                 throw new ErrorServicio("No se encontró la función.");
+            }
+        }
+    }
+
+//    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = {Exception.class})
+//    public void agregarLineas(List<String> ids, List<List<MultipartFile>> fotos) throws ErrorServicio {
+//        for (int i = 0; i < ids.size(); i++) {
+//            Optional<Linea> opt = lineaRepositorio.findById(ids.get(i));
+//            if (opt.isPresent()) {
+//                Linea linea = opt.get();
+//                List<Foto> fotosPorLinea = linea.getFotos();
+//                for (MultipartFile multipartFile : fotos.get(i)) {
+//                    fotosPorLinea.add(fotoServicio.guardar(multipartFile));
+//                }
+//                linea.setFotos(fotosPorLinea);
+//                lineaRepositorio.save(linea);
+//            } else {
+//                throw new ErrorServicio("Hubo un error, Inténtelo nuevamente.");
+//            }
+//        }
+//    }
+
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = {Exception.class})
+    public void agregarLineas(List<String> ids, Map<String, List<MultipartFile>> fotosPorLinea) throws ErrorServicio {
+        for (String id : ids) {
+            Optional<Linea> opt = lineaRepositorio.findById(id);
+            if (opt.isPresent()) {
+                Linea linea = opt.get();
+                List<Foto> fotosDeLinea = linea.getFotos();
+                List<MultipartFile> fotos = fotosPorLinea.get(id);
+                for (MultipartFile multipartFile : fotos) {
+                    fotosDeLinea.add(fotoServicio.guardar(multipartFile));
+                }
+                linea.setFotos(fotosDeLinea);
+                lineaRepositorio.save(linea);
+            } else {
+                throw new ErrorServicio("Hubo un error, Inténtelo nuevamente.");
             }
         }
     }

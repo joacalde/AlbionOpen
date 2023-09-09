@@ -47,7 +47,7 @@ main {
     margin-left: 10%;
     margin-right: 10%;
     margin-bottom: 50px;
-    background-color: var(--gris0);
+    background-color: rgb(247, 247, 247);
     border-radius: 5px;
 	padding-top: 20px;
 	padding-bottom: 30px;

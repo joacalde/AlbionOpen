@@ -3,11 +3,17 @@
 }
 
 .mySwiper{
-    height: 100%;
+    width: 100%;
+    height:auto;
 }
 
 .swiper-wrapper img{
-    height: 100%;
+    width: 100%;
+    height:auto;
+}
+
+.swiper{
+    margin-bottom: 0;
 }
 
 .float{
@@ -33,3 +39,4 @@
 .my-float{
     margin-top:14px;
 }
+
