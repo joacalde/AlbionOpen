@@ -1,6 +1,7 @@
 package albion.com.demo.Controladores;
 
 import albion.com.demo.Entidades.Equipo;
+import albion.com.demo.Entidades.Foto;
 import albion.com.demo.Entidades.Funcion;
 import albion.com.demo.Entidades.Linea;
 import albion.com.demo.Entidades.Producto;
@@ -26,7 +27,7 @@ public class LineaControlador {
 
     @Autowired
     private LineaServicio lineaServicio;
-    
+
     @Autowired
     private EquipoServicio equipoServicio;
 
@@ -51,7 +52,7 @@ public class LineaControlador {
                 model.put("nav5", "Contactanos");
                 model.put("producto_otro", "Otros");
                 model.put("volver", "volver");
-                
+
                 model.put("tabla_1", "Modelo");
                 model.put("tabla_2", "Produccion");
                 model.put("tabla_3", "Fotos");
@@ -76,7 +77,7 @@ public class LineaControlador {
                 model.put("nav5", "Contact Us");
                 model.put("producto_otro", "Others");
                 model.put("volver", "back");
-                
+
                 model.put("tabla_1", "Model");
                 model.put("tabla_2", "Productin");
                 model.put("tabla_3", "Photos");
@@ -101,7 +102,7 @@ public class LineaControlador {
                 model.put("nav5", "Contact Us");
                 model.put("producto_otro", "Others");
                 model.put("volver", "back");
-                
+
                 model.put("tabla_1", "Modèle");
                 model.put("tabla_2", "Production");
                 model.put("tabla_3", "Photos");
@@ -126,7 +127,7 @@ public class LineaControlador {
                 model.put("nav5", "Contact Us");
                 model.put("producto_otro", "Others");
                 model.put("volver", "back");
-                
+
                 model.put("tabla_1", "Modelo");
                 model.put("tabla_2", "Produção");
                 model.put("tabla_3", "Fotos");
@@ -143,10 +144,21 @@ public class LineaControlador {
 
         model.put("idioma", idioma);
         model.put("productotitulo", titulolinea);
+
         List<Funcion> funciones = producto.getFunciones();
         for (Funcion funcion : funciones) {
             List<Linea> lineas = funcion.getLineas();
             lineas.sort(Comparator.comparingInt(Linea::getPosicion));
+
+            // Ordenar las fotos dentro de cada línea por su posición
+            for (Linea linea : lineas) {
+                List<Foto> fotos = linea.getFotos();
+                if (fotos != null) {
+                    fotos.sort(Comparator.comparingInt(Foto::getPosicion));
+                    linea.setFotos(fotos);
+                }
+            }
+
             funcion.setLineas(lineas);
         }
         producto.setFunciones(funciones);
@@ -157,19 +169,24 @@ public class LineaControlador {
             productos.sort(Comparator.comparingInt(Producto::getPosicion));
         }
         model.put("productos", productos);
+
         List<Equipo> equipos = equipoServicio.todos();
         if (equipos != null) {
             equipos.sort(Comparator.comparingInt(Equipo::getPosicion));
         }
         model.put("equipos", equipos);
-        
+
         return "linea";
     }
 
     @GetMapping("/verfoto/{id}")
     public String verfoto(ModelMap model, @PathVariable("id") String id) throws ErrorServicio {
         Linea linea = lineaServicio.buscar(id);
-        System.out.println(linea.getId());
+        List<Foto> fotos = linea.getFotos();
+            if (fotos != null && !fotos.isEmpty()) {
+                fotos.sort(Comparator.comparingInt(Foto::getPosicion));
+                linea.setFotos(fotos);
+            }
         model.put("linea", linea);
         return "foto";
     }

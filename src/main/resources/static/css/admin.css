@@ -118,3 +118,23 @@ td {
     text-align: center;
     vertical-align: middle;
 }
+
+.fotos-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.foto-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.foto-linea {
+    max-width: 130px;  /* Puedes ajustar este valor según prefieras */
+    height: auto;
+    border: 1px solid #ccc;
+    padding: 5px;
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
+}

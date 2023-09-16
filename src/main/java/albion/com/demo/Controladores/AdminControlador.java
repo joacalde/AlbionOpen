@@ -1,5 +1,6 @@
 package albion.com.demo.Controladores;
 
+import albion.com.demo.Entidades.Foto;
 import albion.com.demo.Entidades.Funcion;
 import albion.com.demo.Entidades.Linea;
 import albion.com.demo.Entidades.Producto;
@@ -17,6 +18,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -68,8 +70,42 @@ public class AdminControlador {
     )
             throws ErrorServicio {
 
+//        // 1. Ordenar los productos según su posición.
+//        List<Producto> productos = productoServicio.todos();
+//        if (productos != null) {
+//            productos.sort(Comparator.comparingInt(Producto::getPosicion));
+//
+//            // 2. Ordenar las Funcion de cada Producto según su posición.
+//            for (Producto producto : productos) {
+//                List<Funcion> funciones = producto.getFunciones();
+//                if (funciones != null) {
+//                    funciones.sort(Comparator.comparingInt(Funcion::getPosicion));
+//
+//                    // 3. Ordenar las Linea de cada Funcion según su posición.
+//                    for (Funcion funcion : funciones) {
+//                        List<Linea> lineas = funcion.getLineas();
+//                        if (lineas != null) {
+//                            lineas.sort(Comparator.comparingInt(Linea::getPosicion));
+//
+//                            // 4. Ordenar las Foto de cada Linea según su posición.
+//                            for (Linea linea : lineas) {
+//                                List<Foto> fotos = linea.getFotos();
+//                                if (fotos != null) {
+//                                    fotos.sort(Comparator.comparingInt(Foto::getPosicion));
+//                                    linea.setFotos(fotos);
+//                                }
+//                            }
+//                            funcion.setLineas(lineas);
+//                        }
+//                    }
+//                    producto.setFunciones(funciones);
+//                }
+//            }
+//        }
+//        model.put("producto", productos);
         model.put("producto", productoServicio.todos());
         model.put("funcion", funcionServicio.todos());
+
         if (newproducto == null) {
             model.put("newproducto", new Producto());
         } else {
@@ -106,6 +142,16 @@ public class AdminControlador {
         Funcion funcion = funcionServicio.buscar(funcionId);
         List<Linea> lineas = funcion.getLineas();
         lineas.sort(Comparator.comparingInt(Linea::getPosicion));
+
+        // Ordenar las fotos de cada Linea
+        for (Linea linea : lineas) {
+            List<Foto> fotos = linea.getFotos();
+            if (fotos != null && !fotos.isEmpty()) {
+                fotos.sort(Comparator.comparingInt(Foto::getPosicion));
+                linea.setFotos(fotos);
+            }
+        }
+
         return ResponseEntity.ok(lineas);
     }
 
@@ -392,30 +438,29 @@ public class AdminControlador {
         return "redirect:/adminsesion";
     }
 
-    //FOTO
     @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     @DeleteMapping("/foto/eliminar/{id}")
-    public String eliminarFoto(@PathVariable("id") String id, ModelMap model, RedirectAttributes ra) throws ErrorServicio {
+    public ResponseEntity<?> eliminarFoto(@PathVariable("id") String id) {
         try {
             fotoServicio.eliminar(id);
-            ra.addAttribute("exito", "La Foto se ha eliminado con éxito");
+            return ResponseEntity.ok().body("La Foto se ha eliminado con éxito");
         } catch (ErrorServicio e) {
-            ra.addAttribute("error", e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
-        return "redirect:/adminsesion";
     }
 
-//    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
-//    @PostMapping("/fotosLinea")
-//    public String fotosLinea(@RequestParam("id") List<String> ids, @RequestParam("fotos") List<List<MultipartFile>> fotos, RedirectAttributes ra) throws ErrorServicio {
-//        try {
-//            lineaServicio.agregarLineas(ids, fotos);
-//            ra.addAttribute("exito", "Las fotos se han agregado correctamente");
-//        } catch (ErrorServicio e) {
-//            ra.addAttribute("error", e.getMessage());
-//        }
-//        return "redirect:/adminsesion";
-//    }
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+    @DeleteMapping("/linea/{lineaId}/eliminarTodasFotos")
+    public ResponseEntity<?> eliminarTodasFotos(@PathVariable("lineaId") String lineaId) {
+        try {
+            fotoServicio.eliminarTodas(lineaId);
+            return ResponseEntity.ok().body("Todas las fotos se han eliminado con éxito");
+        } catch (ErrorServicio e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+    }
+
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     @PostMapping("/fotoLinea")
     public String fotoLinea(@RequestParam("id") List<String> ids, MultipartHttpServletRequest request, RedirectAttributes ra) throws ErrorServicio {
 
@@ -430,7 +475,7 @@ public class AdminControlador {
         }
 
         try {
-            lineaServicio.agregarLineas(ids, fotosPorLinea);
+            lineaServicio.agregarFotoLineas(ids, fotosPorLinea);
             ra.addAttribute("exito", "Las fotos se han agregado correctamente");
         } catch (ErrorServicio e) {
             ra.addAttribute("error", e.getMessage());

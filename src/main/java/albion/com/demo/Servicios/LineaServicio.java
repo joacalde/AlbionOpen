@@ -30,8 +30,8 @@ public class LineaServicio {
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = {Exception.class})
     public void crear(
             String modelo, String configuracion, String produccion,
-            String titulo_es, String titulo_en, 
-            String descripcion_es, String descripcion_en, 
+            String titulo_es, String titulo_en,
+            String descripcion_es, String descripcion_en,
             String funcionId) throws ErrorServicio {
         Integer posicion = 1;
         if (lineaRepositorio.ultimaPosicion() != null) {
@@ -156,37 +156,28 @@ public class LineaServicio {
         }
     }
 
-//    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = {Exception.class})
-//    public void agregarLineas(List<String> ids, List<List<MultipartFile>> fotos) throws ErrorServicio {
-//        for (int i = 0; i < ids.size(); i++) {
-//            Optional<Linea> opt = lineaRepositorio.findById(ids.get(i));
-//            if (opt.isPresent()) {
-//                Linea linea = opt.get();
-//                List<Foto> fotosPorLinea = linea.getFotos();
-//                for (MultipartFile multipartFile : fotos.get(i)) {
-//                    fotosPorLinea.add(fotoServicio.guardar(multipartFile));
-//                }
-//                linea.setFotos(fotosPorLinea);
-//                lineaRepositorio.save(linea);
-//            } else {
-//                throw new ErrorServicio("Hubo un error, Inténtelo nuevamente.");
-//            }
-//        }
-//    }
-
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = {Exception.class})
-    public void agregarLineas(List<String> ids, Map<String, List<MultipartFile>> fotosPorLinea) throws ErrorServicio {
+    public void agregarFotoLineas(List<String> ids, Map<String, List<MultipartFile>> fotosPorLinea) throws ErrorServicio {
         for (String id : ids) {
             Optional<Linea> opt = lineaRepositorio.findById(id);
             if (opt.isPresent()) {
                 Linea linea = opt.get();
                 List<Foto> fotosDeLinea = linea.getFotos();
                 List<MultipartFile> fotos = fotosPorLinea.get(id);
-                for (MultipartFile multipartFile : fotos) {
-                    fotosDeLinea.add(fotoServicio.guardar(multipartFile));
+
+                // Solo procesar las fotos si la lista no está vacía
+                if (fotos != null && !fotos.isEmpty()) {
+                    List<Foto> fotosAgregar = fotoServicio.guardar(fotos);
+
+                    // Verificar que fotosAgregar no sea null o esté vacío antes de intentar agregarlo
+                    if (fotosAgregar != null && !fotosAgregar.isEmpty()) {
+                        for (Foto foto : fotosAgregar) {
+                            fotosDeLinea.add(foto);
+                        }
+                        linea.setFotos(fotosDeLinea);
+                        lineaRepositorio.save(linea);
+                    }
                 }
-                linea.setFotos(fotosDeLinea);
-                lineaRepositorio.save(linea);
             } else {
                 throw new ErrorServicio("Hubo un error, Inténtelo nuevamente.");
             }

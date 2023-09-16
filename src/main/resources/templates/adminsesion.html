@@ -58,6 +58,7 @@
                 </button>
                 <ul class="dropdown-menu">
                     <li><a class="dropdown-item" data-bs-toggle="modal" href="#fotosLinea">Fotos Lineas</a></li>
+                    <li><a class="dropdown-item" data-bs-toggle="modal" href="#editarFotosLinea">Editar Fotos Lineas</a></li>
                     <li><a class="dropdown-item" data-bs-toggle="modal" href="#fotosEquipo">Fotos Equipos</a></li>
                 </ul>
             </div>
@@ -220,14 +221,14 @@
                                 <label for="exampleInputEmail1" class="form-label">Título Inglés</label>
                                 <input type="text" name="titulo_en" class="form-control" id="exampleInputEmail1">
                             </div>
-<!--                            <div class="col-md-3">
-                                <label for="exampleInputEmail1" class="form-label">Título Francés</label>
-                                <input type="text" name="titulo_fr" class="form-control" id="exampleInputEmail1">
-                            </div>
-                            <div class="col-md-3">
-                                <label for="exampleInputEmail1" class="form-label">Título Brasil</label>
-                                <input type="text" name="titulo_br" class="form-control" id="exampleInputEmail1">
-                            </div>-->
+                            <!--                            <div class="col-md-3">
+                                                            <label for="exampleInputEmail1" class="form-label">Título Francés</label>
+                                                            <input type="text" name="titulo_fr" class="form-control" id="exampleInputEmail1">
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            <label for="exampleInputEmail1" class="form-label">Título Brasil</label>
+                                                            <input type="text" name="titulo_br" class="form-control" id="exampleInputEmail1">
+                                                        </div>-->
                             <div class="col-md-3">
                                 <label for="exampleFormControlTextarea1" class="form-label">Descripción Español</label>
                                 <textarea name="descripcion_es" class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
@@ -236,14 +237,14 @@
                                 <label for="exampleFormControlTextarea1" class="form-label">Descripción Inglés</label>
                                 <textarea name="descripcion_en" class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
                             </div>
-<!--                            <div class="col-md-3">
-                                <label for="exampleFormControlTextarea1" class="form-label">Descripción Francés</label>
-                                <textarea name="descripcion_fr" class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
-                            </div>
-                            <div class="col-md-3">
-                                <label for="exampleFormControlTextarea1" class="form-label">Descripción Brasil</label>
-                                <textarea name="descripcion_br" class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
-                            </div>-->
+                            <!--                            <div class="col-md-3">
+                                                            <label for="exampleFormControlTextarea1" class="form-label">Descripción Francés</label>
+                                                            <textarea name="descripcion_fr" class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            <label for="exampleFormControlTextarea1" class="form-label">Descripción Brasil</label>
+                                                            <textarea name="descripcion_br" class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                                                        </div>-->
                             <!--                            <div class="col-md-3">
                                                             <label class="form-label" for="inputGroupFile01">Foto 1</label>
                                                             <input name="archivo1" type="file" class="form-control" id="inputGroupFile01">
@@ -813,8 +814,8 @@
                 </div>
             </div>
         </div>
-        
-          <!-- Fotos Linea -->
+
+        <!-- Fotos Linea -->
         <div class="modal fade" id="fotosLinea" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-xl">
                 <div class="modal-content">
@@ -928,6 +929,164 @@
                 </div>
             </div>
         </div>
+
+        <!-- Editar Fotos Linea -->
+        <div class="modal fade" id="editarFotosLinea" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-fullscreen">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">Editar Fotos Linea</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <label for="producto">Seleccionar Producto:</label>
+                        <select name="producto" id="select-producto-editarFotos" onchange="cargarFuncionesEditarFotos()">
+                            <option value="">Seleccionar</option>
+                            <!-- Iterar sobre los productos y generar las opciones del select -->
+                            <option th:each="producto : ${producto}" th:value="${producto.id}" th:text="${producto.producto_es}"></option>
+                        </select>
+
+                        <label for="funcion">Seleccionar Función:</label>
+                        <select name="funcion" id="select-funcion-editarFotos" onchange="cargarLineasEditarFotos()">
+                            <option value="">Seleccionar</option>
+                        </select>
+
+                        <!-- Tabla de líneas -->
+                        <table id="tablaLineasFotos">
+                            <thead>
+                                <tr>
+                                    <th>Modelo</th>
+                                    <th>Configuracion</th>
+                                    <th>Fotos</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody id="editarFotosLineasBody">
+                            </tbody>
+                        </table>
+
+                        <script th:inline="javascript">
+                            function cargarFuncionesEditarFotos() {
+                            var productoId = $('#select-producto-editarFotos').val();
+
+                            if (productoId) {
+                            var url = /*[[@{/productos/{id}/buscarFunciones}]]*/ '';
+                            url = url.replace('{id}', productoId);
+
+                            $.ajax({
+                            url: url,
+                            type: 'GET',
+                            success: function(data) {
+                            // Limpiar el select de funciones
+                            $('#select-funcion-editarFotos').empty();
+                            $('#select-funcion-editarFotos').append('<option value="">Seleccionar</option>');
+
+                            // Iterar sobre las funciones y generar las opciones del select
+                            $.each(data, function(index, funcion) {
+                            $('#select-funcion-editarFotos').append('<option value="' + funcion.id + '">' + funcion.funcion_es + '</option>');
+                            });
+                            },
+                            error: function() {
+                            console.log('Error al obtener las funciones del producto');
+                            }
+                            });
+                            } else {
+                            $('#select-funcion-editarFotos').empty();
+                            $('#editarFotosLineasBody').empty();
+                            }
+                            }
+
+                            function cargarLineasEditarFotos() {
+                            var funcionId = $('#select-funcion-editarFotos').val();
+
+                            if (funcionId) {
+                            var url = /*[[@{/funciones/{id}/buscarLineas}]]*/ '';
+                            url = url.replace('{id}', funcionId);
+
+                            $.ajax({
+                            url: url,
+                            type: 'GET',
+                            success: function(data) {
+                            var editarFotosLineasBody = $('#editarFotosLineasBody');
+                            editarFotosLineasBody.empty();
+
+                            $.each(data, function(index, linea) {
+                            var fila = $('<tr>');
+                            fila.append('<td>' + linea.modelo + '</td>');
+                            fila.append('<td>' + linea.configuracion + '</td>');
+
+                            // Contenedor de fotos con flexbox
+                            var fotosContainer = $('<div class="fotos-container"></div>');
+
+                            $.each(linea.fotos, function(index, foto) {
+                            var fotoWrapper = $('<div class="foto-wrapper"></div>');
+                            fotoWrapper.append('<img class="foto-linea" src="/foto/' + foto.id + '">');
+                            fotoWrapper.append('<button onclick="eliminarFoto(\'' + foto.id + '\')">Eliminar</button>');
+                            fotosContainer.append(fotoWrapper);
+                            });
+
+                            var fotosColumn = $('<td>');
+                            fotosColumn.append(fotosContainer);
+                            fila.append(fotosColumn);
+
+                            // Botón "eliminarTodas" en la columna de acciones
+                            fila.append('<td><button onclick="eliminarTodasFotos(\'' + linea.id + '\')">Eliminar Todas</button></td>');
+
+                            editarFotosLineasBody.append(fila);
+                            });
+                            },
+                            error: function() {
+                            console.log('Error al obtener las líneas de la función');
+                            }
+                            });
+                            } else {
+                            $('#editarFotosLineasBody').empty();
+                            }
+                            }
+
+                            function eliminarFoto(id) {
+                            $.ajax({
+                            url: '/foto/eliminar/' + id,
+                            type: 'DELETE',
+                            success: function(response) {
+                            alert(response);
+                            location.reload();
+                            },
+                            error: function(xhr, status, error) {
+                            alert('Error al eliminar la foto: ' + xhr.responseText);
+                            }
+                            });
+                            }
+
+
+
+                            function eliminarTodasFotos(lineaId) {
+                            $.ajax({
+                            url: '/linea/' + lineaId + '/eliminarTodasFotos',
+                            type: 'DELETE',
+                            success: function (response) {
+                            alert(response);
+                            location.reload();
+                            },
+                            error: function (xhr, status, error) {
+                            alert('Error al eliminar las fotos: ' + error);
+                            }
+                            });
+                            }
+
+
+
+
+                        </script>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
 

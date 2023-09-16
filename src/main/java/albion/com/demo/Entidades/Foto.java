@@ -17,7 +17,9 @@ public class Foto {
     private String id;
     
     private String nombre;
-    private String mime;      
+    private String mime;
+    
+    private int posicion;
     
     //Lazy= nos permite no cargar inmediatamente, solo cuando lo pida, los query es mas liviano, es decir solo los atributos, y solo foto carga cuando haga el get de este
     @Lob @Basic(fetch = FetchType.LAZY)
@@ -26,11 +28,14 @@ public class Foto {
     public Foto() {
     }
 
-    public Foto(String nombre, String mime, byte[] contenido) {
+    public Foto(String nombre, String mime, int posicion, byte[] contenido) {
         this.nombre = nombre;
         this.mime = mime;
+        this.posicion = posicion;
         this.contenido = contenido;
     }
+    
+    
 
     public String getId() {
         return id;
@@ -64,6 +69,14 @@ public class Foto {
         this.contenido = contenido;
     }
 
+    public int getPosicion() {
+        return posicion;
+    }
+
+    public void setPosicion(int posicion) {
+        this.posicion = posicion;
+    }  
+    
     @Override
     public String toString() {
         return "Foto{" + "id=" + id + ", nombre=" + nombre + ", mime=" + mime + ", contenido=" + contenido + '}';
