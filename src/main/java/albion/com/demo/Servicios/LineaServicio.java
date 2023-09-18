@@ -169,7 +169,7 @@ public class LineaServicio {
                 if (fotos != null && !fotos.isEmpty()) {
                     List<Foto> fotosAgregar = fotoServicio.guardar(fotos);
 
-                    // Verificar que fotosAgregar no sea null o esté vacío antes de intentar agregarlo
+// Verificar que fotosAgregar no sea null o esté vacío antes de intentar agregarlo
                     if (fotosAgregar != null && !fotosAgregar.isEmpty()) {
                         for (Foto foto : fotosAgregar) {
                             fotosDeLinea.add(foto);
@@ -177,6 +177,7 @@ public class LineaServicio {
                         linea.setFotos(fotosDeLinea);
                         lineaRepositorio.save(linea);
                     }
+
                 }
             } else {
                 throw new ErrorServicio("Hubo un error, Inténtelo nuevamente.");

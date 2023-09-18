@@ -50,13 +50,15 @@ public class FotoServicio {
             for (MultipartFile archivo : archivos) {
                 i++;
                 try {
-                    Foto foto = new Foto();
-                    foto.setMime(archivo.getContentType());
-                    foto.setNombre(archivo.getName());
-                    foto.setContenido(archivo.getBytes());
-                    foto.setPosicion(i);
-                    fotoRepositorio.save(foto);
-                    fotos.add(foto);
+                    if (!archivo.isEmpty()) {  // Asegurarse de que el archivo no esté vacío
+                        Foto foto = new Foto();
+                        foto.setMime(archivo.getContentType());
+                        foto.setNombre(archivo.getName());
+                        foto.setContenido(archivo.getBytes());
+                        foto.setPosicion(i);
+                        fotoRepositorio.save(foto);
+                        fotos.add(foto);
+                    }
                 } catch (Exception e) {
                     System.err.println(e.getMessage());
                 }
