@@ -24,9 +24,8 @@ public class EquipoServicio {
     public void crear(
             String modelo, String denominacion, String produccion,
             String titulo_es, String titulo_en, String titulo_fr, String titulo_br,
-            String descripcion_es, String descripcion_en, String descripcion_fr, String descripcion_br,
-            MultipartFile archivo1, MultipartFile archivo2, MultipartFile archivo3, MultipartFile archivo4, MultipartFile archivo5, MultipartFile archivo6, MultipartFile archivo7, MultipartFile archivo8
-    ) throws ErrorServicio {
+            String descripcion_es, String descripcion_en, String descripcion_fr, String descripcion_br
+            ) throws ErrorServicio {
         Integer posicion = 1;
         if (equipoRepositorio.ultimaPosicion() != null) {
             posicion = equipoRepositorio.ultimaPosicion() + 1;
@@ -43,14 +42,6 @@ public class EquipoServicio {
         equipo.setDescripcion_en(descripcion_en);
         equipo.setDescripcion_fr(descripcion_fr);
         equipo.setDescripcion_br(descripcion_br);
-        equipo.setFoto1(fotoServicio.guardar(archivo1));
-        equipo.setFoto2(fotoServicio.guardar(archivo2));
-        equipo.setFoto3(fotoServicio.guardar(archivo3));
-        equipo.setFoto4(fotoServicio.guardar(archivo4));
-        equipo.setFoto5(fotoServicio.guardar(archivo5));
-        equipo.setFoto6(fotoServicio.guardar(archivo6));
-        equipo.setFoto7(fotoServicio.guardar(archivo7));
-        equipo.setFoto8(fotoServicio.guardar(archivo8));
         equipo.setPosicion(posicion);
         equipoRepositorio.save(equipo);
     }
@@ -142,29 +133,7 @@ public class EquipoServicio {
             }
         }
     }
-
-    @Transactional(readOnly = true)
-    public Equipo lineaPorFotoId(String fotoId) throws ErrorServicio {
-        if (equipoRepositorio.equipoPorFoto1Id(fotoId) != null) {
-            return equipoRepositorio.equipoPorFoto1Id(fotoId);
-        } else if (equipoRepositorio.equipoPorFoto2Id(fotoId) != null) {
-            return equipoRepositorio.equipoPorFoto2Id(fotoId);
-        } else if (equipoRepositorio.equipoPorFoto3Id(fotoId) != null) {
-            return equipoRepositorio.equipoPorFoto3Id(fotoId);
-        } else if (equipoRepositorio.equipoPorFoto4Id(fotoId) != null) {
-            return equipoRepositorio.equipoPorFoto4Id(fotoId);
-        } else if (equipoRepositorio.equipoPorFoto5Id(fotoId) != null) {
-            return equipoRepositorio.equipoPorFoto5Id(fotoId);
-        } else if (equipoRepositorio.equipoPorFoto6Id(fotoId) != null) {
-            return equipoRepositorio.equipoPorFoto6Id(fotoId);
-        } else if (equipoRepositorio.equipoPorFoto7Id(fotoId) != null) {
-            return equipoRepositorio.equipoPorFoto7Id(fotoId);
-        } else if (equipoRepositorio.equipoPorFoto8Id(fotoId) != null) {
-            return equipoRepositorio.equipoPorFoto8Id(fotoId);
-        }
-
-        // Si ninguna foto coincide con el ID, retorna null o lanza una excepción según sea necesario.
-        return null;
-    }
-
+    
+    
+    
 }
