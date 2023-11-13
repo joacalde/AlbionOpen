@@ -44,7 +44,7 @@
                     <div class="navbar-links">
 
                         <li>
-                            <a th:href="@{/contacto/{idioma}(idioma=${idioma})}">
+                            <a th:href="@{/contacto}">
                                 <button class="contactar">
                                     <h3 th:text="${nav5}"></h3>
                                 </button>
@@ -67,8 +67,7 @@
                                     <a class="dropdown-toggle" href="#lineas" th:text="${nav3}"></a>
                                     <ul class="navbar-dropdown">
                                         <li th:if="${productos != null}" th:each="producto: ${productos}">
-                                            <a  th:if="${idioma == 1}" th:href="@{/linea/{idioma}/{producto}(idioma=${idioma},producto=${producto.posicion})}" th:text="${producto.producto_es}"></a>
-                                            <a  th:if="${idioma == 2}" th:href="@{/linea/{idioma}/{producto}(idioma=${idioma},producto=${producto.posicion})}" th:text="${producto.producto_en}"></a>
+                                            <a  th:href="@{/linea/{producto}(producto=${producto.posicion})}" th:text="${producto.producto_es}"></a>
                                         </li>
                                         <li th:unless="${productos != null}"><p>No hay productos subidos aún, consulte por mail.</p></li>
 <!--                                        <hr/>
@@ -79,8 +78,7 @@
                                     <a class="dropdown-toggle" href="#" th:text="${nav4}"></a>
                                     <ul class="navbar-dropdown">
                                         <li th:if="${equipos != null}" th:each="equipo: ${equipos}">
-                                            <a  th:if="${idioma == 1}" th:href="@{/equipo/{idioma}/{equipo}(idioma=${idioma},equipo=${equipo.posicion})}" th:text="${equipo.titulo_es}"></a>
-                                            <a  th:if="${idioma == 2}" th:href="@{/equipo/{idioma}/{equipo}(idioma=${idioma},equipo=${equipo.posicion})}" th:text="${equipo.titulo_en}"></a>
+                                            <a  th:href="@{/equipo/{equipo}(equipo=${equipo.posicion})}" th:text="${equipo.titulo_es}"></a>
                                         </li>
                                         <li th:unless="${equipos != null}"><p>No hay equipos subidos aún, consulte por mail.</p></li>
                                     </ul>
@@ -101,11 +99,14 @@
                                         </a>
                                         <a th:if="${idioma != 3}" th:href="@{/index/3}">
                                             <img src="/img/fr2.webp" alt="France">
-                                        </a>-->
-                    <a th:if="${idioma != 2}" th:href="@{/index/2}">
+                                        </a>
+                    <a href="?lang=en">English</a>
+<a href="?lang=es">Español</a>
+                    -->
+                    <a href="?lang=en">
                         <img th:src="@{/img/ing2.webp}" alt="English">
                     </a>
-                    <a th:if="${idioma != 1}" th:href="@{/index/1}">
+                    <a href="?lang=es">
                         <img th:src="@{/img/es.webp}" alt="Argentina">
                     </a>
                 </div>
@@ -115,15 +116,15 @@
 
         <div class="leftnav">
             <ul>
-                <li><a th:href="@{/index/{idioma}(idioma=${idioma})}" th:text="${nav1}"></a></li>
-                <li><a th:href="@{/nosotros/{idioma}(idioma=${idioma})}" th:text="${nav2_1}"></a></li>
-                <li><a th:href="@{/lineas/{idioma}(idioma=${idioma})}" th:text="${nav3}"></a>
-                <li><a th:href="@{/representaciones/{idioma}(idioma=${idioma})}" th:text="${nav2_2}"></a></li>
-                <li><a th:href="@{/servicios/{idioma}(idioma=${idioma})}" th:text="${nav2_3}"></a></li>
-                <li><a th:href="@{/equipos/{idioma}(idioma=${idioma})}" th:text="${nav4}"></a></li>
+                <li><a th:href="@{/index}" th:text="${nav1}"></a></li>
+                <li><a th:href="@{/nosotros}" th:text="${nav2_1}"></a></li>
+                <li><a th:href="@{/lineas}" th:text="${nav3}"></a>
+                <li><a th:href="@{/representaciones}" th:text="${nav2_2}"></a></li>
+                <li><a th:href="@{/servicios}" th:text="${nav2_3}"></a></li>
+                <li><a th:href="@{/equipos}" th:text="${nav4}"></a></li>
                 <li>
                 <li id="leftnavcontactar">
-                    <a th:href="@{/contacto/{idioma}(idioma=${idioma})}"><button class="contactarnav" id="contactarleftnav">
+                    <a th:href="@{/contacto}"><button class="contactarnav" id="contactarleftnav">
                             <h3 th:text="${nav5}"></h3>
                         </button></a>
                 </li>
@@ -133,8 +134,7 @@
         <div class="leftnav2">
             <ul>
                 <li th:each="producto: ${productos}">
-                    <a  th:if="${idioma == 1}" th:href="@{/linea/{idioma}/{producto}(idioma=${idioma},producto=${producto.posicion})}" th:text="${producto.producto_es}"></a>
-                    <a  th:if="${idioma == 2}" th:href="@{/linea/{idioma}/{producto}(idioma=${idioma},producto=${producto.posicion})}" th:text="${producto.producto_en}"></a>
+                    <a th:href="@{/linea/{producto}(producto=${producto.posicion})}" th:text="${producto.producto_es}"></a>
                 </li>
                 <hr />
                 <li><a href="otros.html" th:text="${producto_otro}"></a></li>
@@ -214,7 +214,7 @@
                     <h2 th:text="${tit_1}"></h2>
 
                     <!--                    Español-->
-                    <div th:if="${idioma}==1">
+                    <div th:if="${currentLocale.language} == 'es'">
                         <article>
                             ALBION es una empresa ubicada en Mendoza, Argentina, nacida en 1955. A lo largo de su historia ha ido
                             creciendo y evolucionando desde sus comienzos como empresa unipersonal hasta el presente donde una tercera
@@ -229,7 +229,7 @@
                     </div>
 
                     <!--                    Ingles-->
-                    <div th:if="${idioma}==2">
+                    <div th:if="${currentLocale.language} == 'en'">
                         <article>
                             ALBION is a company located in Mendoza, Argentina, born in 1955. 
                             Throughout its history, it has grown and evolved from its beginnings as a sole proprietorship to the present, 
@@ -283,14 +283,11 @@
                 <h2 th:text="${tit_2}"></h2>
                 <div class="linescontainer">
                     <div  th:each="producto: ${productos}" >
-                        <a th:href="@{/linea/{idioma}/{producto}(idioma=${idioma},producto=${producto.posicion})}">
+                        <a th:href="@{/linea/{producto}(producto=${producto.posicion})}">
                             <div class="cards">
                                 <div th:if="${producto.foto} != null"><img th:src="@{/foto/__${producto.foto.id}__}"></div>
                                 <div class="cardcontent">
-                                    <h6  th:if="${idioma == 1}" th:text="${producto.producto_es}"></h6>
-                                    <h6  th:if="${idioma == 2}" th:text="${producto.producto_en}"></h6>
-                                    <!--                                    <h6  th:if="${idioma == 3}" th:text="${producto.producto_fr}"></h6>
-                                                                        <h6  th:if="${idioma == 4}" th:text="${producto.producto_br}"></h6>-->
+                                    <h6 th:text="${producto.producto_es}"></h6>
                                     <p></p>
                                 </div>
                             </div>
