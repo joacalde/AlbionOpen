@@ -13,7 +13,6 @@
         <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
 
         <link rel="stylesheet" th:href="@{/css/styles.css}"/>
-        <link rel="stylesheet" th:href="@{/css/stylescontacto.css}"/>
         <link rel="stylesheet" th:href="@{/css/styleslineas.css}"/>
 
         <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
@@ -21,7 +20,7 @@
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
 
 
-        <title th:text="${title}"></title>
+        <title th:text="#{title_linea}"></title>
     </head>
 
     <body>
@@ -35,8 +34,7 @@
 
         <div class="fijo">
             <nav>
-
-                <div class="body2">
+                <div class="pagepadding">
                     <a class="checkbtn">
                         <img th:src="@{/img/navbtn.webp}" alt="">
                     </a>
@@ -49,47 +47,42 @@
 
                     <div class="navbar-links">
 
-                        <li>
-                            <a th:href="@{/contacto/{idioma}(idioma=${idioma})}">
-                                <button class="contactar">
-                                    <h3 th:text="${nav5}"></h3>
-                                </button>
-                            </a>
-                        </li>
-
                         <div class="navbar-text">
 
                             <ul class="nav">
-                                <li><a th:href="@{/index/{idioma}(idioma=${idioma})}" th:text="${nav1}"></a></li>
+                                <li><a class="nav-link-break" href="/" th:text="#{nav1}"></a></li>
                                 <li>
-                                    <a class="dropdown-toggle" th:href="@{/nosotros/{idioma}(idioma=${idioma})}"  th:text="${nav2}"></a>
+                                    <a class="dropdown-toggle nav-link-break" href="#nosotros" th:text="#{nav2}"></a>
                                     <ul class="navbar-dropdown">
-                                        <li><a th:href="@{/nosotros/{idioma}(idioma=${idioma})}"  th:text="${nav2_1}"></a></li>
-                                        <li><a th:href="@{/representaciones/{idioma}(idioma=${idioma})}"  th:text="${nav2_2}"></a></li>
-                                        <li><a th:href="@{/servicios/{idioma}(idioma=${idioma})}"  th:text="${nav2_3}"></a></li>
+                                        <li><a href="/nosotros" th:text="#{nav2_1}"></a></li>
+                                        <li><a href="/servicios" th:text="#{nav2_2}"></a></li>
+                                        <li><a href="/representaciones" th:text="#{nav2_3}"></a></li>
                                     </ul>
                                 </li>
                                 <li>
-                                    <a class="dropdown-toggle" href="#lineas" th:text="${nav3}"></a>
+                                    <a class="dropdown-toggle nav-link-break" href="/lineas" th:text="#{nav3}"></a>
                                     <ul class="navbar-dropdown">
                                         <li th:if="${productos != null}" th:each="producto: ${productos}">
-                                            <a  th:if="${idioma == 1}" th:href="@{/linea/{idioma}/{producto}(idioma=${idioma},producto=${producto.posicion})}" th:text="${producto.producto_es}"></a>
-                                            <a  th:if="${idioma == 2}" th:href="@{/linea/{idioma}/{producto}(idioma=${idioma},producto=${producto.posicion})}" th:text="${producto.producto_en}"></a>
+                                            <a  th:href="@{/linea/{producto}(producto=${producto.posicion})}" th:text="${#locale.language == 'en' ? producto.producto_en : producto.producto_es}"></a>
                                         </li>
                                         <li th:unless="${productos != null}"><p>No hay productos subidos aún, consulte por mail.</p></li>
-<!--                                        <hr/>
-                                        <li><a href="" th:text="${producto_otro}"></a></li>-->
                                     </ul>
                                 </li>
                                 <li>
-                                    <a class="dropdown-toggle" href="#" th:text="${nav4}"></a>
+                                    <a class="dropdown-toggle nav-link-break" href="#" th:text="#{nav4}"></a>
                                     <ul class="navbar-dropdown">
                                         <li th:if="${equipos != null}" th:each="equipo: ${equipos}">
-                                            <a  th:if="${idioma == 1}" th:href="@{/equipo/{idioma}/{equipo}(idioma=${idioma},equipo=${equipo.posicion})}" th:text="${equipo.titulo_es}"></a>
-                                            <a  th:if="${idioma == 2}" th:href="@{/equipo/{idioma}/{equipo}(idioma=${idioma},equipo=${equipo.posicion})}" th:text="${equipo.titulo_en}"></a>
+                                            <a  th:href="@{/equipo/{equipo}(equipo=${equipo.posicion})}" th:text="${#locale.language == 'en' ? equipo.titulo_en : equipo.titulo_es}"></a>
                                         </li>
                                         <li th:unless="${equipos != null}"><p>No hay equipos subidos aún, consulte por mail.</p></li>
                                     </ul>
+                                </li>
+                                <li>
+                                    <a th:href="@{/contacto}">
+                                        <button class="contactar">
+                                            <h3 th:text="#{nav5}"></h3>
+                                        </button>
+                                    </a>
                                 </li>
                             </ul>
 
@@ -97,70 +90,132 @@
 
                     </div>
                 </div>
-
             </nav>
 
             <div class="idiomas">
-                <div class="idiomasright">
-                    <!--                    <a th:if="${idioma != 4}" th:href="@{/index/4}">
-                                            <img src="/img/pt.jpg" alt="Brasil">
-                                        </a>
-                                        <a th:if="${idioma != 3}" th:href="@{/index/3}">
-                                            <img src="/img/fr2.webp" alt="France">
-                                        </a>-->
-                    <a th:if="${idioma != 2}"  th:href="@{/linea/2/{producto}(producto=${producto.posicion})}">
-                        <img th:src="@{/img/ing2.webp}" alt="English">
-                    </a>
-                    <a th:if="${idioma != 1}" th:href="@{/index/1}">
-                        <img th:src="@{/img/es.webp}" alt="Argentina">
-                    </a>
-                </div>
+                <select onchange="window.location.href = this.value;">
+                    <option value="?lang=bg" th:selected="${currentLocale.language} == 'bg'">Bulgarian</option>
+                    <option value="?lang=en" th:selected="${currentLocale.language} == 'en'">English</option>
+                    <option value="?lang=es" th:selected="${currentLocale.language} == 'es'">Spanish</option>
+                    <option value="?lang=fr" th:selected="${currentLocale.language} == 'fr'">French</option>
+                    <option value="?lang=pt" th:selected="${currentLocale.language} == 'pt'">Portuguese</option>
+                    <option value="?lang=ru" th:selected="${currentLocale.language} == 'ru'">Russian</option>
+                </select>
             </div>
 
         </div>
 
         <div class="leftnav">
+            <div class="navbar">
+                <button type="button" class="btn-close leftnav-close" aria-label="Close"></button>
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item"><a class="nav-link" href="/" th:text="#{nav1}"></a></li>
+                    <li class="nav-item"><a class="nav-link" href="/nosotros" th:text="#{nav2_1}"></a></li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" th:text="#{nav3}"></a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <li th:if="${productos != null}" th:each="producto: ${productos}">
+                                <a class="dropdown-item" th:href="@{/linea/{producto}(producto=${producto.posicion})}" th:text="${#locale.language == 'en' ? producto.producto_en : producto.producto_es}"></a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item"><a class="nav-link" href="/servicios" th:text="#{nav2_2}"></a></li>
+                    <li class="nav-item"><a class="nav-link" href="/representaciones" th:text="#{nav2_3}"></a></li>
+                    <li class="nav-item"><a class="nav-link" href="#" th:text="#{nav4}"></a></li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/contacto}" th:text="#{nav5}"></a></li>
+                </ul>
+            </div>
+        </div>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+            const leftNav = document.getElementsByClassName('leftnav')[0];
+            const toggleButton = document.getElementsByClassName('checkbtn')[0];
+            const closeButton = document.getElementsByClassName('leftnav-close')[0];
+            const navLinks = leftNav.getElementsByTagName('a');
+
+            // Evento para mostrar/ocultar el leftnav
+            toggleButton.addEventListener('click', function() {
+            leftNav.classList.toggle('active');
+            });
+
+            closeButton.addEventListener('click', function() {
+            leftNav.classList.remove('active');
+            });
+
+            for (let link of navLinks) {
+            if (link.id !== 'navbarDropdown') { // Verifica que no sea el enlace "lineas"
+            link.addEventListener('click', function() {
+            leftNav.classList.remove('active');
+            });
+            }
+            }
+
+            // Detiene la propagación para el enlace "lineas"
+            const lineasLink = document.getElementById('navbarDropdown');
+            lineasLink.addEventListener('click', function(event) {
+            event.stopPropagation(); // Detiene la propagación del evento
+            });
+            });
+        </script>
+
+        <div class="leftnav" id="leftnav-productos">
+            <button type="button" class="btn-close leftnav-close" aria-label="Close"></button>
             <ul>
-                <li><a th:href="@{/index/{idioma}(idioma=${idioma})}" th:text="${nav1}"></a></li>
-                <li><a th:href="@{/nosotros/{idioma}(idioma=${idioma})}" th:text="${nav2_1}"></a></li>
-                <li><a th:href="@{/lineas/{idioma}(idioma=${idioma})}" th:text="${nav3}"></a>
-                <li><a th:href="@{/representaciones/{idioma}(idioma=${idioma})}" th:text="${nav2_2}"></a></li>
-                <li><a th:href="@{/servicios/{idioma}(idioma=${idioma})}" th:text="${nav2_3}"></a></li>
-                <li><a th:href="@{/equipos/{idioma}(idioma=${idioma})}" th:text="${nav4}"></a></li>
-                <li>
-                <li id="leftnavcontactar">
-                    <a th:href="@{/contacto/{idioma}(idioma=${idioma})}"><button class="contactarnav" id="contactarleftnav">
-                            <h3 th:text="${nav5}"></h3>
-                        </button></a>
+                <!-- Lista de Productos Aquí -->
+                <li th:if="${productos != null}" th:each="producto: ${productos}">
+                    <a th:href="@{/linea/{producto}(producto=${producto.posicion})}" th:text="${#locale.language == 'en' ? producto.producto_en : producto.producto_es}"></a>
                 </li>
+                <li th:unless="${productos != null}"><p>No hay productos subidos aún, consulte por mail.</p></li>
             </ul>
         </div>
 
-        <div class="leftnav2">
-            <ul>
-                <li th:each="producto: ${productos}">
-                    <a  th:if="${idioma == 1}" th:href="@{/linea/{idioma}/{producto}(idioma=${idioma},producto=${producto.posicion})}" th:text="${producto.producto_es}"></a>
-                    <a  th:if="${idioma == 2}" th:href="@{/linea/{idioma}/{producto}(idioma=${idioma},producto=${producto.posicion})}" th:text="${producto.producto_en}"></a>
-                    <!--                    <a  th:if="${idioma == 3}" th:href="@{/linea/{idioma}/{producto}(idioma=${idioma},producto=${producto.posicion})}" th:text="${producto.producto_fr}"></a>
-                                        <a  th:if="${idioma == 4}" th:href="@{/linea/{idioma}/{producto}(idioma=${idioma},producto=${producto.posicion})}" th:text="${producto.producto_br}"></a>-->
-                </li>
-                <hr />
-                <li><a href="otros.html" th:text="${producto_otro}"></a></li>
-                <hr />
-            </ul>
-            <ul>
-                <li><a href="" class="cancelleftnav2" th:text="${volver}"></a></li>
-            </ul>
+        <div class="imglinea"   th:style="'background-image: url(' + @{/img/subscribe-bg4.jpg} + ');'">
+            <div class="pagepadding">
+                <h2 class="titulolinea" th:text="${productotitulo}" </h2>
+            </div>
         </div>
 
         <div class="body2">
-            <div class="imglinea"   th:style="'background-image: url(' + @{/img/subscribe-bg4.jpg} + ');'"><h2 class="titulolinea" th:text="${productotitulo}" </h2></div>
 
-            <div class="cardscontainer" id="lineas">
-                <div class="botonestiposlineas" th:each="funcion: ${producto.funciones}" th:if="${funcion.lineas.size() > 0}">
-                    <a th:text="${funcion.funcion_es}" th:href="'#'+${funcion.id}"></a>
+<!--            <div id="select-container">
+                <div class="cardscontainer" id="lineas">
+                    <div class="botonestiposlineas" th:each="funcion: ${producto.funciones}" th:if="${funcion.lineas.size() > 0}">
+                        <a th:text="${funcion.funcion_es}" th:href="'#'+${funcion.id}"></a>
+                    </div>
                 </div>
             </div>
+
+
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                // Selecciona todos los enlaces dentro de '.botonestiposlineas'
+                var botones = document.querySelectorAll('.botonestiposlineas a');
+
+                // Crea un elemento select
+                var select = document.createElement('select');
+
+                // Agrega una opción por cada botón
+                botones.forEach(function(boton, index) {
+                var option = document.createElement('option');
+                option.value = index;
+                option.textContent = boton.textContent;
+                select.appendChild(option);
+                });
+
+                // Agrega el select al contenedor
+                document.getElementById('select-container').appendChild(select);
+                });
+
+                select.addEventListener('change', function() {
+                // Acción a realizar cuando se selecciona una opción
+                // Por ejemplo, puedes redirigir a la URL del botón seleccionado
+                var selectedButton = botones[this.value];
+                window.location.href = selectedButton.href;
+                });
+
+
+            </script>-->
 
             <div th:each="funcion: ${producto.funciones}" th:if="${funcion.lineas.size() > 0}">
                 <div th:id="${funcion.id}">
@@ -168,42 +223,30 @@
                     <h2 th:text="${funcion.funcion_es}"></h2>
                     <table>
                         <tr>
-                            <th th:text="${tabla_1}"></th>
-                            <th th:text="${tabla_2}"></th>
-                            <th th:text="${tabla_3}"></th>
-                            <th th:text="${tabla_4}"></th>
+                            <th th:text="#{tabla_1}"></th>
+                            <th th:text="#{tabla_2}" class="produccion"></th>
+                            <th th:text="#{tabla_3}"></th>
+                            <th th:text="#{tabla_4}"></th>
                         </tr>
                         <tr th:each="linea: ${funcion.lineas}">
                             <td class="modelo">
                                 <b><p th:text="${linea.modelo}"></p></b>
                                 <p th:text="${linea.configuracion}"></p>
+                                <p th:text="${linea.produccion}" class="produccion_cel"></p>
 
-                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" th:data-modelo="${linea.modelo}" th:data-configuracion="${linea.configuracion}" th:data-produccion="${linea.produccion}" th:data-titulo-es="${linea.titulo_es}" th:data-titulo-en="${linea.titulo_en}" th:data-descripcion-es="${linea.descripcion_es}" th:data-descripcion-en="${linea.descripcion_en}" th:data-idioma="${idioma}">
-                                    Ver
-                                </button>
+                                <button th:text="#{ver}" type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" th:data-modelo="${linea.modelo}" th:data-configuracion="${linea.configuracion}" th:data-produccion="${linea.produccion}" th:data-titulo-es="${linea.titulo_es}" th:data-titulo-en="${linea.titulo_en}" th:data-descripcion-es="${linea.descripcion_es}" th:data-descripcion-en="${linea.descripcion_en}"></button>
                             </td>
 
                             <td th:text="${linea.produccion}" class="produccion"></td>
                             <td class="fotos">
-                                <!--                                <div class="swiper mySwiper">
-                                                                    <div class="swiper-wrapper">
-                                                                        <div th:each="foto : ${linea.fotos}" th:if="${foto != null}" class="swiper-slide">
-                                                                            <img th:src="@{/foto/__${foto.id}__}">
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="swiper-button-next"></div>
-                                                                    <div class="swiper-button-prev"></div>
-                                                                    <div class="swiper-pagination"></div>
-                                                                </div>
-                                -->
                                 <img th:if="${linea.fotos.size() > 0}" th:src="@{/foto/__${linea.fotos[0].id}__}">
-                                <a th:if="${!linea.fotos.isEmpty()}" th:href="@{/verfoto/{id} (id=${linea.id})}" th:text="${imagen}"></a>
+                                <a th:if="${!linea.fotos.isEmpty()}" th:href="@{/verfoto/{id} (id=${linea.id})}" th:text="#{imagen}"></a>
                                 <p th:if="${linea.fotos.isEmpty()}" th:text="${noimagen}"></p>
                             </td>
                             <td class="cotizar">
-                                <a th:href="@{/contacto/{idioma}/{producto}/{modelo}/{configuracion}(idioma=${idioma}, producto=${producto.posicion}, modelo=${linea.modelo}, configuracion=${linea.configuracion})}">
+                                <a th:href="@{/contacto/{producto}/{modelo}/{configuracion}(producto=${producto.posicion}, modelo=${linea.modelo}, configuracion=${linea.configuracion})}">
                                     <button class="contactar" id="cotizar">
-                                        <h3 th:text="${cotizar}"></h3>
+                                        <h3 th:text="#{cotizar}"></h3>
                                     </button>
                                 </a>
                             </td>
@@ -235,86 +278,32 @@
                 </div>
             </div>
 
-            <!-- Swiper JS -->
-            <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+        </div>
 
-            <!-- Initialize Swiper -->
-            <script>
-                var swiper = new Swiper(".mySwiper", {
-                slidesPerView: 1,
-                spaceBetween: 0,
-                loop: true,
-                pagination: {
-                el: ".swiper-pagination",
-                clickable: true,
-                },
-                navigation: {
-                nextEl: ".swiper-button-next",
-                prevEl: ".swiper-button-prev",
-                },
-                });
-            </script>
 
-            <script>
-                $('#exampleModal').on('show.bs.modal', function (event) {
-                var button = $(event.relatedTarget); // Botón que activa el modal
-                var modelo = button.data('modelo'); // Obtener el valor del atributo 'data-modelo'
-                var configuracion = button.data('configuracion'); // Obtener el valor del atributo 'data-configuracion'
-                var produccion = button.data('produccion'); // Obtener el valor del atributo 'data-produccion'
-                var tituloEs = button.data('titulo-es'); // Obtener el valor del atributo 'data-titulo-es'
-                var tituloEn = button.data('titulo-en'); // Obtener el valor del atributo 'data-titulo-en'
-                var descripcionEs = button.data('descripcion-es'); // Obtener el valor del atributo 'data-descripcion-es'
-                var descripcionEn = button.data('descripcion-en'); // Obtener el valor del atributo 'data-descripcion-en'
-                var idioma = button.data('idioma'); // Obtener el valor del atributo 'data-idioma'
+        <!-- Swiper JS -->
+        <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
 
-                // Generar el contenido del modal
-                var modalContent = '';
+        <!-- Initialize Swiper -->
+        <script>
+            var swiper = new Swiper(".mySwiper", {
+            slidesPerView: 1,
+            spaceBetween: 0,
+            loop: true,
+            pagination: {
+            el: ".swiper-pagination",
+            clickable: true,
+            },
+            navigation: {
+            nextEl: ".swiper-button-next",
+            prevEl: ".swiper-button-prev",
+            },
+            });
+        </script>
 
-                if (modelo) {
-                var labelModelo = idioma === 1 ? 'Modelo: ' : 'Model: ';
-                modalContent += '<p>' + labelModelo + modelo + '</p>';
-                }
 
-                if (configuracion) {
-                var labelConfiguracion = idioma === 1 ? 'Configuración: ' : 'Configuration: ';
-                modalContent += '<p>' + labelConfiguracion + configuracion + '</p>';
-                }
-
-                if (produccion) {
-                var labelProduccion = idioma === 1 ? 'Producción: ' : 'Production: ';
-                modalContent += '<p>' + labelProduccion + produccion + '</p>';
-                }
-
-                if (idioma === 1) {
-                // Idioma: Español
-                if (tituloEs) {
-                var labelTitulo = 'Equipos que la componen: ';
-                modalContent += '<p>' + labelTitulo + tituloEs + '</p>';
-                }
-
-                if (descripcionEs) {
-                var labelDescripcion = 'Descripción: ';
-                modalContent += '<p>' + labelDescripcion + descripcionEs + '</p>';
-                }
-                } else if (idioma === 2) {
-                // Idioma: Inglés
-                if (tituloEn) {
-                var labelTitulo = 'Inlcue this equipment: ';
-                modalContent += '<p>' + labelTitulo + tituloEn + '</p>';
-                }
-
-                if (descripcionEn) {
-                var labelDescripcion = 'Description: ';
-                modalContent += '<p>' + labelDescripcion + descripcionEn + '</p>';
-                }
-                }
-
-                $('#modal-content').html(modalContent); // Insertar el contenido en el modal
-                });
-            </script>
-
-            <footer  th:style="'background-image: url(' + @{/img/tallerinferior.jpg} + ');'">
-
+        <footer  th:style="'background-image: url(' + @{/img/tallerinferior.jpg} + ');'">
+            <div class="pagepadding">
                 <div class="pie">
                     <img class="logofooter" th:src="@{/img/logo.webp}" alt="logo Albion">
                     <p>Food processing machinery</p>
@@ -337,81 +326,10 @@
                 </div>
 
                 <div class="copyri">
-                    <p>Copyright © 2022 ALBION</p>
+                    <p>Copyright © 2024 ALBION</p>
                 </div>
-
-            </footer>
-
-        </div>
-
-        <script>
-            const toggleButton = document.getElementsByClassName('checkbtn')[0]
-            const navbarLinks = document.getElementsByClassName('leftnav')[0]
-
-            toggleButton.addEventListener('click',()=> {
-            navbarLinks.classList.toggle('active')
-            })
-
-            const hnav = document.getElementsByClassName('hnav')[0]
-            hnav.addEventListener('click',()=> {
-            navbarLinks.classList.toggle('active')
-            })
-
-            const representacionesnav = document.getElementsByClassName('representacionesnav')[0]
-            representacionesnav.addEventListener('click',()=> {
-            navbarLinks.classList.toggle('active')
-            })
-
-            const serviciosnav = document.getElementsByClassName('serviciosnav')[0]
-            serviciosnav.addEventListener('click',()=> {
-            navbarLinks.classList.toggle('active')
-            })
-
-            const contactarnav = document.getElementsByClassName('contactarnav')[0]
-            contactarnav.addEventListener('click',()=> {
-            navbarLinks.classList.toggle('active')
-            })
-
-            const hnosotros = document.getElementsByClassName('hnosotros')[0]
-            hnosotros.addEventListener('click',()=> {
-            navbarLinks.classList.toggle('active')
-            })
-
-            const lineasnav = document.getElementsByClassName('lineasnav')[0]
-            const leftnav2 = document.getElementsByClassName('leftnav2')[0]
-            const cancelleftnav2 = document.getElementsByClassName('cancelleftnav2')[0]
-            lineasnav.addEventListener('click',()=> {
-            leftnav2.classList.toggle('active')
-            })
-            cancelleftnav2.addEventListener('click',()=> {
-            leftnav2.classList.toggle('active')
-            })
-
-            const cardsmas = document.getElementsByClassName('cardsmas')[0]
-
-            const mas = document.getElementsByClassName('mas')[0]
-            mas.addEventListener('click',()=> {
-            cardsmas.classList.toggle('active')
-            mas.classList.toggle('active')
-            menos.classList.toggle('active')
-            })
-
-            const menos = document.getElementsByClassName('menos')[0]
-            menos.addEventListener('click',()=> {
-            cardsmas.classList.toggle('active')
-            mas.classList.toggle('active')
-            menos.classList.toggle('active')
-            })
-
-            const testimonio1 = document.getElementsByClassName('testimonio1')[0]
-            testimonio1.classList.toggle('active')
-            const testimonio2 = document.getElementsByClassName('testimonio2')[0]
-            const testimonio3 = document.getElementsByClassName('testimonio3')[0]
-            const testimonio4 = document.getElementsByClassName('testimonio4')[0]
-            const testimoniosizq = document.getElementsByClassName('testimoniosizq')[0]
-            const testimoniosder = document.getElementsByClassName('testimoniosder')[0]
-
-        </script>
+            </div>
+        </footer>
 
         <!-- Option 1: Bootstrap Bundle with Popper -->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>

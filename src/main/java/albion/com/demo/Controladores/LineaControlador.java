@@ -11,7 +11,9 @@ import albion.com.demo.Servicios.LineaServicio;
 import albion.com.demo.Servicios.ProductoServicio;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Locale;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -71,6 +73,9 @@ public class LineaControlador {
             equipos.sort(Comparator.comparingInt(Equipo::getPosicion));
         }
         model.put("equipos", equipos);
+        
+        Locale currentLocale = LocaleContextHolder.getLocale();
+        model.addAttribute("currentLocale", currentLocale);
 
         return "linea";
     }

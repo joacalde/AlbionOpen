@@ -8,60 +8,25 @@
     --letranav: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
 
-html,body {
-    position: relative;
-    height: 100%;
-}
-
-body {
-    background: white;
-    margin: 0;
-    padding: 0;
-}
-
-@media screen and (min-width: 1750px) {
-    .body2{
-        margin-left: calc(50% - 875px);
-        margin-right: calc(50% - 875px);
-        max-width: 1750px;
-    }
-
-    .idiomas{
-        margin-left: calc(50% - 875px);
-        margin-right: calc(50% - 875px);
-        max-width: 1750px;
-    }
-}
-
-.cardscontainer {
-  padding-left: 10%;
-  padding-right: 10%;
-  padding-top: 90px;
-  padding-bottom: 0;
-  height: fit-content;
-  overflow: hidden;
-  display: flex;
-  flex-wrap: wrap; /* Permite que los elementos se envuelvan en varias líneas */
-}
-
 .botonestiposlineas {
-    flex: 0 0 auto; /* Evita que los botones se estiren para ajustarse al ancho */
-    margin-right: 10px; /* Espacio entre botones */
-    margin-bottom: 10px;
+    display: flex; /* Usa flexbox para el contenedor */
+    flex-wrap: wrap; /* Permite que los elementos se envuelvan en líneas adicionales */
+    gap: 10px; /* Espacio entre botones */
+    margin-bottom: 20px; /* Espacio adicional en la parte inferior del contenedor */
 }
 
 .botonestiposlineas a {
-    display: block;
-    color: white;
     background-color: var(--calbion);
+    color: white;
     padding: 10px;
     border-radius: 30px;
-    margin-bottom: 10px;
+    text-decoration: none;
+    white-space: nowrap; /* Evita que el texto del botón se ajuste */
+    transition: background-color 0.3s; /* Suaviza la transición de color */
 }
 
 .botonestiposlineas a:hover {
     background-color: var(--calbionsecundario);
-    transition: background 0.5s;
 }
 
 h2 {
@@ -75,9 +40,7 @@ h2 {
 .titulolinea{
     color: white;
     text-align: left;
-    margin-left: 5%;
-    margin-right: 5%;
-    padding-top: 230px;
+    padding-top: 150px;
 }
 
 /*DENTRO DE TABLA*/
@@ -104,11 +67,6 @@ td {
     padding-bottom: 10px;
 }
 
-/*MODELO*/
-.modelo {
-    width: 15%;
-}
-
 p{
     width: auto;
     text-align: center;
@@ -130,16 +88,6 @@ p{
 .nav-tabs{
     position: fixed;
     padding-top: 50px;
-}
-
-/*PRODUCCION*/
-.produccion {
-    width: 15%;
-}
-
-/*FOTOS*/
-.fotos {
-    width: 55%;
 }
 
 .imglinea{
@@ -184,227 +132,106 @@ p{
     margin-right: auto;
 }
 
-/*COTIZAR*/
-.cotizar{
+/* Estilo básico para el botón "cotizar" */
+#cotizar {
+    background-color: var(--calbion);
+    border-radius: 20px;
+    border: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 20px;
+    white-space: normal; /* Permite que el texto se ajuste según el ancho del botón */
+    text-align: center; /* Alinea el texto al centro */
+    font-size: 100%;
+    color: white;
+    text-decoration: none;
+    transition: background 0.5s;
+}
+
+#cotizar:hover {
+    background-color: var(--calbionsecundario);
+}
+
+.produccion_cel{
+    display: none;
+}
+
+
+/*MODELO*/
+.modelo {
     width: 15%;
 }
 
-#cotizar{
-    height: 70px;
-    width: 150px;
-    margin: 0;
+/*PRODUCCION*/
+.produccion {
+    width: 15%;
 }
 
-#cotizar h3{
-    line-height: 15px;
+/*FOTOS*/
+.fotos {
+    width: 55%;
+}
+
+/*COTIZAR*/
+.cotizar {
+    width: 15%;
+}
+
+@media screen and (max-width: 1279px) {
+    table {
+        width: 100%;
+        padding: 0;
+        margin: 0;
+    }
+}
+
+@media screen and (max-width: 1100px) {
+    td {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+}
+
+@media screen and (max-width: 800px) {
+    .produccion_cel{
+        display: block;
+    }
+    .produccion{
+        display: none;
+    }
+    /*MODELO*/
+    .modelo {
+        width: 30%;
+    }
+    /*FOTOS*/
+    .fotos {
+        width: 40%;
+    }
+    /*COTIZAR*/
+    .cotizar {
+        width: 30%;
+    }
+}
+
+
+@media screen and (max-width: 600px) {
+    #cotizar {
+        font-size: 90%;
+        padding: 8px 16px;
+    }
+}
+
+@media screen and (max-width: 400px) {
+    #cotizar {
+        font-size: 80%;
+        padding: 6px 12px;
+    }
 }
 
 footer{
     margin-top: 200px;
 }
-
-@media screen and (max-width: 1200px) {
-    .modelo {
-        width: 25%;
-    }
-
-    .produccion {
-        width: 25%;
-    }
-
-    .fotos {
-        width: 40%;
-    }
-
-    .cotizar{
-        width: 10%;
-    }
-
-    .swiper {
-        width: 400px;
-    }
-
-    #cotizar{
-        width: 100px;
-    }
-
-    td {
-        padding-left: 10px;
-        padding-right: 10px;
-    }
-
-    h2{
-        font-size: 50px;
-    }
-}
-
-@media screen and (max-width: 1100px) {
-    .swiper {
-        width: 340px;
-    }
-    #cotizar h3{
-        font-size: 100%;
-    }
-    table .contactar{
-        border-radius: 20px;
-    }
-    h2{
-        font-size: 45px;
-    }
-}
-
-@media screen and (max-width: 900px) {
-    .produccion {
-        display: none;
-    }
-    h2{
-        font-size: 40px;
-    }
-}
-
-@media screen and (max-width: 700px) {
-    .swiper {
-        width: 200px;
-    }
-    .swiper-button-next{
-        margin-right: -10px;
-    }
-    .swiper-button-prev{
-        margin-left: -10px;
-    }
-    .swiper-pagination{
-        margin-bottom: -10px;
-    }
-    #cotizar{
-        width: 90px;
-        height: 55px;
-    }
-    #cotizar h3{
-        font-size: 90%;
-    }
-    .modelo {
-        width: 30%;
-    }
-
-    .produccion {
-        width: 0;
-    }
-
-    .fotos {
-        width: 40%;
-    }
-
-    .cotizar{
-        width: 30%;
-        padding-right: calc(15% - 45px);
-        padding-left: calc(15% - 45px);
-    }
-    table .contactar{
-        border-radius: 15px;
-    }
-    .botonestiposlineas a{
-        font-size: 13px;
-    }
-    h2{
-        font-size: 35px;
-    }
-}
-
-@media screen and (max-width: 600px) {
-    .swiper {
-        width: 200px;
-    }
-    #cotizar{
-        width: 80px;
-    }
-    .cotizar{
-        padding-right: calc(15% - 40px);
-        padding-left: calc(15% - 40px);
-    }
-    #cotizar h3{
-        font-size: 80%;
-    }
-    h2{
-        font-size: 30px;
-    }
-}
-
-@media screen and (max-width: 500px) {
-    .swiper {
-        display: none;
-    }
-    .modelo {
-        width: 34%;
-    }
-    .fotos {
-        width: 33%;
-    }
-    .cotizar{
-        width: 34%;
-        padding-right: calc(17% - 40px);
-        padding-left: calc(17% - 40px);
-    }
-    table .contactar{
-        border-radius: 10px;
-    }
-}
-
-@media screen and (max-width: 400px) {
-    .swiper {
-        display: none;
-    }
-    .modelo {
-        width: 30%;
-    }
-    .fotos {
-        width: 30%;
-    }
-    .cotizar{
-        width: 40%;
-        padding-right: calc(20% - 40px);
-        padding-left: calc(20% - 40px);
-    }
-    td {
-        padding-left: 0;
-        padding-right: 0;
-    }
-
-
-    .botonestiposlineas a{
-        font-size: 12px;
-    }
-}
-
-@media screen and (max-width: 340px) {
-    th{
-        font-size: 18px;
-    }
-    #cotizar{
-        width: 60px;
-        height: 50px;
-    }
-    .cotizar{
-        padding-right: calc(20% - 30px);
-        padding-left: calc(20% - 30px);
-    }
-    table a{
-        font-size: 13px;
-        padding: 0;
-        margin: 0;
-    }
-    table p{
-        font-size: 13px;
-    }
-} 
-
-@media screen and (max-width: 300px) {
-    th{
-        font-size: 14px;
-    }
-    table p{
-        font-size: 12px;
-    }
-} 
 
 .modal{
     z-index: 9999;

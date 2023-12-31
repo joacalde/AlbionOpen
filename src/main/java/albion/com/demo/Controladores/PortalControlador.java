@@ -49,22 +49,22 @@ public class PortalControlador {
 
     @GetMapping("/nosotros")
     public String nosotros(ModelMap model) {
-        return "redirect:/index#nosotros";
+        return "redirect:/#nosotros";
     }
 
     @GetMapping("/lineas")
     public String lineas(ModelMap model, Locale locale) {
-        return "redirect:/index#lineas";
+        return "redirect:/#lineas";
     }
 
     @GetMapping("/representaciones")
     public String representaciones(ModelMap model, Locale locale) {
-        return "redirect:/index#representaciones";
+        return "redirect:/#representaciones";
     }
 
     @GetMapping("/servicios")
     public String servicios(ModelMap model, Locale locale) {
-        return "redirect:/index#servicios";
+        return "redirect:/#servicios";
     }
 
 }

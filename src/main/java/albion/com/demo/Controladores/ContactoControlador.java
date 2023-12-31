@@ -8,8 +8,10 @@ import albion.com.demo.Servicios.NotificacionServicio;
 import albion.com.demo.Servicios.ProductoServicio;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Locale;
 import javax.mail.MessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,16 +26,19 @@ public class ContactoControlador {
 
     @Autowired
     NotificacionServicio notificacionServicio;
-    
+
     @Autowired
     private ProductoServicio productoServicio;
-    
+
     @Autowired
     private EquipoServicio equipoServicio;
 
     @GetMapping("/contacto")
     public String contacto(ModelMap model, @RequestParam(required = false, value = "exito") String exito, @RequestParam(required = false, value = "error") String error, @RequestParam(required = false, value = "nombre") String nombre, @RequestParam(required = false, value = "apellido") String apellido, @RequestParam(required = false, value = "empresa") String empresa, @RequestParam(required = false, value = "pais") String pais, @RequestParam(required = false, value = "correo") String correo, @RequestParam(required = false, value = "telefono") String telefono, @RequestParam(required = false, value = "direccion") String direccion, @RequestParam(required = false, value = "producto") String producto, @RequestParam(required = false, value = "modelo") String modelo, @RequestParam(required = false, value = "mensaje") String mensaje) throws ErrorServicio {
-        
+
+        Locale currentLocale = LocaleContextHolder.getLocale();
+        model.addAttribute("currentLocale", currentLocale);
+
         List<Producto> productos = productoServicio.todos();
         if (productos != null) {
             productos.sort(Comparator.comparingInt(Producto::getPosicion));
@@ -50,7 +55,7 @@ public class ContactoControlador {
 
     @GetMapping("/contacto/{producto}/{modelo}/{configuracion}")
     public String contacto(ModelMap model, @PathVariable("producto") int producto, @PathVariable("modelo") String modelo, @PathVariable("configuracion") String configuracion) throws ErrorServicio {
-        
+
         List<Producto> productos = productoServicio.todos();
         if (productos != null) {
             productos.sort(Comparator.comparingInt(Producto::getPosicion));
@@ -65,12 +70,18 @@ public class ContactoControlador {
         model.put("producto", producto);
         model.put("modelo", modelo);
         model.put("configuracion", configuracion);
+        Locale currentLocale = LocaleContextHolder.getLocale();
+        model.addAttribute("currentLocale", currentLocale);
+
         return "contacto";
     }
 
     @GetMapping("/contacto/{producto}/{modelo}")
     public String contacto(ModelMap model, @PathVariable("producto") int producto, @PathVariable("modelo") String modelo) throws ErrorServicio {
-        
+
+        Locale currentLocale = LocaleContextHolder.getLocale();
+        model.addAttribute("currentLocale", currentLocale);
+
         List<Producto> productos = productoServicio.todos();
         if (productos != null) {
             productos.sort(Comparator.comparingInt(Producto::getPosicion));
@@ -81,9 +92,10 @@ public class ContactoControlador {
             equipos.sort(Comparator.comparingInt(Equipo::getPosicion));
         }
         model.put("equipos", equipos);
-        
+
         model.put("producto", producto);
         model.put("modelo", modelo);
+        
         return "contacto";
     }
 
@@ -105,6 +117,8 @@ public class ContactoControlador {
             ra.addAttribute("mensaje", mensaje);
             ra.addAttribute("error", e.getMessage());
         }
+        Locale currentLocale = LocaleContextHolder.getLocale();
+        model.addAttribute("currentLocale", currentLocale);
         return "redirect:/contacto";
     }
 

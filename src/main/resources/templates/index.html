@@ -2,6 +2,7 @@
 <html lang="en">
 
     <head>
+
         <!-- Required meta tags -->
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -15,7 +16,14 @@
 
         <link rel="stylesheet" th:href="@{/css/styles.css}"/>
 
-        <title th:text="${title}"></title>
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+
+        <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
+
+        <title th:text="#{title}"></title>
+
     </head>
 
     <body>
@@ -29,8 +37,7 @@
 
         <div class="fijo">
             <nav>
-
-                <div class="body2">
+                <div class="pagepadding">
                     <a class="checkbtn">
                         <img th:src="@{/img/navbtn.webp}" alt="">
                     </a>
@@ -43,45 +50,44 @@
 
                     <div class="navbar-links">
 
-                        <li>
-                            <a th:href="@{/contacto}">
-                                <button class="contactar">
-                                    <h3 th:text="${nav5}"></h3>
-                                </button>
-                            </a>
-                        </li>
-
                         <div class="navbar-text">
 
                             <ul class="nav">
-                                <li><a href="#" th:text="${nav1}"></a></li>
+                                <li><a class="nav-link-break" href="#" th:text="#{nav1}"></a></li>
                                 <li>
-                                    <a class="dropdown-toggle" href="#nosotros" th:text="${nav2}"></a>
+                                    <a class="dropdown-toggle nav-link-break" href="#nosotros" th:text="#{nav2}"></a>
                                     <ul class="navbar-dropdown">
-                                        <li><a href="#nosotros" th:text="${nav2_1}"></a></li>
-                                        <li><a href="#representaciones" th:text="${nav2_2}"></a></li>
-                                        <li><a href="#servicios" th:text="${nav2_3}"></a></li>
+                                        <li><a href="#nosotros" th:text="#{nav2_1}"></a></li>
+                                        <li><a href="#servicios" th:text="#{nav2_2}"></a></li>
+                                        <li><a href="#representaciones" th:text="#{nav2_3}"></a></li>
                                     </ul>
                                 </li>
                                 <li>
-                                    <a class="dropdown-toggle" href="#lineas" th:text="${nav3}"></a>
+                                    <a class="dropdown-toggle nav-link-break" href="#lineas" th:text="#{nav3}"></a>
                                     <ul class="navbar-dropdown">
                                         <li th:if="${productos != null}" th:each="producto: ${productos}">
-                                            <a  th:href="@{/linea/{producto}(producto=${producto.posicion})}" th:text="${producto.producto_es}"></a>
+                                            <a  th:href="@{/linea/{producto}(producto=${producto.posicion})}" th:text="${#locale.language == 'en' ? producto.producto_en : producto.producto_es}"></a>
                                         </li>
                                         <li th:unless="${productos != null}"><p>No hay productos subidos aún, consulte por mail.</p></li>
-<!--                                        <hr/>
-                                        <li><a href="" th:text="${producto_otro}"></a></li>-->
+                                        <!--                                        <hr/>
+                                                                                <li><a href="" th:text="${producto_otro}"></a></li>-->
                                     </ul>
                                 </li>
                                 <li>
-                                    <a class="dropdown-toggle" href="#" th:text="${nav4}"></a>
+                                    <a class="dropdown-toggle nav-link-break" href="#" th:text="#{nav4}"></a>
                                     <ul class="navbar-dropdown">
                                         <li th:if="${equipos != null}" th:each="equipo: ${equipos}">
-                                            <a  th:href="@{/equipo/{equipo}(equipo=${equipo.posicion})}" th:text="${equipo.titulo_es}"></a>
+                                            <a  th:href="@{/equipo/{equipo}(equipo=${equipo.posicion})}" th:text="${#locale.language == 'en' ? equipo.titulo_en : equipo.titulo_es}"></a>
                                         </li>
                                         <li th:unless="${equipos != null}"><p>No hay equipos subidos aún, consulte por mail.</p></li>
                                     </ul>
+                                </li>
+                                <li>
+                                    <a th:href="@{/contacto}">
+                                        <button class="contactar">
+                                            <h3 th:text="#{nav5}"></h3>
+                                        </button>
+                                    </a>
                                 </li>
                             </ul>
 
@@ -89,129 +95,110 @@
 
                     </div>
                 </div>
-
             </nav>
 
             <div class="idiomas">
-                <div class="idiomasright">
-                    <!--                    <a th:if="${idioma != 4}" th:href="@{/index/4}">
-                                            <img src="/img/pt..webp" alt="Brasil">
-                                        </a>
-                                        <a th:if="${idioma != 3}" th:href="@{/index/3}">
-                                            <img src="/img/fr2.webp" alt="France">
-                                        </a>
-                    <a href="?lang=en">English</a>
-<a href="?lang=es">Español</a>
-                    -->
-                    <a href="?lang=en">
-                        <img th:src="@{/img/ing2.webp}" alt="English">
-                    </a>
-                    <a href="?lang=es">
-                        <img th:src="@{/img/es.webp}" alt="Argentina">
-                    </a>
-                </div>
+                <select onchange="window.location.href = this.value;">
+                    <option value="?lang=bg" th:selected="${currentLocale.language} == 'bg'">Bulgarian</option>
+                    <option value="?lang=en" th:selected="${currentLocale.language} == 'en'">English</option>
+                    <option value="?lang=es" th:selected="${currentLocale.language} == 'es'">Spanish</option>
+                    <option value="?lang=fr" th:selected="${currentLocale.language} == 'fr'">French</option>
+                    <option value="?lang=pt" th:selected="${currentLocale.language} == 'pt'">Portuguese</option>
+                    <option value="?lang=ru" th:selected="${currentLocale.language} == 'ru'">Russian</option>
+                </select>
             </div>
 
         </div>
 
         <div class="leftnav">
-            <ul>
-                <li><a th:href="@{/index}" th:text="${nav1}"></a></li>
-                <li><a th:href="@{/nosotros}" th:text="${nav2_1}"></a></li>
-                <li><a th:href="@{/lineas}" th:text="${nav3}"></a>
-                <li><a th:href="@{/representaciones}" th:text="${nav2_2}"></a></li>
-                <li><a th:href="@{/servicios}" th:text="${nav2_3}"></a></li>
-                <li><a th:href="@{/equipos}" th:text="${nav4}"></a></li>
-                <li>
-                <li id="leftnavcontactar">
-                    <a th:href="@{/contacto}"><button class="contactarnav" id="contactarleftnav">
-                            <h3 th:text="${nav5}"></h3>
-                        </button></a>
-                </li>
-            </ul>
-        </div>
-
-        <div class="leftnav2">
-            <ul>
-                <li th:each="producto: ${productos}">
-                    <a th:href="@{/linea/{producto}(producto=${producto.posicion})}" th:text="${producto.producto_es}"></a>
-                </li>
-                <hr />
-                <li><a href="otros.html" th:text="${producto_otro}"></a></li>
-                <hr />
-            </ul>
-            <ul>
-                <li><a href="" class="cancelleftnav2" th:text="${volver}"></a></li>
-            </ul>
+            <div class="navbar">
+                <button type="button" class="btn-close leftnav-close" aria-label="Close"></button>
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item"><a class="nav-link" href="#" th:text="#{nav1}"></a></li>
+                    <li class="nav-item"><a class="nav-link" href="#nosotros" th:text="#{nav2_1}"></a></li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" th:text="#{nav3}"></a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <li th:if="${productos != null}" th:each="producto: ${productos}">
+                                <a class="dropdown-item" th:href="@{/linea/{producto}(producto=${producto.posicion})}" th:text="${#locale.language == 'en' ? producto.producto_en : producto.producto_es}"></a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item"><a class="nav-link" href="#servicios" th:text="#{nav2_2}"></a></li>
+                    <li class="nav-item"><a class="nav-link" href="#representaciones" th:text="#{nav2_3}"></a></li>
+                    <li class="nav-item"><a class="nav-link" href="#equipos" th:text="#{nav4}"></a></li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/contacto}" th:text="#{nav5}"></a></li>
+                </ul>
+            </div>
         </div>
 
         <script>
-            const toggleButton = document.getElementsByClassName('checkbtn')[0]
-            const navbarLinks = document.getElementsByClassName('leftnav')[0]
+            document.addEventListener('DOMContentLoaded', function() {
+            const leftNav = document.getElementsByClassName('leftnav')[0];
+            const toggleButton = document.getElementsByClassName('checkbtn')[0];
+            const closeButton = document.getElementsByClassName('leftnav-close')[0];
+            const navLinks = leftNav.getElementsByTagName('a');
 
-            toggleButton.addEventListener('click',()=> {
-            navbarLinks.classList.toggle('active')
-            })
+            // Evento para mostrar/ocultar el leftnav
+            toggleButton.addEventListener('click', function() {
+            leftNav.classList.toggle('active');
+            });
 
-            const hnav = document.getElementsByClassName('hnav')[0]
-            hnav.addEventListener('click',()=> {
-            navbarLinks.classList.toggle('active')
-            })
+            closeButton.addEventListener('click', function() {
+            leftNav.classList.remove('active');
+            });
 
-            const representacionesnav = document.getElementsByClassName('representacionesnav')[0]
-            representacionesnav.addEventListener('click',()=> {
-            navbarLinks.classList.toggle('active')
-            })
+            for (let link of navLinks) {
+            if (link.id !== 'navbarDropdown') { // Verifica que no sea el enlace "lineas"
+            link.addEventListener('click', function() {
+            leftNav.classList.remove('active');
+            });
+            }
+            }
 
-            const serviciosnav = document.getElementsByClassName('serviciosnav')[0]
-            serviciosnav.addEventListener('click',()=> {
-            navbarLinks.classList.toggle('active')
-            })
-
-            const contactarnav = document.getElementsByClassName('contactarnav')[0]
-            contactarnav.addEventListener('click',()=> {
-            navbarLinks.classList.toggle('active')
-            })
-
-            const hnosotros = document.getElementsByClassName('hnosotros')[0]
-            hnosotros.addEventListener('click',()=> {
-            navbarLinks.classList.toggle('active')
-            })
-
-            const lineasnav = document.getElementsByClassName('lineasnav')[0]
-            const leftnav2 = document.getElementsByClassName('leftnav2')[0]
-            const cancelleftnav2 = document.getElementsByClassName('cancelleftnav2')[0]
-            lineasnav.addEventListener('click',()=> {
-            leftnav2.classList.toggle('active')
-            })
-            cancelleftnav2.addEventListener('click',()=> {
-            leftnav2.classList.toggle('active')
-            })
+            // Detiene la propagación para el enlace "lineas"
+            const lineasLink = document.getElementById('navbarDropdown');
+            lineasLink.addEventListener('click', function(event) {
+            event.stopPropagation(); // Detiene la propagación del evento
+            });
+            });
         </script>
 
+        <div class="leftnav" id="leftnav-productos">
+            <button type="button" class="btn-close leftnav-close" aria-label="Close"></button>
+            <ul>
+                <!-- Lista de Productos Aquí -->
+                <li th:if="${productos != null}" th:each="producto: ${productos}">
+                    <a th:href="@{/linea/{producto}(producto=${producto.posicion})}" th:text="${#locale.language == 'en' ? producto.producto_en : producto.producto_es}"></a>
+                </li>
+                <li th:unless="${productos != null}"><p>No hay productos subidos aún, consulte por mail.</p></li>
+            </ul>
+        </div>
 
-        <div class="body2">
-            <header th:style="'background-image: url(' + @{/img/taller2as.jpg} + ');'">
+        <header th:style="'background-image: url(' + @{/img/taller2as.jpg} + ');'">
+            <div class="pagepadding">
                 <div class="headertext">
                     <div class="cardheadertext">
                         <h4>67</h4>
-                        <p th:text="${header_1}"></p>
+                        <p th:text="#{header_1}"></p>
                     </div>
                     <div class="cardheadertext" id="cardheadertext2">
                         <h4>+40</h4>
-                        <p th:text="${header_2}"></p>
+                        <p th:text="#{header_2}"></p>
                     </div>
                     <div class="cardheadertext" id="cardheadertext3">
-                        <h4>+10</h4>
-                        <p th:text="${header_3}"></p>
+                        <h4>+15</h4>
+                        <p th:text="#{header_3}"></p>
                     </div>
                 </div>
-            </header>
+            </div>
+        </header>
 
+        <div class="body2">
             <div class="cardscontainer" id="nosotros">
                 <div class="historia">
                     <img th:src="@{/img/historia.jpg}" alt="Team Albion">
-                    <h2 th:text="${tit_1}"></h2>
+                    <h2 th:text="#{tit_1}"></h2>
 
                     <!--                    Español-->
                     <div th:if="${currentLocale.language} == 'es'">
@@ -243,51 +230,80 @@
                         </article>
                     </div>
 
-                    <!--                    Frances-->
-                    <!--                    <div th:if="${idioma}==3">
-                                            <article>
-                                                ALBION es una empresa ubicada en Mendoza, Argentina, nacida en 1955. A lo largo de su historia ha ido
-                                                creciendo y evolucionando desde sus comienzos como empresa unipersonal hasta el presente donde una tercera
-                                                generación familiar se prepara para continuar con el desafío.
-                                            </article>
-                                            <article>
-                                                Hoy, buscamos ser la empresa de productores y compañías que desean crecer y expandirse, brindando el apoyo
-                                                necesario para su desarrollo. Para ello, gracias a nuestra historia, trabajo y dedicación contamos con un gran
-                                                capital humano y tecnología de producción que nos ayuda a estar a la altura de los desafíos de un mercado que
-                                                está en constante cambio
-                                            </article>
-                                        </div>-->
+                    <!-- Búlgaro -->
+                    <div th:if="${currentLocale.language} == 'bg'">
+                        <article>
+                            ALBION е компания, разположена в Мендоза, Аржентина, основана през 1955 г. 
+                            През цялата си история компанията е растяла и се развивала от своето начало като еднолична фирма до днес, 
+                            където семейство от трето поколение се подготвя да продължи предизвикателството.
+                        </article>
+                        <article>
+                            Днес ние се стремим да бъдем компанията за производители и фирми, които искат да растат и се разширяват, 
+                            като осигуряваме необходимата подкрепа за тяхното развитие. 
+                            Благодарение на нашата история, работа и отдаденост разполагаме с голям човешки капитал и технологии за производство, 
+                            които ни позволяват да отговорим на предизвикателствата на постоянно променящия се пазар.
+                        </article>
+                    </div>
 
-                    <!--                    Brasil-->
-                    <!--                    <div th:if="${idioma}==4">
-                                            <article>
-                                                ALBION es una empresa ubicada en Mendoza, Argentina, nacida en 1955. A lo largo de su historia ha ido
-                                                creciendo y evolucionando desde sus comienzos como empresa unipersonal hasta el presente donde una tercera
-                                                generación familiar se prepara para continuar con el desafío.
-                                            </article>
-                                            <article>
-                                                Hoy, buscamos ser la empresa de productores y compañías que desean crecer y expandirse, brindando el apoyo
-                                                necesario para su desarrollo. Para ello, gracias a nuestra historia, trabajo y dedicación contamos con un gran
-                                                capital humano y tecnología de producción que nos ayuda a estar a la altura de los desafíos de un mercado que
-                                                está en constante cambio
-                                            </article>
-                                        </div>-->
+                    <!-- Francés -->
+                    <div th:if="${currentLocale.language} == 'fr'">
+                        <article>
+                            ALBION est une entreprise située à Mendoza, Argentine, fondée en 1955. 
+                            Tout au long de son histoire, elle a grandi et évolué, passant de ses débuts en tant qu'entreprise individuelle 
+                            à aujourd'hui, où une famille de troisième génération se prépare à relever le défi.
+                        </article>
+                        <article>
+                            Aujourd'hui, notre objectif est d'être l'entreprise des producteurs et des entreprises qui souhaitent croître et s'étendre, 
+                            en fournissant le soutien nécessaire à leur développement. 
+                            Grâce à notre histoire, à notre travail et à notre dévouement, nous disposons d'un grand capital humain et d'une technologie de production 
+                            qui nous permettent de répondre aux défis d'un marché en constante évolution.
+                        </article>
+                    </div>
 
-                    <!--                    <a href="https://www.youtube.com/watch?v=Qy2YxJRm2hU"  th:text="${tit_1_vermas}"></a>-->
+                    <!-- Portugués -->
+                    <div th:if="${currentLocale.language} == 'pt'">
+                        <article>
+                            ALBION é uma empresa localizada em Mendoza, Argentina, fundada em 1955. 
+                            Ao longo de sua história, cresceu e evoluiu desde seus inícios como uma empresa individual até o presente, 
+                            onde uma família de terceira geração está se preparando para continuar o desafio.
+                        </article>
+                        <article>
+                            Hoje, nosso objetivo é ser a empresa para produtores e negócios que desejam crescer e expandir, 
+                            fornecendo o suporte necessário para seu desenvolvimento. 
+                            Graças à nossa história, trabalho e dedicação, temos um grande capital humano e tecnologia de produção 
+                            que nos permitem enfrentar os desafios de um mercado em constante mudança.
+                        </article>
+                    </div>
+
+                    <!-- Ruso -->
+                    <div th:if="${currentLocale.language} == 'ru'">
+                        <article>
+                            ALBION - компания, расположенная в Мендосе, Аргентина, основанная в 1955 году. 
+                            На протяжении всей своей истории она росла и развивалась от начала как частная фирма до настоящего времени, 
+                            когда семья третьего поколения готовится продолжить вызов.
+                        </article>
+                        <article>
+                            Сегодня мы стремимся быть компанией для производителей и бизнеса, желающих расти и расширяться, 
+                            предоставляя необходимую поддержку для их развития. 
+                            Благодаря нашей истории, работе и преданности у нас есть большой человеческий капитал и технологии производства, 
+                            которые позволяют нам соответствовать вызовам постоянно меняющегося рынка.
+                        </article>
+                    </div>
+
                 </div>
             </div>
 
 
             <div class="cardscontainer" id="lineas">
 
-                <h2 th:text="${tit_2}"></h2>
+                <h2 th:text="#{tit_2}"></h2>
                 <div class="linescontainer">
                     <div  th:each="producto: ${productos}" >
                         <a th:href="@{/linea/{producto}(producto=${producto.posicion})}">
                             <div class="cards">
                                 <div th:if="${producto.foto} != null"><img th:src="@{/foto/__${producto.foto.id}__}"></div>
                                 <div class="cardcontent">
-                                    <h6 th:text="${producto.producto_es}"></h6>
+                                    <h6 th:text="${#locale.language == 'en' ? producto.producto_en : producto.producto_es}"></h6>
                                     <p></p>
                                 </div>
                             </div>
@@ -296,176 +312,106 @@
 
                 </div>
             </div>
-            <!--                    <div class="cardsmas">-->
-            <!--                    </div>-->
-            <!--            <div class="containsmasmenos">
-                            <a href="#lineas" class="mas">+</a>
-                        </div>
-                        <div class="containsmasmenos">
-                            <a href="#lineas" class="menos">-</a>
-                        </div>-->
-
-            <div id="representaciones">
-                <div class="cardscontainer" id="repres">
-
-                    <h2 th:text="${tit_3}"></h2>
-
-                    <div class="cards3">
-                        <div class="cardsimg3">
-                            <a href="http://www.simon-online.fr/">
-                                <img th:src="@{/img/representation_01.jpg}" alt="Simon">
-                            </a>
-                        </div>
-                    </div>
-                    <div class="cards3">
-                        <div class="cardsimg3">
-                            <a href="http://www.newtec.com/">
-                                <img th:src="@{/img/representation_02.jpg}" alt="Newtec">
-                            </a>
-                        </div>
-                    </div>
-                    <div class="cards3">
-                        <div class="cardsimg3">
-                            <a href="http://www.c-pack.com/">
-                                <img th:src="@{/img/representation_04.jpg}" alt="C-pack">
-                            </a>
-                        </div>
-                    </div>
-                    <div class="cards3" id="cards3-4">
-                        <div class="cardsimg3">
-                            <a>
-                                <img th:src="@{/img/visys.jpg}" alt="VISYS">
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-
-
 
             <div class="cardscontainer" id="servicios">
-
-                <h2 th:text="${tit_4}"></h2>
-
-                <div class="servicios">
-
-                    <div class="cards2">
-                        <img th:src="@{/img/pictograma-servicio12.webp}" alt="Puesta En Marcha">
-                        <div class="cardcontent2">
-                            <h6 th:text="${ser_1}"></h6>
-                        </div>
+                <h2 th:text="#{tit_4}">Nuestros Servicios</h2>
+                <div class="row align-items-center">
+                    <!-- Columna para la imagen -->
+                    <div class="col-md-6 text-center">
+                        <img th:src="@{/img/pictograma-servicio22.png}" alt="Nuestros Servicios" class="img-fluid">
                     </div>
-
-
-                    <div class="cards2" id="s2">
-                        <img th:src="@{/img/pictograma-servicio22.webp}" alt="Mantenimiento">
-                        <div class="cardcontent2">
-                            <h6 th:text="${ser_2}"></h6>
-                        </div>
-                    </div>
-
-                    <div class="servicios2">
-                        <div class="cardcontent2">
-                            <h6 th:text="${ser_1}"></h6>
-                        </div>
-                        <div class="cardcontent2">
-                            <h6 th:text="${ser_2}"></h6>
-                        </div>
+                    <!-- Columna para la lista de servicios -->
+                    <div class="col-md-6">
+                        <ul class="list-unstyled">
+                            <li class="my-4"><i class="fa fa-check" aria-hidden="true" style="color: #154388;"></i> <span th:text="#{ser_1}">Asesoramiento y puesta en marcha</span></li>
+                            <li><i class="fa fa-check" aria-hidden="true" style="color: #154388;"></i> <span th:text="#{ser_2}">Mantenimiento preventivo y correctivo</span></li>
+                        </ul>
                     </div>
                 </div>
             </div>
 
 
 
+            <div class="cardscontainer" id="representaciones">
 
-            <!--            <div class="swiper mySwiper">
-                            <div class="swiper-wrapper">
-            
-                                <div class="swiper-slide testimonios">
-                                    <h2>Angel</h2>
-                                    <h5>CEO de Albion</h5>
-                                    <hr />
-                                    <div class="testimoniostext">
-                                        <p>"La Argentina está organizada como un Estado federal descentralizado, integrado desde 1994 por un Estado
-                                            nacional y 24 jurisdicciones o distritos de primer orden8​ o estados autogobernados,9​10​ que son 23
-                                            provincias y la Ciudad Autónoma de Buenos Aires (CABA), esta última designada como capital federal
-                                            principal del país.i​ Las 24 jurisdicciones o distritos autogobernados tienen constitución, bandera y
-                                            fuerza de seguridad propios. Las 23 provincias mantienen todos los poderes no delegados al Estado
-                                            nacional, tienen tres poderes autónomos y garantizan la autonomía de sus municipios"</p>
+                <h2 th:text="#{tit_3}"></h2>
+
+                <div class="cards3">
+                    <div class="cardsimg3">
+                        <a href="http://www.simon-online.fr/">
+                            <img th:src="@{/img/representation_01.jpg}" alt="Simon">
+                        </a>
+                    </div>
+                </div>
+                <div class="cards3">
+                    <div class="cardsimg3">
+                        <a href="http://www.newtec.com/">
+                            <img th:src="@{/img/representation_02.jpg}" alt="Newtec">
+                        </a>
+                    </div>
+                </div>
+                <div class="cards3">
+                    <div class="cardsimg3">
+                        <a href="http://www.c-pack.com/">
+                            <img th:src="@{/img/representation_04.jpg}" alt="C-pack">
+                        </a>
+                    </div>
+                </div>
+                <div class="cards3" id="cards3-4">
+                    <div class="cardsimg3">
+                        <a>
+                            <img th:src="@{/img/visys.jpg}" alt="VISYS">
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!--  
+                      <div class="swiper mySwiper">
+                                        <div class="swiper-wrapper">
+                        
+                                            <div class="swiper-slide testimonios">
+                                                <h2>Angel</h2>
+                                                <h5>CEO de Albion</h5>
+                                                <hr />
+                                                <div class="testimoniostext">
+                                                    <p>"La Argentina está organizada como un Estado federal descentralizado, integrado desde 1994 por un Estado
+                                                        nacional y 24 jurisdicciones o distritos de primer orden8​ o estados autogobernados,9​10​ que son 23
+                                                        provincias y la Ciudad Autónoma de Buenos Aires (CABA), esta última designada como capital federal
+                                                        principal del país.i​ Las 24 jurisdicciones o distritos autogobernados tienen constitución, bandera y
+                                                        fuerza de seguridad propios. Las 23 provincias mantienen todos los poderes no delegados al Estado
+                                                        nacional, tienen tres poderes autónomos y garantizan la autonomía de sus municipios"</p>
+                                                </div>
+                                            </div>
+                        
+                                        </div>
+                                        <div class="swiper-button-next"></div>
+                                        <div class="swiper-button-prev"></div>
+                                        <div class="swiper-pagination"></div>
                                     </div>
-                                </div>
             
-                                <div class="swiper-slide testimonios">
-                                    <h2>Angel</h2>
-                                    <h5>CEO de Albion</h5>
-                                    <hr />
-                                    <div class="testimoniostext">
-                                        <p>"La Argentina está organizada como un Estado federal descentralizado, integrado desde 1994 por un Estado
-                                            nacional y 24 jurisdicciones o distritos de primer orden8​ o estados autogobernados,9​10​ que son 23
-                                            provincias y la Ciudad Autónoma de Buenos Aires (CABA), esta última designada como capital federal
-                                            principal del país.i​ Las 24 jurisdicciones o distritos autogobernados tienen constitución, bandera y
-                                            fuerza de seguridad propios. Las 23 provincias mantienen todos los poderes no delegados al Estado
-                                            nacional, tienen tres poderes autónomos y garantizan la autonomía de sus municipios"</p>
-                                    </div>
-                                </div>
+                        <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
             
-                                <div class="swiper-slide testimonios">
-                                    <h2>Angel</h2>
-                                    <h5>CEO de Albion</h5>
-                                    <hr />
-                                    <div class="testimoniostext">
-                                        <p>"La Argentina está organizada como un Estado federal descentralizado, integrado desde 1994 por un Estado
-                                            nacional y 24 jurisdicciones o distritos de primer orden8​ o estados autogobernados,9​10​ que son 23
-                                            provincias y la Ciudad Autónoma de Buenos Aires (CABA), esta última designada como capital federal
-                                            principal del país.i​ Las 24 jurisdicciones o distritos autogobernados tienen constitución, bandera y
-                                            fuerza de seguridad propios. Las 23 provincias mantienen todos los poderes no delegados al Estado
-                                            nacional, tienen tres poderes autónomos y garantizan la autonomía de sus municipios"</p>
-                                    </div>
-                                </div>
-            
-                                <div class="swiper-slide testimonios">
-                                    <h2>Angel</h2>
-                                    <h5>CEO de Albion</h5>
-                                    <hr />
-                                    <div class="testimoniostext">
-                                        <p>"La Argentina está organizada como un Estado federal descentralizado, integrado desde 1994 por un Estado
-                                            nacional y 24 jurisdicciones o distritos de primer ordeno estados autogobernados,9que son 23
-                                            provincias y la Ciudad Autónoma de Buenos Aires (CABA), esta última designada como capital federal
-                                            principal del país. Las 24 jurisdicciones o distritos autogobernados tienen constitución, bandera y
-                                            fuerza de seguridad propios. Las 23 provincias mantienen todos los poderes no delegados al Estado
-                                            nacional, tienen tres poderes autónomos y garantizan la autonomía de sus municipios"</p>
-                                    </div>
-                                </div>
-            
-                            </div>
-                            <div class="swiper-button-next"></div>
-                            <div class="swiper-button-prev"></div>
-                            <div class="swiper-pagination"></div>
-                        </div>-->
+                        <script>
+                            var swiper = new Swiper(".mySwiper", {
+                            slidesPerView: 1,
+                            spaceBetween: 30,
+                            loop: true,
+                            pagination: {
+                            el: ".swiper-pagination",
+                            clickable: true,
+                            },
+                            navigation: {
+                            nextEl: ".swiper-button-next",
+                            prevEl: ".swiper-button-prev",
+                            },
+                            });
+                        </script>
+            -->
+        </div>
 
-            <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
-
-            <script>
-                var swiper = new Swiper(".mySwiper", {
-                slidesPerView: 1,
-                spaceBetween: 30,
-                loop: true,
-                pagination: {
-                el: ".swiper-pagination",
-                clickable: true,
-                },
-                navigation: {
-                nextEl: ".swiper-button-next",
-                prevEl: ".swiper-button-prev",
-                },
-                });
-            </script>
-
-
-
-            <footer  th:style="'background-image: url(' + @{/img/tallerinferior.jpg} + ');'">
-
+        <footer  th:style="'background-image: url(' + @{/img/tallerinferior.jpg} + ');'">
+            <div class="pagepadding">
                 <div class="pie">
                     <img class="logofooter" th:src="@{/img/logo.webp}" alt="logo Albion">
                     <p>Food processing machinery</p>
@@ -488,11 +434,11 @@
                 </div>
 
                 <div class="copyri">
-                    <p>Copyright © 2022 ALBION</p>
+                    <p>Copyright © 2024 ALBION</p>
                 </div>
+            </div>
+        </footer>
 
-            </footer>
-        </div>
 
 
 
